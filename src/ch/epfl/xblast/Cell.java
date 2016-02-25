@@ -15,7 +15,7 @@ public final class Cell {
     private final int x,y;
     
     public Cell(int x,int y){
-        
+        //salut
     }
     
     public int x(){
