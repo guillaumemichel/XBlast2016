@@ -15,7 +15,8 @@ public final class Cell {
     private final int x,y;
     
     public Cell(int x,int y){
-        //salut
+        this.x=x;
+        this.y=y;
     }
     
     public int x(){
@@ -50,7 +51,7 @@ public final class Cell {
         }
         boolean horizontal = true;
         ArrayList<Cell> spiral = new ArrayList<Cell>();
-        
+        ArrayList<Integer> temp = new ArrayList<Integer>();       
         ArrayList<Integer> i1;
         ArrayList<Integer> i2;
         int c1;
@@ -68,6 +69,16 @@ public final class Cell {
             
             c2 = i2.get(0);
             i2.remove(0);
+            for (int i=0;i<i1.size();++i){
+                c1=i1.get(i);
+                spiral.add(new Cell(c1,c2));
+            }
+            for (int i=i1.size()-1;i>=0;--i){
+                temp.add(i1.get(i));
+            }
+            i1=temp;
+            temp.clear();
+            horizontal = !horizontal;
         }
         return spiral;
     }
