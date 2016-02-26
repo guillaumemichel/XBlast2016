@@ -15,8 +15,8 @@ public final class Cell {
     private final int x,y;
     
     public Cell(int x,int y){
-        this.x=x;
-        this.y=y;
+        this.x=Math.floorMod(x, COLUMNS);
+        this.y=Math.floorMod(y, ROWS);
     }
     
     public int x(){
@@ -61,22 +61,26 @@ public final class Cell {
             if (horizontal){
                 i1=ix;
                 i2=iy;
+                System.out.println("horizontal");
             }
             else {
                 i1=iy;
                 i2=ix;
+                System.out.println("vertical");
             }
-            
+            System.out.println(i1);
+            System.out.println(i2);
             c2 = i2.get(0);
-            i2.remove(0);
+            i2.remove(c2);
             for (int i=0;i<i1.size();++i){
                 c1=i1.get(i);
                 spiral.add(new Cell(c1,c2));
             }
+            System.out.println("Spirale "+c2+i1);
             for (int i=i1.size()-1;i>=0;--i){
                 temp.add(i1.get(i));
             }
-            i1=temp;
+            i1=(ArrayList<Integer>)temp.clone();
             temp.clear();
             horizontal = !horizontal;
         }
@@ -84,39 +88,38 @@ public final class Cell {
     }
     
     public Cell neighbor(Direction dir){
-        int place=ROW_MAJOR_ORDER.indexOf(this);
         switch (dir){
         
             case E:
                 if (x==COLUMNS-1){
-                    return ROW_MAJOR_ORDER.get(place-(COLUMNS-1));
+                    return new Cell(x-(COLUMNS-1),y);
                 }
                 else{
-                    return ROW_MAJOR_ORDER.get(place+1);
+                    return new Cell(x+1,y);
                 }
                 
             case W:
                 if (x==0){
-                    return ROW_MAJOR_ORDER.get(place+(COLUMNS-1));
+                    return new Cell(x+(COLUMNS-1),y);
                 }
                 else{
-                    return ROW_MAJOR_ORDER.get(place-1);
+                    return new Cell(x-1,y);
                 }
                 
             case S:
                 if (y==ROWS-1){
-                    return ROW_MAJOR_ORDER.get(place-(ROWS-1)*COLUMNS);
+                    return new Cell(x,y-(ROWS-1));
                 }
                 else{
-                    return ROW_MAJOR_ORDER.get(place+COLUMNS);
+                    return new Cell(x,y+1);
                 }
                 
             case N:
                 if (y==0){
-                    return ROW_MAJOR_ORDER.get(place+(ROWS-1)*COLUMNS);
+                    return new Cell(x,y+(ROWS-1));
                 }
                 else{
-                    return ROW_MAJOR_ORDER.get(place-COLUMNS);
+                    return new Cell(x,y-1);
                 }
             default:
                 return null;

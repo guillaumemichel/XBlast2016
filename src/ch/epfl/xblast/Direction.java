@@ -1,7 +1,7 @@
 package ch.epfl.xblast;
 
 public enum Direction {
-    W, E, S, N;
+    N, E, S, W;
     
     public Direction opposite(){
         switch (this){
