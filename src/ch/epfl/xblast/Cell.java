@@ -68,6 +68,10 @@ public final class Cell {
                 i2=ix;
                 System.out.println("vertical");
             }
+            temp = (ArrayList<Integer>)i1.clone();
+            i1=(ArrayList<Integer>)i2.clone();
+            i2=(ArrayList<Integer>)temp.clone();
+            temp.clear();
             System.out.println(i1);
             System.out.println(i2);
             c2 = i2.get(0);
