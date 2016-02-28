@@ -1,5 +1,3 @@
-// this is a test, ignore
-
 package ch.epfl.xblast;
 
 import java.util.ArrayList;
