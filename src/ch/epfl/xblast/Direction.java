@@ -1,29 +1,59 @@
 package ch.epfl.xblast;
-
+/**
+ * A direction
+ * 
+ * @author Guillaume Michel
+ * @author Adrien Vandenbroucque
+ *
+ */
 public enum Direction {
     N, E, S, W;
     
-    public Direction opposite(){
-        switch (this){
-            case W:
-                return E;
-            case E:
-                return W;
-            case S:
-                return N;
-            case N:
-                return S;
-            default:
-                return null;
+    /**
+     * Returns the opposite of this direction
+     * 
+     * @return
+     *      The opposite of this direction
+     */
+    public Direction opposite() {
+        switch(this){
+        case N:
+            return S;
+
+        case S:
+            return N;
+
+        case E:
+            return W;
+
+        case W:
+            return E;
+
+        default:
+            return null;
         }
     }
     
+    /**
+     * Determines if this direction is horizontal (East or West) and returns the appropriate boolean
+     * 
+     * @return
+     *      <b>True</b> if this direction is horizontal (East or West), <b>false</b> otherwise
+     */
     public boolean isHorizontal(){
-        return (this==E||this==W);
+        return (this==E || this==W);
     }
     
+    /**
+     * Determines if this direction is parallel to another direction
+     * 
+     * @param that
+     *      The direction we test the parallelity with
+     * 
+     * @return
+     *      <b>True</b> if the directions are parallel, <b>false</b> otherwise
+     */
     public boolean isParallelTo(Direction that){
-        return (this==that||this==that.opposite());
+       return (this==that || this==that.opposite());
     }
 }
-
