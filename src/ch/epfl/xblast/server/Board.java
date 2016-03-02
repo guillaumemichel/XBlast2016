@@ -32,7 +32,35 @@ public final class Board {
     
     public static Board ofRows(List<List<Block>> rows) throws IllegalArgumentException{
         checkBlockMatrix(rows, 13, 15);
-        //A finir 
+        List<Sq<Block>> sequence= new ArrayList<>();
+        
+        for (int i = 0; i < rows.size(); ++i) {
+            for (int j = 0; j < rows.get(i).size(); ++j) {
+                sequence.set(i+rows.size()*j, Sq.constant(rows.get(i).get(j)));
+            }
+        }
+        
+        return new Board(sequence);
+    }
+    
+    public static Board ofInnerBlocksWalled(List<List<Block>> innerBlocks){
+        checkBlockMatrix(innerBlocks, 11, 13);
+        List<Sq<Block>> sequence= new ArrayList<>();
+        
+        for (int i = 0; i < 13; ++i) {
+            for (int j = 0; j < 15; ++j) {
+                if(i==0 || i==12 || j==0 || j==14){
+                    sequence.set(i+13*j, Sq.constant(Block.INDESTRUCTIBLE_WALL));
+                }else{
+                    sequence.set(i+13*j, Sq.constant(innerBlocks.get(i).get(j)));
+                }
+            }
+        }
+        return new Board(sequence);
+    }
+    
+    public Sq<Block> blocksAt(Cell c){
+        //A faire
         return null;
     }
 }
