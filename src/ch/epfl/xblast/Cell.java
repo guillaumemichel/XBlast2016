@@ -74,7 +74,6 @@ public final class Cell {
         }
         boolean horizontal = true;
         ArrayList<Cell> spiral = new ArrayList<Cell>();
-        ArrayList<Integer> temp = new ArrayList<Integer>();       
         ArrayList<Integer> i1;
         ArrayList<Integer> i2;
         int c1;
@@ -91,25 +90,18 @@ public final class Cell {
                 i2=ix;
                 System.out.println("vertical");
             }
-            temp = (ArrayList<Integer>)i1.clone();
-            i1=(ArrayList<Integer>)i2.clone();
-            i2=(ArrayList<Integer>)temp.clone();
-            temp.clear();
+
             System.out.println(i1);
             System.out.println(i2);
             c2 = i2.get(0);
             i2.remove(c2);
             for (int i=0;i<i1.size();++i){
-                c1=i1.get(i);
-                spiral.add(new Cell(c1,c2));
+            	c1 = i1.get(i);
+            	spiral.add( horizontal ? new Cell(c1,c2):new Cell(c2,c1));
             }
-            System.out.println("Spirale "+c2+i1);
-            for (int i=i1.size()-1;i>=0;--i){
-                temp.add(i1.get(i));
-            }
-            i1=(ArrayList<Integer>)temp.clone();
-            temp.clear();
+
             horizontal = !horizontal;
+            System.out.println(spiral);
         }
         return spiral;
     }
