@@ -20,10 +20,22 @@ public enum Block {
         return this==FREE;
     }
     
+    /**
+     * Determines if this block can host a player and returns the appropriate boolean
+     * 
+     * @return
+     *      <b>True</b> if this block can host a player, <b>false</b> otherwise
+     */
     public boolean canHostPlayer(){
         return this.isFree();
     }
     
+    /**
+     * Determines if this block casts shadow on the board, and returns the appropriate boolean
+     * 
+     * @return
+     *      <b>True</b> if this casts shadow on the board, <b>false</b> otherwise
+     */
     public boolean castsShadow(){
         return (this==INDESTRUCTIBLE_WALL || this==DESTRUCTIBLE_WALL || this==CRUMBLING_WALL);
     }
