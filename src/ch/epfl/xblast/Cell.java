@@ -54,6 +54,12 @@ public final class Cell {
     public int y(){
         return y;
     }
+    /**
+     * Create an array with all the cells in order by lines from right to left, top to bottom.
+     * 
+     * @return
+     * 		An array with all the cells in Row Major Order
+     */
     
     private static ArrayList<Cell> rowMajorOrder(){
         ArrayList<Cell> rowMajorOrder= new ArrayList<Cell>();
@@ -62,6 +68,12 @@ public final class Cell {
         }
         return rowMajorOrder;
     }
+    /**
+     * Create an array with all the cells in a clockwise spiral order beginning on corner top-left.
+     * 
+     * @return
+     * 		An array with all the cells in a Spiral Order
+     */
     
     private static ArrayList<Cell> spiralOrder(){
         ArrayList<Integer> ix = new ArrayList<Integer>();
@@ -78,30 +90,30 @@ public final class Cell {
         ArrayList<Integer> i2;
         int c1;
         int c2;
+        int l;
         
         while (!ix.isEmpty()&&!iy.isEmpty()){
             if (horizontal){
                 i1=ix;
                 i2=iy;
-                System.out.println("horizontal");
             }
             else {
                 i1=iy;
                 i2=ix;
-                System.out.println("vertical");
             }
-
-            System.out.println(i1);
-            System.out.println(i2);
             c2 = i2.get(0);
-            i2.remove(c2);
+            i2.remove(0);
             for (int i=0;i<i1.size();++i){
             	c1 = i1.get(i);
             	spiral.add( horizontal ? new Cell(c1,c2):new Cell(c2,c1));
+            	//adding new Cell in the array according on the boolean horizontal
             }
-
+            l=i1.size();
+            for (int i=0;i<l;++i){
+            	i1.add(i1.get(l-1-i));
+            	i1.remove(l-1-i);
+            } //inversion of list i1
             horizontal = !horizontal;
-            System.out.println(spiral);
         }
         return spiral;
     }
