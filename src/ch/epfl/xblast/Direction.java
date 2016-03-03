@@ -2,8 +2,8 @@ package ch.epfl.xblast;
 /**
  * A direction
  * 
- * @author Guillaume Michel
- * @author Adrien Vandenbroucque
+ * @author Guillaume Michel (258066)
+ * @author Adrien Vandenbroucque (258715)
  *
  */
 public enum Direction {

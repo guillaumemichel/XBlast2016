@@ -11,8 +11,8 @@ import ch.epfl.xblast.Cell;
 /**
  * A board
  * 
- * @author Guillaume Michel
- * @author Adrien Vandenbroucque
+ * @author Guillaume Michel (258066)
+ * @author Adrien Vandenbroucque (258715)
  *
  */
 public final class Board {
@@ -31,7 +31,7 @@ public final class Board {
         if(blocks.size()!=Cell.COUNT){
             throw new IllegalArgumentException();
         }else{
-            this.blocks=blocks; //Attention voir références!!!
+            this.blocks=blocks; //Attention voir references!!!
         }
     }
     

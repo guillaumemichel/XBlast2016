@@ -1,5 +1,12 @@
 package ch.epfl.xblast.server;
 
+/**
+ * Tick list
+ * 
+ * @author Guillaume Michel (258066)
+ * @author Adrien Vandenbroucque (258715)
+ *
+ */
 public interface Ticks {
     public final static int PLAYER_DYING_TICKS=8;
     public final static int PLAYER_INVULNERABLE_TICKS=64;

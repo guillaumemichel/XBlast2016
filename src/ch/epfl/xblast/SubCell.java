@@ -3,8 +3,8 @@ package ch.epfl.xblast;
 /**
  * A subcell
  * 
- * @author Guillaume Michel
- * @author Adrien Vndenbroucque
+ * @author Guillaume Michel (258066)
+ * @author Adrien Vandenbroucque (258715)
  *
  */
 public final class SubCell {

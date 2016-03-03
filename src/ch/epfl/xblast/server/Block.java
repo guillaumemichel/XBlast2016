@@ -3,8 +3,8 @@ package ch.epfl.xblast.server;
 /**
  * A block
  * 
- * @author Guillaume Michel
- * @author Adrien Vandenbroucque
+ * @author Guillaume Michel (258066)
+ * @author Adrien Vandenbroucque (258715)
  *
  */
 public enum Block {
