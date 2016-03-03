@@ -31,7 +31,7 @@ public final class Lists {
         if(l.isEmpty()){
             throw new IllegalArgumentException();
         }else{
-            List<T> subList=l.subList(0, l.size());
+            List<T> subList=l.subList(0, l.size()); //l.size()-2 ???
             Collections.reverse(subList);
             l.addAll(subList);
             return l;
