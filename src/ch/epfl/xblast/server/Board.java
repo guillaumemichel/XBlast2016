@@ -3,11 +3,11 @@ package ch.epfl.xblast.server;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import ch.epfl.cs108.Sq;
 import ch.epfl.xblast.Cell;
+import ch.epfl.xblast.Lists;
 
 /**
  * A board
@@ -122,9 +122,25 @@ public final class Board {
         
         List<Sq<Block>> sequence= new ArrayList<Sq<Block>>();
         
+        List<List<Block>> innerBoard=new ArrayList<List<Block>>();
+        
+        for (int i = 0; i < quadrantNWBlocks.size(); ++i) {
+            innerBoard.add(Lists.mirrored(quadrantNWBlocks.get(i)));
+        }
+        
+        innerBoard = Lists.mirrored(quadrantNWBlocks);
+        
+        sequence.addAll(Collections.nCopies(Cell.COLUMNS, Sq.constant(Block.INDESTRUCTIBLE_WALL)));
+        for(int i=0;i<innerBoard.size();++i){
+            sequence.add(Sq.constant(Block.INDESTRUCTIBLE_WALL));
+            for(int j=0;j<innerBoard.get(i).size();++j){
+                sequence.add(Sq.constant(quadrantNWBlocks.get(i).get(j)));
+            }
+            sequence.add(Sq.constant(Block.INDESTRUCTIBLE_WALL));
+        }
         sequence.addAll(Collections.nCopies(Cell.COLUMNS, Sq.constant(Block.INDESTRUCTIBLE_WALL)));
         
-        
+        return new Board(sequence);
     }
     
     public Sq<Block> blocksAt(Cell c){
