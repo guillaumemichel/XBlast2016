@@ -32,7 +32,7 @@ public final class Board {
         if(blocks.size()!=Cell.COUNT){
             throw new IllegalArgumentException();
         }else{
-            this.blocks=blocks; //Attention voir references!!!
+            this.blocks=blocks;
         }
     }
     
@@ -57,7 +57,7 @@ public final class Board {
         }
         for (List<Block> list : matrix) {
             if(list.size()!=columns){
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("Dimensions are incorrect !");
             }  
         }
     }
@@ -88,7 +88,7 @@ public final class Board {
     }
     
     /**
-     * Constructand returns a walled board with the given inner blocks
+     * Constructs and returns a walled board with the given inner blocks
      * 
      * @param innerBlocks
      *      The matrix that contains the inner blocks
@@ -117,7 +117,19 @@ public final class Board {
         return new Board(sequence);
     }
     
-    public static Board ofQuadrantNWBlocksWalled(List<List<Block>> quadrantNWBlocks){
+    /**
+     * Constructs and returns a symmetrical walled board with the given blocks of the north-west quadrant
+     * 
+     * @param innerBlocks
+     *      The matrix that contains blocks of the north-west quadrant
+     *      
+     * @return
+     *      A symmetrical walled board, with the given blocks of the north-west quadrant
+     *      
+     * @throws IllegalArgumentException
+     *      If the given matrix of blocks has not the dimensions 6*7
+     */
+    public static Board ofQuadrantNWBlocksWalled(List<List<Block>> quadrantNWBlocks) throws IllegalArgumentException{
         checkBlockMatrix(quadrantNWBlocks, (Cell.ROWS-1)/2, (Cell.COLUMNS-1)/2);
         
         List<Sq<Block>> sequence= new ArrayList<Sq<Block>>();
