@@ -73,12 +73,12 @@ public final class Board {
      *      If the matrix has not the dimensions 13*15
      */
     public static Board ofRows(List<List<Block>> rows) throws IllegalArgumentException{
-        checkBlockMatrix(rows, 13, 15);
+        checkBlockMatrix(rows, Cell.ROWS, Cell.COLUMNS);
         List<Sq<Block>> sequence= new ArrayList<>();
         
         for (int i = 0; i < rows.size(); ++i) {
             for (int j = 0; j < rows.get(i).size(); ++j) {
-                sequence.set(i+rows.size()*j, Sq.constant(rows.get(i).get(j)));
+                sequence.add(Sq.constant(rows.get(i).get(j)));
             }
         }
         
@@ -98,7 +98,7 @@ public final class Board {
      *      If the matrix of inner blocks has not the dimensions 11*13
      */
     public static Board ofInnerBlocksWalled(List<List<Block>> innerBlocks) throws IllegalArgumentException{
-        checkBlockMatrix(innerBlocks, 11, 13);
+        checkBlockMatrix(innerBlocks, Cell.ROWS-2, Cell.COLUMNS-2);
         List<Sq<Block>> sequence= new ArrayList<>();
         
         for (int i = 0; i < 13; ++i) {
@@ -113,8 +113,17 @@ public final class Board {
         return new Board(sequence);
     }
     
+    public static Board ofQuadrantNWBlocksWalled(List<List<Block>> quadrantNWBlocks){
+        checkBlockMatrix(quadrantNWBlocks, (Cell.ROWS-1)/2, (Cell.COLUMNS-1)/2);
+        
+    }
+    
     public Sq<Block> blocksAt(Cell c){
         //A faire
         return null;
+    }
+    
+    public Block blockAt(Cell c){
+        return blocksAt(c).head();
     }
 }
