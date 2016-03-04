@@ -2,6 +2,7 @@ package ch.epfl.xblast.server;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -74,7 +75,8 @@ public final class Board {
      */
     public static Board ofRows(List<List<Block>> rows) throws IllegalArgumentException{
         checkBlockMatrix(rows, Cell.ROWS, Cell.COLUMNS);
-        List<Sq<Block>> sequence= new ArrayList<>();
+        
+        List<Sq<Block>> sequence= new ArrayList<Sq<Block>>();
         
         for (int i = 0; i < rows.size(); ++i) {
             for (int j = 0; j < rows.get(i).size(); ++j) {
@@ -99,28 +101,34 @@ public final class Board {
      */
     public static Board ofInnerBlocksWalled(List<List<Block>> innerBlocks) throws IllegalArgumentException{
         checkBlockMatrix(innerBlocks, Cell.ROWS-2, Cell.COLUMNS-2);
-        List<Sq<Block>> sequence= new ArrayList<>();
         
-        for (int i = 0; i < 13; ++i) {
-            for (int j = 0; j < 15; ++j) {
-                if(i==0 || i==12 || j==0 || j==14){
-                    sequence.set(i+13*j, Sq.constant(Block.INDESTRUCTIBLE_WALL));
-                }else{
-                    sequence.set(i+13*j, Sq.constant(innerBlocks.get(i).get(j)));
-                }
+        List<Sq<Block>> sequence= new ArrayList<Sq<Block>>();
+        
+        sequence.addAll(Collections.nCopies(Cell.COLUMNS, Sq.constant(Block.INDESTRUCTIBLE_WALL)));
+        for(int i=0;i<innerBlocks.size();++i){
+            sequence.add(Sq.constant(Block.INDESTRUCTIBLE_WALL));
+            for(int j=0;j<innerBlocks.get(i).size();++j){
+                sequence.add(Sq.constant(innerBlocks.get(i).get(j)));
             }
+            sequence.add(Sq.constant(Block.INDESTRUCTIBLE_WALL));
         }
+        sequence.addAll(Collections.nCopies(Cell.COLUMNS, Sq.constant(Block.INDESTRUCTIBLE_WALL)));
+
         return new Board(sequence);
     }
     
     public static Board ofQuadrantNWBlocksWalled(List<List<Block>> quadrantNWBlocks){
         checkBlockMatrix(quadrantNWBlocks, (Cell.ROWS-1)/2, (Cell.COLUMNS-1)/2);
         
+        List<Sq<Block>> sequence= new ArrayList<Sq<Block>>();
+        
+        sequence.addAll(Collections.nCopies(Cell.COLUMNS, Sq.constant(Block.INDESTRUCTIBLE_WALL)));
+        
+        
     }
     
     public Sq<Block> blocksAt(Cell c){
-        //A faire
-        return null;
+        return blocks.get(c.rowMajorIndex());
     }
     
     public Block blockAt(Cell c){
