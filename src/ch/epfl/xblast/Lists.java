@@ -5,13 +5,12 @@ import java.util.Collections;
 import java.util.List;
 
 /**
-* Lists
-* 
-* @author Guillaume Michel (258066)
-* @author Adrien Vandenbroucque (258715)
-*
-*/
-
+ * Lists
+ * 
+ * @author Guillaume Michel (258066)
+ * @author Adrien Vandenbroucque (258715)
+ *
+ */
 public final class Lists {
     
     private Lists(){}
