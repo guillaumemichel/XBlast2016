@@ -158,10 +158,28 @@ public final class Board {
         return new Board(sequence);
     }
     
+    /**
+     * Returns the sequence of blocks for the given cell
+     * 
+     * @param c
+     *      The cell from which we retrieve the sequence of blocks
+     *      
+     * @return
+     *      The sequence of blocks for the given cell
+     */
     public Sq<Block> blocksAt(Cell c){
         return blocks.get(c.rowMajorIndex());
     }
     
+    /**
+     * Returns the block for the given cell (the head of the sequence of blocks)
+     * 
+     * @param c
+     *      The cell from which we retrieve the block
+     *      
+     * @return
+     *      The block for the given cell
+     */
     public Block blockAt(Cell c){
         return blocksAt(c).head();
     }
