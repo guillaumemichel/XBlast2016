@@ -2,6 +2,7 @@ package ch.epfl.xblast;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,10 +12,21 @@ public class ListsTest {
 
     @Test
     public void mirroredWorksCorrectly() {
-        List<Integer> trueOne= Arrays.asList(1, 2, 3, 2, 1);
-        List<Integer> testOne= Lists.mirrored(Arrays.asList(1, 2, 3));
+
+        List<String> testOne= new ArrayList<>();
+        testOne.add("k");
+        testOne.add("a");
+        testOne.add("y");
+        List<String> trueOne = new ArrayList<String>();
+        trueOne.add("k");
+        trueOne.add("a");
+        trueOne.add("y");
+        trueOne.add("a");
+        trueOne.add("k");
+        testOne = Lists.mirrored(trueOne);
         
-        assertTrue(trueOne.size()==testOne.size());
+        for (int i=0;i<testOne.size();++i)
+            assertEquals(testOne.get(i), trueOne.get(i));
     }
     
     @Test(expected = IllegalArgumentException.class)
