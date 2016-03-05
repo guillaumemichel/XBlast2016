@@ -51,7 +51,10 @@ public final class Board {
      * @throws IllegalArgumentException
      *      If the dimensions are not as desired 
      */
-    private static void checkBlockMatrix(List<List<Block>> matrix, int rows, int columns) throws IllegalArgumentException{
+    public static void checkBlockMatrix(List<List<Block>> matrix, int rows, int columns) throws IllegalArgumentException{
+        if (matrix==null||matrix.isEmpty()){
+            throw new IllegalArgumentException();
+        }
         if(matrix.size()!=rows){
             throw new IllegalArgumentException();
         }
