@@ -88,28 +88,25 @@ public final class Cell {
         ArrayList<Cell> spiral = new ArrayList<Cell>();
         ArrayList<Integer> i1;
         ArrayList<Integer> i2;
-        int c1;
-        int c2;
-        int l;
+        int c1, c2, l;
         
-        while (!ix.isEmpty()&&!iy.isEmpty()){
-            if (horizontal){
+        while(!ix.isEmpty()&&!iy.isEmpty()){
+            if(horizontal){
                 i1=ix;
                 i2=iy;
-            }
-            else {
+            }else{
                 i1=iy;
                 i2=ix;
             }
             c2 = i2.get(0);
             i2.remove(0);
-            for (int i=0;i<i1.size();++i){
+            for(int i=0;i<i1.size();++i){
             	c1 = i1.get(i);
             	spiral.add( horizontal ? new Cell(c1,c2):new Cell(c2,c1));
             	//adding new Cell in the array according on the boolean horizontal
             }
             l=i1.size();
-            for (int i=0;i<l;++i){
+            for(int i=0;i<l;++i){
             	i1.add(i1.get(l-1-i));
             	i1.remove(l-1-i);
             } //inversion of list i1
