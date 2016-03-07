@@ -1,12 +1,8 @@
 package ch.epfl.xblast.server;
 
 import java.util.Objects;
-
 import ch.epfl.cs108.Sq;
-import ch.epfl.xblast.ArgumentChecker;
-import ch.epfl.xblast.Direction;
-import ch.epfl.xblast.PlayerID;
-import ch.epfl.xblast.SubCell;
+import ch.epfl.xblast.*;
 
 public final class Player {
     private final PlayerID id;
@@ -24,7 +20,7 @@ public final class Player {
     }
     
     public Player(PlayerID id, int lives, Cell position, int maxBombs, int bombRange){
-        //A faire
+        this();
     }
     
     public final static class LifeState{
