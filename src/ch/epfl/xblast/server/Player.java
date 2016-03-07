@@ -24,7 +24,7 @@ public final class Player {
     }
     
     public Player(PlayerID id, int lives, Cell position, int maxBombs, int bombRange){
-        //A faire
+        
     }
     
     public final static class LifeState{

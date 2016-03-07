@@ -52,15 +52,16 @@ public final class Bomb {
     
     public List<Sq<Sq<Cell>>> explosion(){
         List<Sq<Sq<Cell>>> explosion=new ArrayList<>();
-        //WTF?
-        return null;
+        Direction[] directions = Direction.values();
+        for (int i = 0; i < 4; i++) {
+            explosion.add(explosionArmTowards(directions[i]));
+        }
+        return explosion;
     }
     
-    private Sq<Sq<Cell>> explosionArmTowards(Direction dir){
-        Sq<Cell> particle = Sq.iterate(position, c -> c.neighbor(dir));
-        particle.limit(3);
-        Sq<Sq<Cell>> explosionArm = Sq.constant(particle);
-        explosionArm.limit(3);
+    public Sq<Sq<Cell>> explosionArmTowards(Direction dir){
+        Sq<Cell> particle = Sq.iterate(position, c -> c.neighbor(dir)).limit(range);
+        Sq<Sq<Cell>> explosionArm=Sq.constant(particle).limit(Ticks.EXPLOSION_TICKS);
         return explosionArm;
     }
 }
