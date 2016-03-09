@@ -12,6 +12,7 @@ public class BombTest {
 
     @Test
     public void explosionMethodWorks() {
+        
         Bomb b = new Bomb(PlayerID.PLAYER_1, new Cell(2,3), 10, 3);
         Sq<Sq<Cell>> sqFinal=b.explosionArmTowards(Direction.S);
         for (int i = 0; i < Ticks.EXPLOSION_TICKS; i++) {
