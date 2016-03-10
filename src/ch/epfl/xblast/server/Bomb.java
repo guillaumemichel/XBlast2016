@@ -24,7 +24,7 @@ public final class Bomb {
     private final int range;
     
     /**
-     * Constructs a bomb with the given parameters
+     * Constructs a bomb with the given attributes
      * 
      * @param ownerId
      *      The id of the owner of the bomb

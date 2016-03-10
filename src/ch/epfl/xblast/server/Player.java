@@ -24,6 +24,30 @@ public final class Player {
     private final int maxBombs;
     private final int bombRange;
     
+    /**
+     * Constructs a player with the given attributes
+     * 
+     * @param id
+     *      The id of the player
+     *      
+     * @param lifeStates
+     *      The sequence of life state of the player
+     *      
+     * @param directedPos
+     *      The sequence of directed position of the player
+     *      
+     * @param maxBombs
+     *      The maximum number of bombs the player can plant 
+     *      
+     * @param bombRange
+     *      The range of the explosions of the player's bombs
+     *      
+     * @throws IllegalArgumentException
+     *      If maxBombs or bombRange is strictly negative
+     *      
+     * @throws NullPointerException
+     *      If id, lifeStates or directedPos is null
+     */
     public Player(PlayerID id, Sq<LifeState> lifeStates, Sq<DirectedPosition> directedPos, int maxBombs, int bombRange) throws IllegalArgumentException, NullPointerException{
         this.id=Objects.requireNonNull(id);
         this.lifeStates=Objects.requireNonNull(lifeStates);
@@ -36,18 +60,42 @@ public final class Player {
         
     }
     
+    /**
+     * Returns the identity of this player
+     * 
+     * @return
+     *      The id of this player
+     */
     public PlayerID id(){
         return id;
     }
     
+    /**
+     * Returns the sequence of life states of this player
+     * 
+     * @return
+     *      The sequence of life states of this player
+     */
     public Sq<LifeState> lifeStates(){
         return lifeStates;
     }
     
+    /**
+     * Returns the current life state of this player
+     * 
+     * @return
+     *      The current life state of this player
+     */
     public LifeState lifeState(){
         return lifeStates.head();
     }
     
+    /**
+     * Returns the sequence of life states for the player's next life
+     * 
+     * @return
+     *      The sequence of life states for the player's next life
+     */
     public Sq<LifeState> statesForNextLife(){
        return Sq.repeat(Ticks.PLAYER_DYING_TICKS, new LifeState(lives(), State.DYING)).concat(createLifeStateSequence(lives()-1));
     }
@@ -60,42 +108,108 @@ public final class Player {
         }
     }
     
+    /**
+     * Returns the current number of lives of this player
+     * 
+     * @return
+     *      The current number of lives of this player
+     */
     public int lives(){
         return lifeState().lives();
     }
     
+    /**
+     * Determines if this player is alive and returns the appropriate boolean
+     * 
+     * @return
+     *      <b>True</b> if this player is alive, <b>false</b> otherwise
+     */
     public boolean isAlive(){
         return lives()>0;
     }
     
+    /**
+     * Returns the sequence of directed positions of this player
+     * 
+     * @return
+     *      The sequence of directed positions of this player
+     */
     public Sq<DirectedPosition> directedPositions(){
         return directedPos;
     }
     
+    /**
+     * Returns the current position of this player
+     * 
+     * @return
+     *      The current position of this player
+     */
     public SubCell position(){
         return directedPositions().head().position();
     }
     
+    /**
+     * Returns the direction this player is currently looking at
+     * 
+     * @return
+     *      The direction this player is currently looking at
+     */
     public Direction direction(){
         return directedPositions().head().direction();
     }
     
+    /**
+     * Returns the maximum number of bombs this player can plant
+     * 
+     * @return
+     *      The maximum number of bombs this player can plant
+     */
     public int maxBombs(){
         return maxBombs;
     }
     
+    /**
+     * Returns a player with the given number of maximum bombs he can plant (and conserves his other attributes)
+     * 
+     * @param newMaxBombs
+     *      The new maximum number of bombs the player can plant
+     *      
+     * @return
+     *      The player with the new number of maxBombs (and conserves the other attributes)
+     */
     public Player withMaxBombs(int newMaxBombs){
         return new Player(id, lifeStates, directedPos, newMaxBombs, bombRange);
     }
     
+    /**
+     * Returns the range of the explosions of this player's bombs
+     * 
+     * @return
+     *      The range of the explosions of this player's bombs
+     */
     public int bombRange(){
         return bombRange;
     }
     
+    /**
+     * Returns a player with the given range of explosions his bombs make (and conserves his other attributes)
+     * 
+     * @param newBombRange
+     *      The new range of explosions the player's bombs make
+     *      
+     * @return
+     *      The player with the new range of explosions his bombs make (and conserves his other attributes)
+     */
     public Player witBombRange(int newBombRange){
         return new Player(id, lifeStates, directedPos, maxBombs, newBombRange);
     }
     
+    /**
+     * Returns a bomb  positioned on the cell where this player is currently
+     * 
+     * @return
+     *      The bomb, positioned on the cell where this player is currently
+     */
     public Bomb newBomb(){
         return new Bomb(id, position().containingCell(), Ticks.BOMB_FUSE_TICKS, bombRange);
     }
