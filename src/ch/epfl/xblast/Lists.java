@@ -37,4 +37,19 @@ public final class Lists {
             return l;
         }
     }
+    
+    public static <T> List<List<T>> permutations(List<T> l){
+        List<List<T>> l1 = new ArrayList<List<T>>();
+        if (l.isEmpty()) {
+            l1.add(l);
+            return l1;
+        }
+        return null;
+    }
+    
+    public static <T> List<List<T>> recursivePermutations(List<T> l){
+        ArrayList<T> copy = new ArrayList<T>(l);
+
+        return null;
+    }
 }
