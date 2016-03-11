@@ -56,12 +56,32 @@ public final class Player {
         this.bombRange=ArgumentChecker.requireNonNegative(bombRange);
     }
     
+    /**
+     * Constructs a player with the given attributes
+     * 
+     * @param id
+     *      The id of the player
+     *      
+     * @param lives
+     *      The number of lives of the player
+     *      
+     * @param position
+     *      The cell where the player stands
+     *      
+     * @param maxBombs
+     *      The maximum number of bombs the player can plant 
+     *      
+     * @param bombRange
+     *      The range of the explosions of the player's bombs
+     *      
+     * @throws IllegalArgumentException
+     *      If maxBombs or bombRange is strictly negative
+     *      
+     * @throws NullPointerException
+     *      If id, lifeStates or directedPos is null
+     */
     public Player(PlayerID id, int lives, Cell position, int maxBombs, int bombRange){
         this(id, createLifeStateSequence(lives),Sq.repeat(Ticks.PLAYER_DYING_TICKS,new DirectedPosition(SubCell.centralSubCellOf(position),Direction.S)),maxBombs,bombRange);
-    }
-    
-    private static Sq<DirectedPosition> dyingPositionSequence(Cell position){
-        return Sq.repeat(Ticks.PLAYER_DYING_TICKS,new DirectedPosition(SubCell.centralSubCellOf(position),Direction.S));
     }
     /**
      * Returns the identity of this player
