@@ -81,7 +81,11 @@ public final class Player {
      *      If id, lifeStates or directedPos is null
      */
     public Player(PlayerID id, int lives, Cell position, int maxBombs, int bombRange){
-        this(id, createLifeStateSequence(lives),Sq.repeat(Ticks.PLAYER_DYING_TICKS,new DirectedPosition(SubCell.centralSubCellOf(position),Direction.S)),maxBombs,bombRange);
+        this(id, 
+                createLifeStateSequence(lives),
+                DirectedPosition.stopped(new DirectedPosition(SubCell.centralSubCellOf(position),Direction.S)),
+                maxBombs,
+                bombRange);
     }
     /**
      * Returns the identity of this player
