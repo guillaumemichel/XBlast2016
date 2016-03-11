@@ -227,7 +227,7 @@ public final class Player {
      * @return
      *      The player with the new range of explosions his bombs make (and conserves his other attributes)
      */
-    public Player witBombRange(int newBombRange){
+    public Player withBombRange(int newBombRange){
         return new Player(id, lifeStates, directedPos, maxBombs, newBombRange);
     }
     
