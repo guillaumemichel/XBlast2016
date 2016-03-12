@@ -40,7 +40,7 @@ public final class Lists {
     
     public static <T> List<List<T>> permutations(List<T> l){
         List<List<T>> l1 = new ArrayList<List<T>>();
-        if (l.isEmpty()) {
+        if (l.size()<2) {
             l1.add(l);
             return l1;
         }
@@ -49,7 +49,13 @@ public final class Lists {
     
     public static <T> List<List<T>> recursivePermutations(List<T> l){
         ArrayList<T> copy = new ArrayList<T>(l);
-
+        ArrayList<T> el = new ArrayList<T>();
+        ArrayList<ArrayList<T>> list = new ArrayList<>();
+        while (copy.size()>2){
+            el.add(copy.get(0));
+            copy.remove(0);
+        }
+        while ()
         return null;
     }
 }
