@@ -1,8 +1,6 @@
 package ch.epfl.xblast;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -41,7 +39,7 @@ public final class Lists {
     }
     
     /**
-     * Returns a list all possible combinations from the list in parameter
+     * Recursive function that returns a list all possible combinations from the list in parameter
      * 
      * @param l
      * 		The list from which we will do all the possible combinations

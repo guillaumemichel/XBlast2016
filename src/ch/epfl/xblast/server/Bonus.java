@@ -23,5 +23,15 @@ public enum Bonus {
       }
     };
 
+    /**
+     * Apply the bonus to the player
+     * 
+     * @param player
+     *      player targeted by the bonus
+     * @return
+     *      the same player with the bonus applied
+     */
+    
     abstract public Player applyTo(Player player);
+   
   }

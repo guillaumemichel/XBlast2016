@@ -1,5 +1,13 @@
 package ch.epfl.xblast;
 
+/**
+ * A bonus
+ * 
+ * @author Guillaume Michel (258066)
+ * @author Adrien Vandenbroucque (258715)
+ *
+ */
+
 public interface Time {
     public final static int S_PER_MIN = 60;
     public final static int MS_PER_S = 1000;
