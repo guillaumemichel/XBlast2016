@@ -1,5 +1,7 @@
 package ch.epfl.xblast.server;
 
+import ch.epfl.xblast.Time;
+
 /**
  * Tick list
  * 
@@ -14,4 +16,7 @@ public interface Ticks {
     public final static int EXPLOSION_TICKS=30;
     public final static int WALL_CRUMBLING_TICKS=30;
     public final static int BONUS_DISAPPEARING_TICKS=30;
+    public final static int TICKS_PER_SECOND = 20;
+    public final static int TICK_NANOSECOND_DURATION = TICKS_PER_SECOND / Time.NS_PER_S; /// WTF ???
+    public final static int TOTAL_TICKS = 2 * Time.S_PER_MIN * TICKS_PER_SECOND; 
 }

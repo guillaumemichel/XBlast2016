@@ -1,5 +1,7 @@
 package ch.epfl.xblast.server;
 
+import java.util.NoSuchElementException;
+
 /**
  * A block
  * 
@@ -8,7 +10,15 @@ package ch.epfl.xblast.server;
  *
  */
 public enum Block {
-    FREE, INDESTRUCTIBLE_WALL, DESTRUCTIBLE_WALL, CRUMBLING_WALL;
+    FREE, INDESTRUCTIBLE_WALL, DESTRUCTIBLE_WALL, CRUMBLING_WALL,BONUS_BOMB(Bonus.INC_BOMB),BONUS_RANGE(Bonus.INC_RANGE);
+    
+    private Bonus maybeAssociatedBonus;
+    
+    private Block(){}
+    
+    private Block(Bonus maybeAssociatedBonus){
+        this.maybeAssociatedBonus = maybeAssociatedBonus;
+    }
     
     /**
      * Determines if this block is free and returns the appropriate boolean
@@ -27,7 +37,7 @@ public enum Block {
      *      <b>True</b> if this block can host a player, <b>false</b> otherwise
      */
     public boolean canHostPlayer(){
-        return this.isFree();
+        return this.isFree()||this.isBonus();
     }
     
     /**
@@ -38,5 +48,16 @@ public enum Block {
      */
     public boolean castsShadow(){
         return (this==INDESTRUCTIBLE_WALL || this==DESTRUCTIBLE_WALL || this==CRUMBLING_WALL);
+    }
+    
+    public boolean isBonus(){
+        return (this==BONUS_BOMB || this==BONUS_RANGE);
+    }
+    
+    public Bonus associatedBonus(){
+        if (!isBonus()){
+            throw new NoSuchElementException();
+        }
+        return maybeAssociatedBonus;
     }
 }
