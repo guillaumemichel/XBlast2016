@@ -23,6 +23,11 @@ public class test {
         System.out.println(a);*/
         a=Lists.permutations(s3);
         System.out.println(a);
+        
+        long startTime = System.currentTimeMillis();
+        List<List<Integer>> t = Lists.permutations(l);
+        long endTime   = System.currentTimeMillis();
+        System.out.println("Temps de calcul: " + (endTime-startTime) + " ms");
     }
 
 }

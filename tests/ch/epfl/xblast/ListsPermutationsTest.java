@@ -14,7 +14,11 @@ public class ListsPermutationsTest {
     public void test() {
         List<Integer> l = new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8));
         List<List<Integer>> check = new ArrayList<>();
-        int factorial=1;
+        long startTime = System.currentTimeMillis();
+        List<List<Integer>> t = Lists.permutationsBisBis(l);
+        long endTime   = System.currentTimeMillis();
+        System.out.println("Temps de calcul: " + (endTime-startTime) + " ms");
+        /*int factorial=1;
         List<List<Integer>> t = Lists.permutationsBis(l);
         
         for(int i=2; i<=l.size(); i++){
@@ -27,7 +31,7 @@ public class ListsPermutationsTest {
             }
         }
         
-        assertEquals(check.size(), factorial);
+        assertEquals(check.size(), factorial);*/
     }
 
 }
