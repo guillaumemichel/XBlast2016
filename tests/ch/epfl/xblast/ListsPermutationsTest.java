@@ -15,7 +15,7 @@ public class ListsPermutationsTest {
         List<Integer> l = new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8));
         List<List<Integer>> check = new ArrayList<>();
         long startTime = System.currentTimeMillis();
-        List<List<Integer>> t = Lists.permutationsBisBis(l);
+        List<List<Integer>> t = Lists.permutations(l);
         long endTime   = System.currentTimeMillis();
         System.out.println("Temps de calcul: " + (endTime-startTime) + " ms");
         /*int factorial=1;

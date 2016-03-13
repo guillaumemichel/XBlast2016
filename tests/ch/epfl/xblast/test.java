@@ -21,13 +21,11 @@ public class test {
         System.out.println(a);
         a=Lists.permutations(s2);
         System.out.println(a);*/
+        System.out.println(s3);
         a=Lists.permutations(s3);
-        System.out.println(a);
-        
-        long startTime = System.currentTimeMillis();
-        List<List<Integer>> t = Lists.permutations(l);
-        long endTime   = System.currentTimeMillis();
-        System.out.println("Temps de calcul: " + (endTime-startTime) + " ms");
+        System.out.println(s3+" "+a);
+        s3.set(0,"hello");
+        System.out.println(s3+" "+a);
     }
 
 }

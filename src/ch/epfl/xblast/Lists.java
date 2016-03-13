@@ -40,6 +40,16 @@ public final class Lists {
         }
     }
     
+    /**
+     * Returns a list all possible combinations from the list in parameter
+     * 
+     * @param l
+     * 		The list from which we will do all the possible combinations
+     * 
+     * @return
+     * 		A list of lists with all possible combinations from the list in parameter
+     */
+    
     public static <T> List<List<T>> permutations(List<T> l){
         List<T> copy = new ArrayList<>(l);
         List<List<T>> list = new ArrayList<>();
@@ -67,98 +77,4 @@ public final class Lists {
         }
         return list;
     }
-    
-    public static <T> List<List<T>> permutationsBis(List<T> l){
-        ArrayList<T> copy = new ArrayList<T>(l);
-        ArrayDeque<T> el = new ArrayDeque<T>();
-        ArrayList<T> temp = new ArrayList<>();
-        List<List<T>> list = new ArrayList<>();
-        if (l.size()<2) {
-            list.add(l);
-            return list;
-        }
-        while (copy.size()>2){
-            el.addFirst(copy.get(0));
-            copy.remove(0);
-        }
-        temp.addAll(copy); //size==2
-        list.add(new ArrayList<>(temp));
-        temp.clear();
-        Collections.reverse(copy);
-        temp.addAll(copy);
-        list.add(new ArrayList<>(temp));
-        while (!el.isEmpty()){
-            list=recursionLists(list,el.getFirst());
-            el.removeFirst();
-        }
-        return list;
-    }
-    
-    private static <T> List<List<T>> recursionLists(List<List<T>> l,T el){
-        ArrayList<ArrayDeque<T>> copy = new ArrayList<>();
-        ArrayDeque<T> t;
-        for (int i=0;i<l.size();++i){
-            t=new ArrayDeque<>(l.get(i));
-            copy.add(t);
-        }
-        ArrayList<List<T>> list = new ArrayList<>();
-        for (int i=0;i<l.size();++i){
-            copy.get(i).addFirst(el);
-            for (int j=0;j<copy.get(i).size();++j){
-                list.add(new ArrayList<>(copy.get(i)));
-                copy.get(i).addFirst(copy.get(i).getLast());
-                copy.get(i).removeLast();
-            }
-        }
-        return list;
-        
-    }
-    
-    public static <T> List<List<T>> permutationsBisBis(List<T> l){
-    	int size = l.size();
-
-    	// Si le tableau est vide ou qu'il contient 1 élément
-    	if(size==0 || size==1){
-    	// On retourne un tableau de tableau vide, ou un tablea contenant un tableau du premier élément
-    	List<List<T>> nullArray = (size==0)? new ArrayList<>(Arrays.asList(Arrays.asList())) : new ArrayList<>(Arrays.asList(Arrays.asList(l.get(0))));
-    	return nullArray;
-    	}
-    	else{
-    	T firstElement = l.get(0);
-
-    	// Cas d'arrêt de la récursion
-    	// Permutations d'un tableau [X, Y] --> [[X, Y], [Y, X]]
-    	if(size==2){
-    	List<List<T>> queue = new ArrayList<>();
-    	queue.add(new ArrayList<>(l));
-    	Collections.reverse(l);
-    	queue.add(new ArrayList<>(l));
-    	return queue;
-    	}
-
-    	// Si le tableau contient plus de deux éléments
-    	else{
-
-    	// On applique la récursion sur la queue du tableau
-    	List<List<T>> recursive = new ArrayList<>();
-    	recursive.addAll(permutations(l.subList(1, size)));
-
-    	List<T> temp;
-    	List<List<T>> headPermut=new ArrayList<>();
-
-    	// Pour chaque élément de recursive
-    	for(List<T> e:recursive){
-
-    	// On ajoute la tête à toutes les places possibles
-    	for(int i=0; i<=e.size(); i++){
-    	temp=new ArrayList<>(e);
-    	temp.add(i, firstElement);
-    	headPermut.add(temp);
-    	}
-
-    	}
-    	return headPermut;
-    	}
-    	}
-    	}
 }
