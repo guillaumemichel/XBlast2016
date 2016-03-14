@@ -14,19 +14,19 @@ public enum Block {
     
     private Bonus maybeAssociatedBonus;
     
-    /**
-     * A Block
-     */
+   /**
+    * Constructs a block
+    */
+    private Block(){
+        this.maybeAssociatedBonus=null;
+    }
     
-    private Block(){}
-    
     /**
-     * A bonus block 
+     * Constructs a bonus block with the given bonus
      * 
      * @param maybeAssociatedBonus
-     *      bonus associated with the block
+     *      the bonus associated with the block
      */
-    
     private Block(Bonus maybeAssociatedBonus){
         this.maybeAssociatedBonus = maybeAssociatedBonus;
     }
@@ -48,24 +48,39 @@ public enum Block {
      *      <b>True</b> if this block can host a player, <b>false</b> otherwise
      */
     public boolean canHostPlayer(){
-        return this.isFree()||this.isBonus();
+        return (this.isFree()||this.isBonus());
     }
     
     /**
      * Determines if this block casts shadow on the board, and returns the appropriate boolean
      * 
      * @return
-     *      <b>True</b> if this casts shadow on the board, <b>false</b> otherwise
+     *      <b>True</b> if this block casts shadow on the board, <b>false</b> otherwise
      */
     public boolean castsShadow(){
         return (this==INDESTRUCTIBLE_WALL || this==DESTRUCTIBLE_WALL || this==CRUMBLING_WALL);
     }
     
+    /**
+     * Determines if this block is a bonus, and returns the appropriate boolean
+     * 
+     * @return
+     *      <b>True</b> if this block is a bonus, <b>false</b> otherwise
+     */
     public boolean isBonus(){
         return (this==BONUS_BOMB || this==BONUS_RANGE);
     }
     
-    public Bonus associatedBonus(){
+    /**
+     * Returns the bonus associated to this block, if this block is a bonus
+     * 
+     * @return
+     *      The bonus associated to this block
+     *      
+     * @throws NoSuchElementException
+     *      If this block is not a bonus
+     */
+    public Bonus associatedBonus() throws NoSuchElementException{
         if (!isBonus()){
             throw new NoSuchElementException();
         }

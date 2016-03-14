@@ -24,14 +24,14 @@ public enum Bonus {
     };
 
     /**
-     * Apply the bonus to the player
+     * Applies this bonus to the given player
      * 
      * @param player
-     *      player targeted by the bonus
+     *      The player targeted by this bonus
+     *      
      * @return
-     *      the same player with the bonus applied
+     *      The player with this bonus applied to him
      */
-    
     abstract public Player applyTo(Player player);
    
   }

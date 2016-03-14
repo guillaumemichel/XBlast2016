@@ -18,20 +18,24 @@ public class ListsPermutationsTest {
         List<List<Integer>> t = Lists.permutations(l);
         long endTime   = System.currentTimeMillis();
         System.out.println("Temps de calcul: " + (endTime-startTime) + " ms");
-        /*int factorial=1;
-        List<List<Integer>> t = Lists.permutationsBis(l);
+        int factorial=1;
+        List<List<Integer>> t1 = Lists.permutations(l);
         
         for(int i=2; i<=l.size(); i++){
             factorial*=i;
         }
         
-        for(List<Integer> e:t){
+        for(List<Integer> e:t1){
             if(!check.contains(e)){
                 check.add(e);
             }
         }
         
-        assertEquals(check.size(), factorial);*/
+        for (List<Integer> list : t1) {
+            System.out.println(list);
+        }
+        
+        assertEquals(check.size(), factorial);
     }
 
 }

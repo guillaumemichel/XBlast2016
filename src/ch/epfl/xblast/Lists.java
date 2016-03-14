@@ -39,15 +39,14 @@ public final class Lists {
     }
     
     /**
-     * Recursive function that returns a list all possible combinations from the list in parameter
+     * Recursive function that returns a list of all possible permutations of the elements of the given list
      * 
      * @param l
-     * 		The list from which we will do all the possible combinations
+     * 		The list from which we do all the possible permutations
      * 
      * @return
-     * 		A list of lists with all possible combinations from the list in parameter
+     * 		The list of lists containing all possible combinations of the elements of the given list
      */
-    
     public static <T> List<List<T>> permutations(List<T> l){
         List<T> copy = new ArrayList<>(l);
         List<List<T>> list = new ArrayList<>();
