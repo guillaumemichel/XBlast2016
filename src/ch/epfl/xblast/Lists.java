@@ -31,10 +31,11 @@ public final class Lists {
         if(l.isEmpty()){
             throw new IllegalArgumentException();
         }else{
-            List<T> subList=new ArrayList<T>(l.subList(0, l.size()-1));
+            List<T> l1 = new ArrayList<>(l);
+            List<T> subList=new ArrayList<>(l1.subList(0, l1.size()-1));
             Collections.reverse(subList);
-            l.addAll(subList);
-            return l;
+            l1.addAll(subList);
+            return l1;
         }
     }
     
