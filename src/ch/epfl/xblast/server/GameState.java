@@ -74,6 +74,6 @@ public final class GameState {
     }
     
     private static List<Sq<Cell>> nextBlasts(List<Sq<Cell>> blasts0, Board board0, List<Sq<Sq<Cell>>> explosions0){
-        
+        return null;
     }
 }
