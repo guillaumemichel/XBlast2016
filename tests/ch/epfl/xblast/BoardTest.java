@@ -31,11 +31,11 @@ public class BoardTest {
             Arrays.asList(xx, XX, xx, XX, xx, XX, __)));
         
         List<Player> players = new ArrayList<>();
-        players.add(new Player(PlayerID.PLAYER_1, 0, new Cell(1, 1), 5, 5));
+        players.add(new Player(PlayerID.PLAYER_1, 3, new Cell(1, 1), 5, 5));
         players.add(new Player(PlayerID.PLAYER_2, 0, new Cell(13, 1), 5, 5));
         players.add(new Player(PlayerID.PLAYER_3, 0, new Cell(1, 11), 5, 5));
         players.add(new Player(PlayerID.PLAYER_4, 0, new Cell(13, 11), 5, 5));
-        
+
         GameState g = new GameState(board, players);
         GameStatePrinter.printGameState(g);
     }
