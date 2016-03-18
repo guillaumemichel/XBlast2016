@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import javax.swing.border.EmptyBorder;
+
 import ch.epfl.cs108.Sq;
 import ch.epfl.xblast.ArgumentChecker;
 import ch.epfl.xblast.Cell;
@@ -47,7 +49,11 @@ public final class GameState {
     }
     
     public Optional<PlayerID> winner(){
-        
+        if(!isGameOver()){
+            return Optional.empty();
+        }else{
+            return Optional.of(alivePlayers().get(0).id());
+        } 
     }
     
     public Board board(){
@@ -65,5 +71,9 @@ public final class GameState {
                 alivePlayers.add(p); 
         }
         return alivePlayers;
+    }
+    
+    private static List<Sq<Cell>> nextBlasts(List<Sq<Cell>> blasts0, Board board0, List<Sq<Sq<Cell>>> explosions0){
+        
     }
 }
