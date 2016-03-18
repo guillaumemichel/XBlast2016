@@ -1,6 +1,7 @@
 Todo :
 
 1. Board.java références de block (copie ou pas)
+2. SpiralOrder pour les Walls
 
 Alternatives methods : 
 Lists.java permutations

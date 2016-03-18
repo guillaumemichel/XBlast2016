@@ -135,27 +135,16 @@ public final class Board {
     public static Board ofQuadrantNWBlocksWalled(List<List<Block>> quadrantNWBlocks) throws IllegalArgumentException{
         checkBlockMatrix(quadrantNWBlocks, (Cell.ROWS-1)/2, (Cell.COLUMNS-1)/2);
         
-        List<Sq<Block>> sequence= new ArrayList<Sq<Block>>();
-        
         List<List<Block>> innerBoard=new ArrayList<List<Block>>();
         
         for (int i = 0; i < quadrantNWBlocks.size(); ++i) {
-            innerBoard.add(Lists.mirrored(quadrantNWBlocks.get(i)));
+            quadrantNWBlocks.set(i, Lists.mirrored(quadrantNWBlocks.get(i)));
+            innerBoard.add(quadrantNWBlocks.get(i));
         }
-        
         innerBoard = Lists.mirrored(quadrantNWBlocks);
         
-        sequence.addAll(Collections.nCopies(Cell.COLUMNS, Sq.constant(Block.INDESTRUCTIBLE_WALL)));
-        for(int i=0;i<innerBoard.size();++i){
-            sequence.add(Sq.constant(Block.INDESTRUCTIBLE_WALL));
-            for(int j=0;j<innerBoard.get(i).size();++j){
-                sequence.add(Sq.constant(quadrantNWBlocks.get(i).get(j)));
-            }
-            sequence.add(Sq.constant(Block.INDESTRUCTIBLE_WALL));
-        }
-        sequence.addAll(Collections.nCopies(Cell.COLUMNS, Sq.constant(Block.INDESTRUCTIBLE_WALL)));
+        return ofInnerBlocksWalled(innerBoard);
         
-        return new Board(sequence);
     }
     
     /**
