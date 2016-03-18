@@ -21,7 +21,7 @@ public final class GameState {
     private final List<Sq<Cell>> blasts;
     
     
-    GameState(int ticks, Board board, List<Player> players, List<Bomb> bombs, List<Sq<Sq<Cell>>> explosions, List<Sq<Cell>> blasts){
+    public GameState(int ticks, Board board, List<Player> players, List<Bomb> bombs, List<Sq<Sq<Cell>>> explosions, List<Sq<Cell>> blasts){
         this.ticks = ArgumentChecker.requireNonNegative(ticks);
         if(players.size()!=4) 
             throw new IllegalArgumentException();
@@ -32,7 +32,7 @@ public final class GameState {
         this.blasts = new ArrayList<>(Objects.requireNonNull(blasts));
     }
     
-    GameState(Board board, List<Player> players){
+    public GameState(Board board, List<Player> players){
         this(0,board,players,new ArrayList<Bomb>(),new ArrayList<Sq<Sq<Cell>>>(),new ArrayList<Sq<Cell>>());
     }
     
@@ -74,6 +74,15 @@ public final class GameState {
     }
     
     private static List<Sq<Cell>> nextBlasts(List<Sq<Cell>> blasts0, Board board0, List<Sq<Sq<Cell>>> explosions0){
-        return null;
+        List<Sq<Cell>> blasts1=new ArrayList<>();
+        for (Sq<Cell> c : blasts0){
+            if (!c.isEmpty() && board0.blockAt(c.head()).isFree()){
+                blasts1.add(c.tail());
+            }
+        }
+        for (Sq<Sq<Cell>> sq : explosions0) {
+            blasts1.add(sq.head());
+        }
+        return blasts1;
     }
 }
