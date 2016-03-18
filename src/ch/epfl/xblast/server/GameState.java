@@ -49,11 +49,11 @@ public final class GameState {
     }
     
     public Optional<PlayerID> winner(){
-        if(!isGameOver()){
-            return Optional.empty();
-        }else{
+        if (alivePlayers().size()==1 && isGameOver()){//useless but beautiful (isGameOver)
             return Optional.of(alivePlayers().get(0).id());
-        } 
+        }
+        //if the last players die at the same time there is no winner
+        return Optional.empty();
     }
     
     public Board board(){
