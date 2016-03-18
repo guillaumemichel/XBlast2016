@@ -10,7 +10,7 @@ import ch.epfl.xblast.server.Ticks;
 
 public class BombTest {
 
-    @Test
+    /*@Test
     public void explosionMethodWorks() {
         
         Bomb b = new Bomb(PlayerID.PLAYER_1, new Cell(2,3), 10, 3);
@@ -24,6 +24,6 @@ public class BombTest {
             System.out.println();
             sqFinal=sqFinal.tail();
         }
-    }
+    }*/
 
 }
