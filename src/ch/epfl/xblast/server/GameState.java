@@ -1,13 +1,21 @@
 package ch.epfl.xblast.server;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Random;
+import java.util.Set;
 
 import ch.epfl.cs108.Sq;
 import ch.epfl.xblast.ArgumentChecker;
 import ch.epfl.xblast.Cell;
+import ch.epfl.xblast.Direction;
+import ch.epfl.xblast.Lists;
 import ch.epfl.xblast.PlayerID;
 
 /**
@@ -24,6 +32,10 @@ public final class GameState {
     private final List<Bomb> bombs;
     private final List<Sq<Sq<Cell>>> explosions;
     private final List<Sq<Cell>> blasts;
+    
+    
+    private final static List<List<PlayerID>> PERMUTATIONS=Lists.permutations(Arrays.asList(PlayerID.values()));
+    private final static Random RANDOM=new Random(2016);
     
     /**
      * Constructs a game state with the given attributes
@@ -65,10 +77,11 @@ public final class GameState {
     
     
     /**
-     * Constructs a game state at tick 0 with no explosion, bombs or blasts, and with the given board and players
+     * Constructs a game state at tick 0 with no explosions, bombs or blasts, and with the given board and players
      * 
      * @param board
      *      The board
+     *      
      * @param players
      *      The players
      */
@@ -167,4 +180,25 @@ public final class GameState {
         }
         return blasts1;
     }
+    
+    public Map<Cell, Bomb> bombedCells(){
+        Map<Cell, Bomb> bombedCells= new HashMap<>();
+        for (Bomb b : bombs) {
+            bombedCells.put(b.position(), b);
+        }
+        return bombedCells;
+    }
+    
+    public Set<Cell> blastedCells(){
+        Set<Cell> blastedCells= new HashSet<>();
+        for (Sq<Cell> cell : blasts) {
+            blastedCells.add(cell.head());
+        }
+        return blastedCells;
+    }
+    
+    public GameState next(Map<PlayerID, Optional<Direction>> speedChangeEvents, Set<PlayerID> bombDropEvents){
+        return null;
+    }
+    
 }

@@ -142,4 +142,9 @@ public final class SubCell {
     public String toString(){
         return "("+x+","+y+")";
     }
+    
+    @Override
+    public int hashCode(){
+        return 16*Cell.COLUMNS*y+x;
+    }
 }
