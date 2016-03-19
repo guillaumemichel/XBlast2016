@@ -103,7 +103,7 @@ public final class Cell {
             for(int i=0;i<i1.size();++i){
             	c1 = i1.get(i);
             	spiral.add( horizontal ? new Cell(c1,c2):new Cell(c2,c1));
-            	//adding new Cell in the array according to the boolean horizontal
+            	//adding new Cell in the array according on the boolean horizontal
             }
             l=i1.size();
             for(int i=0;i<l;++i){
@@ -174,19 +174,14 @@ public final class Cell {
         }
     }
     
-    public int hashcode(){
-        int r=0;
-        for (int i=0;i<ROW_MAJOR_ORDER.size();++i){
-            if (this.equals(ROW_MAJOR_ORDER.get(i))){
-                r=i;
-            }
-        }
-        return r;
-    }
-    
     @Override
     public String toString(){
         return "("+x+","+y+")";
+    }
+    
+    @Override
+    public int hashCode(){
+        return rowMajorIndex();
     }
 
 }
