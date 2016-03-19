@@ -174,14 +174,9 @@ public final class Cell {
         }
     }
     
-    public int hashcode(){
-        int r=0;
-        for (int i=0;i<ROW_MAJOR_ORDER.size();++i){
-            if (this.equals(ROW_MAJOR_ORDER.get(i))){
-                r=i;
-            }
-        }
-        return r;
+    @Override
+    public int hashCode(){
+        return x+COLUMNS*y;
     }
     
     @Override
