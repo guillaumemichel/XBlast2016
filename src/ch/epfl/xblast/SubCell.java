@@ -139,12 +139,12 @@ public final class SubCell {
     }
     
     @Override
-    public int hashCode(){
-        return x+Cell.ROWS*y;
+    public String toString(){
+        return "("+x+","+y+")";
     }
     
     @Override
-    public String toString(){
-        return "("+x+","+y+")";
+    public int hashCode(){
+        return 16*Cell.COLUMNS*y+x;
     }
 }
