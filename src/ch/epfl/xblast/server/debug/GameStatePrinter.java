@@ -1,10 +1,13 @@
 package ch.epfl.xblast.server.debug;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import ch.epfl.xblast.Cell;
 import ch.epfl.xblast.server.Block;
 import ch.epfl.xblast.server.Board;
+import ch.epfl.xblast.server.Bomb;
 import ch.epfl.xblast.server.GameState;
 import ch.epfl.xblast.server.Player;
 
@@ -13,6 +16,8 @@ public final class GameStatePrinter {
 
     public static void printGameState(GameState s) {
         List<Player> ps = s.alivePlayers();
+        Set<Cell> blastedCells=s.blastedCells();
+        Map<Cell, Bomb> bombedCells=s.bombedCells();
         Board board = s.board();
 
         for (int y = 0; y < Cell.ROWS; ++y) {
@@ -24,6 +29,12 @@ public final class GameStatePrinter {
                         continue xLoop;
                     }
                 }
+                
+                if(blastedCells.contains(c)){
+                    System.out.println("B");
+                    continue xLoop;
+                }
+                
                 Block b = board.blockAt(c);
                 System.out.print(stringForBlock(b));
             }
