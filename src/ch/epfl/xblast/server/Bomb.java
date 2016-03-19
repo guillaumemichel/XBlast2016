@@ -19,7 +19,7 @@ import ch.epfl.xblast.ArgumentChecker;
  */
 public final class Bomb {
     private final PlayerID ownerId;
-    private final Cell position;;
+    private final Cell position;
     private final Sq<Integer> fuseLengths;
     private final int range;
     
