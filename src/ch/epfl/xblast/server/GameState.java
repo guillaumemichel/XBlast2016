@@ -181,6 +181,55 @@ public final class GameState {
         return blasts1;
     }
     
+    private static Board nextBoard(Board board0, Set<Cell> consumedBonuses, Set<Cell> blastedCells1){
+        List<Sq<Block>> blocks=new ArrayList<>();
+        
+        for (Cell c : Cell.ROW_MAJOR_ORDER) {
+            if(consumedBonuses.contains(c)){
+                blocks.add(Sq.constant(Block.FREE));
+            }else if(board0.blockAt(c).isBonus() && blastedCells1.contains(c)){
+                boolean alreadyDisappearing=false;
+                Sq<Block> boardBlocks=board0.blocksAt(c);
+                
+                //We check if the bonus block is already disappearing (we look in the sequence if it will become a free block)
+                for (int i = 0; i < Ticks.BONUS_DISAPPEARING_TICKS; ++i) {
+                    if(boardBlocks.head()==Block.FREE){
+                        alreadyDisappearing=true;
+                        break;
+                    }
+                    boardBlocks=boardBlocks.tail();
+                }
+                
+                //Only if the bonus block is not already disappearing, we add the bonus_disappearing time before it becomes a free block
+                if(!alreadyDisappearing){
+                    Sq<Block> bonusDisappearing=Sq.repeat(Ticks.BONUS_DISAPPEARING_TICKS, board0.blockAt(c));
+                    bonusDisappearing.concat(Sq.constant(Block.FREE));
+                    blocks.add(bonusDisappearing);
+                }
+            }else if(board0.blockAt(c)==Block.DESTRUCTIBLE_WALL && blastedCells1.contains(c)){
+                Sq<Block> destructibleWall=Sq.repeat(Ticks.WALL_CRUMBLING_TICKS, Block.CRUMBLING_WALL);
+                int randomBlock=RANDOM.nextInt(3);
+                Block newBlock;
+                
+                switch (randomBlock){
+                    case 0:
+                        newBlock=Block.BONUS_BOMB;
+                        break;
+                    case 1:
+                        newBlock=Block.BONUS_RANGE;
+                        break;
+                    default:
+                        newBlock=Block.FREE;
+                        break;
+                }
+                destructibleWall.concat(Sq.constant(newBlock));
+            }else{
+                blocks.add(board0.blocksAt(c));
+            }
+        }
+        return new Board(blocks);
+    }
+    
     private List<Bomb> nextBomb(Set<PlayerID> bombDropEvents){
         boolean canBomb;
         int count;
