@@ -168,6 +168,30 @@ public final class GameState {
         return alivePlayers;
     }
     
+    public Map<Cell, Bomb> bombedCells(){
+        Map<Cell, Bomb> bombedCells= new HashMap<>();
+        for (Bomb b : bombs) {
+            bombedCells.put(b.position(), b);
+        }
+        return bombedCells;
+    }
+    
+    public Set<Cell> blastedCells(){
+        Set<Cell> blastedCells= new HashSet<>();
+        for (Sq<Cell> cell : blasts) {
+            blastedCells.add(cell.head());
+        }
+        return blastedCells;
+    }
+    
+    public GameState next(Map<PlayerID, Optional<Direction>> speedChangeEvents, Set<PlayerID> bombDropEvents){
+        
+        
+        //traitement des explosions, retirer les bombes explosées du tableau, appeler la méthode newlyDroppedBomb()
+        //la liste de players en paramètre est PERMUTATIONS.get(ticks%PERMUTATIONS.size())
+        return new GameState(ticks+1,null,players,nextBomb(bombDropEvents),null,null);
+    }
+    
     private static List<Sq<Cell>> nextBlasts(List<Sq<Cell>> blasts0, Board board0, List<Sq<Sq<Cell>>> explosions0){
         List<Sq<Cell>> blasts1=new ArrayList<>();
         for (Sq<Cell> c : blasts0){
@@ -229,6 +253,36 @@ public final class GameState {
         }
         return new Board(blocks);
     }
+
+    public static List<Bomb> newlyDroppedBombs(List<Player> players0, Set<PlayerID> bombDropEvents, List<Bomb> bombs0){
+        
+        if (bombDropEvents.isEmpty())
+            return bombs0;
+        
+        boolean canBomb;
+        Player p;
+        int count;
+        List<Bomb> bombs1 = new ArrayList<>(bombs0);
+        for (int i=0;i<players0.size();++i){
+            p=players0.get(i);
+            if (bombDropEvents.contains(p.id()) && p.isAlive()){
+                canBomb=true;
+                count=0;
+                for (Bomb b : bombs1){
+                    if (b.ownerId().equals(p.id()))
+                        ++count;
+                    if (b.position().equals(p.position().containingCell()))
+                        canBomb=false;
+                }
+                if (count>=p.maxBombs())
+                    canBomb=false;
+                if (canBomb)
+                    bombs1.add(p.newBomb());
+            }
+        }
+        bombs1.removeAll(bombs0);
+        return bombs1;
+    }
     
     private List<Bomb> nextBomb(Set<PlayerID> bombDropEvents){
         boolean canBomb;
@@ -248,6 +302,7 @@ public final class GameState {
                                 players.get(i).position().containingCell().equals(players.get(j).position().containingCell())){
                             if (PERMUTATIONS.get(ticks%PERMUTATIONS.size()).indexOf(players.get(i))>PERMUTATIONS.get(ticks%PERMUTATIONS.size()).indexOf(players.get(j))){
                                 canBomb = false;
+                                //un autre player est "prioritaire" sur celui ci pour poser une bombe.
                             }
                         }
                     }
@@ -256,28 +311,6 @@ public final class GameState {
                 }
             }
         }
-        return null;
+        return bombs;
     }
-    
-    public Map<Cell, Bomb> bombedCells(){
-        Map<Cell, Bomb> bombedCells= new HashMap<>();
-        for (Bomb b : bombs) {
-            bombedCells.put(b.position(), b);
-        }
-        return bombedCells;
-    }
-    
-    public Set<Cell> blastedCells(){
-        Set<Cell> blastedCells= new HashSet<>();
-        for (Sq<Cell> cell : blasts) {
-            blastedCells.add(cell.head());
-        }
-        return blastedCells;
-    }
-    
-    public GameState next(Map<PlayerID, Optional<Direction>> speedChangeEvents, Set<PlayerID> bombDropEvents){
-        
-        return null;
-    }
-    
 }
