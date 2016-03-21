@@ -168,6 +168,26 @@ public final class GameState {
         return alivePlayers;
     }
     
+    public Map<Cell, Bomb> bombedCells(){
+        Map<Cell, Bomb> bombedCells= new HashMap<>();
+        for (Bomb b : bombs) {
+            bombedCells.put(b.position(), b);
+        }
+        return bombedCells;
+    }
+    
+    public Set<Cell> blastedCells(){
+        Set<Cell> blastedCells= new HashSet<>();
+        for (Sq<Cell> cell : blasts) {
+            blastedCells.add(cell.head());
+        }
+        return blastedCells;
+    }
+    
+    public GameState next(Map<PlayerID, Optional<Direction>> speedChangeEvents, Set<PlayerID> bombDropEvents){
+        return new GameState(ticks+1,null,players,nextBomb(bombDropEvents),null,null);
+    }
+    
     private static List<Sq<Cell>> nextBlasts(List<Sq<Cell>> blasts0, Board board0, List<Sq<Sq<Cell>>> explosions0){
         List<Sq<Cell>> blasts1=new ArrayList<>();
         for (Sq<Cell> c : blasts0){
@@ -179,6 +199,11 @@ public final class GameState {
             blasts1.add(sq.head());
         }
         return blasts1;
+    }
+    
+    public static List<Bomb> newlyDroppedBombs(List<Player> players0, Set<PlayerID> bombDropEvents, List<Bomb> bombs0){
+        
+        return null;
     }
     
     private List<Bomb> nextBomb(Set<PlayerID> bombDropEvents){
@@ -210,26 +235,4 @@ public final class GameState {
         }
         return bombs;
     }
-    
-    public Map<Cell, Bomb> bombedCells(){
-        Map<Cell, Bomb> bombedCells= new HashMap<>();
-        for (Bomb b : bombs) {
-            bombedCells.put(b.position(), b);
-        }
-        return bombedCells;
-    }
-    
-    public Set<Cell> blastedCells(){
-        Set<Cell> blastedCells= new HashSet<>();
-        for (Sq<Cell> cell : blasts) {
-            blastedCells.add(cell.head());
-        }
-        return blastedCells;
-    }
-    
-    public GameState next(Map<PlayerID, Optional<Direction>> speedChangeEvents, Set<PlayerID> bombDropEvents){
-        
-        return null;
-    }
-    
 }
