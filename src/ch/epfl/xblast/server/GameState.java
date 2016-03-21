@@ -181,23 +181,7 @@ public final class GameState {
         return blasts1;
     }
     
-    public Map<Cell, Bomb> bombedCells(){
-        Map<Cell, Bomb> bombedCells= new HashMap<>();
-        for (Bomb b : bombs) {
-            bombedCells.put(b.position(), b);
-        }
-        return bombedCells;
-    }
-    
-    public Set<Cell> blastedCells(){
-        Set<Cell> blastedCells= new HashSet<>();
-        for (Sq<Cell> cell : blasts) {
-            blastedCells.add(cell.head());
-        }
-        return blastedCells;
-    }
-    
-    public GameState next(Map<PlayerID, Optional<Direction>> speedChangeEvents, Set<PlayerID> bombDropEvents){
+    private List<Bomb> nextBomb(Set<PlayerID> bombDropEvents){
         boolean canBomb;
         int count;
         for (int i=0;i<players.size();++i){
@@ -223,6 +207,27 @@ public final class GameState {
                 }
             }
         }
+        return null;
+    }
+    
+    public Map<Cell, Bomb> bombedCells(){
+        Map<Cell, Bomb> bombedCells= new HashMap<>();
+        for (Bomb b : bombs) {
+            bombedCells.put(b.position(), b);
+        }
+        return bombedCells;
+    }
+    
+    public Set<Cell> blastedCells(){
+        Set<Cell> blastedCells= new HashSet<>();
+        for (Sq<Cell> cell : blasts) {
+            blastedCells.add(cell.head());
+        }
+        return blastedCells;
+    }
+    
+    public GameState next(Map<PlayerID, Optional<Direction>> speedChangeEvents, Set<PlayerID> bombDropEvents){
+        
         return null;
     }
     
