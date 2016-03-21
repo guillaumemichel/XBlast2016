@@ -185,6 +185,10 @@ public final class GameState {
     }
     
     public GameState next(Map<PlayerID, Optional<Direction>> speedChangeEvents, Set<PlayerID> bombDropEvents){
+        
+        
+        //traitement des explosions, retirer les bombes explosées du tableau, appeler la méthode newlyDroppedBomb()
+        //la liste de players en paramètre est PERMUTATIONS.get(ticks%PERMUTATIONS.size())
         return new GameState(ticks+1,null,players,nextBomb(bombDropEvents),null,null);
     }
     
@@ -203,7 +207,32 @@ public final class GameState {
     
     public static List<Bomb> newlyDroppedBombs(List<Player> players0, Set<PlayerID> bombDropEvents, List<Bomb> bombs0){
         
-        return null;
+        if (bombDropEvents.isEmpty())
+            return bombs0;
+        
+        boolean canBomb;
+        Player p;
+        int count;
+        List<Bomb> bombs1 = new ArrayList<>(bombs0);
+        for (int i=0;i<players0.size();++i){
+            p=players0.get(i);
+            if (bombDropEvents.contains(p.id()) && p.isAlive()){
+                canBomb=true;
+                count=0;
+                for (Bomb b : bombs1){
+                    if (b.ownerId().equals(p.id()))
+                        ++count;
+                    if (b.position().equals(p.position().containingCell()))
+                        canBomb=false;
+                }
+                if (count>=p.maxBombs())
+                    canBomb=false;
+                if (canBomb)
+                    bombs1.add(p.newBomb());
+            }
+        }
+        bombs1.removeAll(bombs0);
+        return bombs1;
     }
     
     private List<Bomb> nextBomb(Set<PlayerID> bombDropEvents){
