@@ -199,6 +199,7 @@ public final class GameState {
                                 players.get(i).position().containingCell().equals(players.get(j).position().containingCell())){
                             if (PERMUTATIONS.get(ticks%PERMUTATIONS.size()).indexOf(players.get(i))>PERMUTATIONS.get(ticks%PERMUTATIONS.size()).indexOf(players.get(j))){
                                 canBomb = false;
+                                //un autre player est "prioritaire" sur celui ci pour poser une bombe.
                             }
                         }
                     }
@@ -207,7 +208,7 @@ public final class GameState {
                 }
             }
         }
-        return null;
+        return bombs;
     }
     
     public Map<Cell, Bomb> bombedCells(){
