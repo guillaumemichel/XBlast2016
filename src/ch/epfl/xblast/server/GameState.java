@@ -283,34 +283,4 @@ public final class GameState {
         bombs1.removeAll(bombs0);
         return bombs1;
     }
-    
-    private List<Bomb> nextBomb(Set<PlayerID> bombDropEvents){
-        boolean canBomb;
-        int count;
-        for (int i=0;i<players.size();++i){
-            canBomb=true;
-            count=0;
-            if (bombDropEvents.contains(players.get(i).id())){
-                //checker si le nombre max de bombes est atteint
-                for (Bomb b : bombs){
-                    if (b.ownerId().equals(players.get(i).id()))
-                        ++count;
-                }
-                if (count<players.get(i).maxBombs()){
-                    for (int j=i+1;j<players.size();++j){
-                        if (bombDropEvents.contains(players.get(j).id()) && 
-                                players.get(i).position().containingCell().equals(players.get(j).position().containingCell())){
-                            if (PERMUTATIONS.get(ticks%PERMUTATIONS.size()).indexOf(players.get(i))>PERMUTATIONS.get(ticks%PERMUTATIONS.size()).indexOf(players.get(j))){
-                                canBomb = false;
-                                //un autre player est "prioritaire" sur celui ci pour poser une bombe.
-                            }
-                        }
-                    }
-                    if (canBomb)
-                        bombs.add(players.get(i).newBomb());
-                }
-            }
-        }
-        return bombs;
-    }
 }
