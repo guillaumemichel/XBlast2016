@@ -189,6 +189,10 @@ public final class GameState {
         List<Bomb> newBombs = new ArrayList<>();
         List<PlayerID> pid = new ArrayList<>(PERMUTATIONS.get(ticks%PERMUTATIONS.size()));
         List<Player> playersOrder = new ArrayList<>();
+        
+        
+        
+        
         for (Bomb b : bombs){
             if (b.fuseLengths().isEmpty()){//gérer les explosions par contact de particule
                 explosions.addAll(b.explosion());
@@ -209,7 +213,7 @@ public final class GameState {
         }
         //traitement des explosions, retirer les bombes explosées du tableau, appeler la méthode newlyDroppedBomb()
         //la liste de players en paramètre est PERMUTATIONS.get(ticks%PERMUTATIONS.size())
-        return new GameState(ticks+1,null,players,newlyDroppedBombs(players,bombDropEvents,bombs),null,null);
+        return new GameState(ticks+1,null,players,newBombs,null,null);
     }
     
     private static List<Sq<Cell>> nextBlasts(List<Sq<Cell>> blasts0, Board board0, List<Sq<Sq<Cell>>> explosions0){
