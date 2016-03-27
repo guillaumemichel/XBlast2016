@@ -169,6 +169,12 @@ public final class GameState {
         return alivePlayers;
     }
     
+    /**
+     * Returns a map that associates the bombs of this game state with their positions
+     * 
+     * @return
+     *      The map that associates the bombs of this game state with their positions
+     */
     public Map<Cell, Bomb> bombedCells(){
         Map<Cell, Bomb> bombedCells= new HashMap<>();
         for (Bomb b : bombs) {
@@ -177,6 +183,12 @@ public final class GameState {
         return bombedCells;
     }
     
+    /**
+     * Returns a set of cells on which there is at least one blast
+     * 
+     * @return
+     *      The set of cells on which there is at least one blast
+     */
     public Set<Cell> blastedCells(){
         Set<Cell> blastedCells= new HashSet<>();
         for (Sq<Cell> cell : blasts) {
@@ -185,26 +197,45 @@ public final class GameState {
         return blastedCells;
     }
     
+    /**
+     * Returns the game state at the next tick, depending on the actual one and the given events
+     * 
+     * @param speedChangeEvents
+     * 
+     * @param bombDropEvents
+     * 
+     * @return
+     *      The game state at the next tick, depending on the actual one and the given events
+     */
     public GameState next(Map<PlayerID, Optional<Direction>> speedChangeEvents, Set<PlayerID> bombDropEvents){
         List<Bomb> newBombs = new ArrayList<>();
         List<PlayerID> pid = new ArrayList<>(PERMUTATIONS.get(ticks%PERMUTATIONS.size()));
         List<Player> playersOrder = new ArrayList<>();
         
+        //The next blasts
         List<Sq<Cell>> blasts1=nextBlasts(blasts, board, explosions);
         
+        //The blasted cells (depending on the new blasts)
         Set<Cell> blastedCells1=new HashSet<>();
-        Set<Cell> consumedBonuses=new HashSet<>();
-        Map<PlayerID,Bonus> bonusMap = new HashMap<>();
+        for (Sq<Cell> sq : blasts1) {
+            blastedCells1.add(sq.head());
+        }
+        
+        //We arrange the list of player so that it has the same order as the current permutation
         for (Player p : players){
             for (PlayerID id : pid){
                 if (p.id().equals(id)){
                     playersOrder.add(p);
                 }
             }
-        }
-        for (Sq<Cell> sq : blasts1) {
-            blastedCells1.add(sq.head());
-        }
+        } 
+        
+        //Map that will contain the bonuses taken by the players, and associate the id of the player with the bonus that he has taken
+        Map<PlayerID, Bonus> bonusMap = new HashMap<>();
+        //Set that will contain the bonuses consumed by the players
+        Set<Cell> consumedBonuses=new HashSet<>();
+        
+        //For each player, we determine if he is on a bonus. If so, then the bonus is consumed. We also fill the map of <PlayerID, Bonus> at the same time.
         for (Player p : playersOrder){
             if (board.blockAt(p.position().containingCell()).isBonus() && !consumedBonuses.contains(p.position().containingCell())){
                 consumedBonuses.add(p.position().containingCell());
@@ -212,7 +243,9 @@ public final class GameState {
             }
         }
         
+        //We create the next board
         Board board1=nextBoard(board, consumedBonuses, blastedCells1);
+        //We create the next explosions
         List<Sq<Sq<Cell>>> explosions1=nextExplosions(explosions);
         
         bombs.addAll(newlyDroppedBombs(playersOrder,bombDropEvents,bombs));
