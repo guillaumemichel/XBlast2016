@@ -185,11 +185,30 @@ public final class GameState {
     }
     
     public GameState next(Map<PlayerID, Optional<Direction>> speedChangeEvents, Set<PlayerID> bombDropEvents){
-        
-        
+        List<Bomb> newBombs = new ArrayList<>();
+        List<PlayerID> pid = new ArrayList<>(PERMUTATIONS.get(ticks%PERMUTATIONS.size()));
+        List<Player> playersOrder = new ArrayList<>();
+        for (Bomb b : bombs){
+            if (b.fuseLengths().isEmpty()){//gérer les explosions par contact de particule
+                explosions.addAll(b.explosion());
+            }
+            else {
+                newBombs.add(new Bomb(b.ownerId(),b.position(),b.fuseLengths().tail(),b.range()));
+            }
+        }
+        if (!bombDropEvents.isEmpty()){
+            for (Player p : players){
+                for (PlayerID id : pid){
+                    if (p.id().equals(id)){
+                        playersOrder.add(p);
+                    }
+                }
+            }
+            newBombs.addAll(newlyDroppedBombs(playersOrder,bombDropEvents,bombs));
+        }
         //traitement des explosions, retirer les bombes explosées du tableau, appeler la méthode newlyDroppedBomb()
         //la liste de players en paramètre est PERMUTATIONS.get(ticks%PERMUTATIONS.size())
-        return new GameState(ticks+1,null,players,nextBomb(bombDropEvents),null,null);
+        return new GameState(ticks+1,null,players,newlyDroppedBombs(players,bombDropEvents,bombs),null,null);
     }
     
     private static List<Sq<Cell>> nextBlasts(List<Sq<Cell>> blasts0, Board board0, List<Sq<Sq<Cell>>> explosions0){
@@ -207,12 +226,13 @@ public final class GameState {
     
     private static Board nextBoard(Board board0, Set<Cell> consumedBonuses, Set<Cell> blastedCells1){
         List<Sq<Block>> blocks=new ArrayList<>();
+        boolean alreadyDisappearing;
         
         for (Cell c : Cell.ROW_MAJOR_ORDER) {
             if(consumedBonuses.contains(c)){
                 blocks.add(Sq.constant(Block.FREE));
             }else if(board0.blockAt(c).isBonus() && blastedCells1.contains(c)){
-                boolean alreadyDisappearing=false;
+                alreadyDisappearing=false;
                 Sq<Block> boardBlocks=board0.blocksAt(c);
                 
                 //We check if the bonus block is already disappearing (we look in the sequence if it will become a free block)
@@ -254,7 +274,7 @@ public final class GameState {
         return new Board(blocks);
     }
 
-    public static List<Bomb> newlyDroppedBombs(List<Player> players0, Set<PlayerID> bombDropEvents, List<Bomb> bombs0){
+    private static List<Bomb> newlyDroppedBombs(List<Player> players0, Set<PlayerID> bombDropEvents, List<Bomb> bombs0){
         
         if (bombDropEvents.isEmpty())
             return bombs0;
