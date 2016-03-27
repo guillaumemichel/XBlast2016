@@ -190,29 +190,45 @@ public final class GameState {
         List<PlayerID> pid = new ArrayList<>(PERMUTATIONS.get(ticks%PERMUTATIONS.size()));
         List<Player> playersOrder = new ArrayList<>();
         
+        List<Sq<Cell>> blasts1=nextBlasts(blasts, board, explosions);
         
+        Set<Cell> blastedCells1=new HashSet<>();
+        Set<Cell> consumedBonuses=new HashSet<>();
+        Map<PlayerID,Bonus> bonusMap = new HashMap<>();
+        for (Player p : players){
+            for (PlayerID id : pid){
+                if (p.id().equals(id)){
+                    playersOrder.add(p);
+                }
+            }
+        }
+        for (Sq<Cell> sq : blasts1) {
+            blastedCells1.add(sq.head());
+        }
+        for (Player p : playersOrder){
+            if (board.blockAt(p.position().containingCell()).isBonus() && !consumedBonuses.contains(p.position().containingCell())){
+                consumedBonuses.add(p.position().containingCell());
+                bonusMap.put(p.id(), board.blockAt(p.position().containingCell()).associatedBonus());
+            }
+        }
         
+        Board board1=nextBoard(board, consumedBonuses, blastedCells1);
+        List<Sq<Sq<Cell>>> explosions1=nextExplosions(explosions);
         
+        bombs.addAll(newlyDroppedBombs(playersOrder,bombDropEvents,bombs));
         for (Bomb b : bombs){
             if (b.fuseLengths().isEmpty()){//gérer les explosions par contact de particule
-                explosions.addAll(b.explosion());
+                explosions1.addAll(b.explosion());
             }else {
                 newBombs.add(new Bomb(b.ownerId(),b.position(),b.fuseLengths().tail(),b.range()));
             }
         }
-        if (!bombDropEvents.isEmpty()){
-            for (Player p : players){
-                for (PlayerID id : pid){
-                    if (p.id().equals(id)){
-                        playersOrder.add(p);
-                    }
-                }
-            }
-            newBombs.addAll(newlyDroppedBombs(playersOrder,bombDropEvents,bombs));
-        }
+        
+        List<Player> players1=nextPlayers();
+        
         //traitement des explosions, retirer les bombes explosées du tableau, appeler la méthode newlyDroppedBomb()
         //la liste de players en paramètre est PERMUTATIONS.get(ticks%PERMUTATIONS.size())
-        return new GameState(ticks+1,null,players,newBombs,null,null);
+        return new GameState(ticks+1,board1,players1,newBombs,explosions1,blasts1);
     }
     
     private static List<Sq<Cell>> nextBlasts(List<Sq<Cell>> blasts0, Board board0, List<Sq<Sq<Cell>>> explosions0){
