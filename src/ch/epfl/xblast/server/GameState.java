@@ -217,14 +217,14 @@ public final class GameState {
         
         bombs.addAll(newlyDroppedBombs(playersOrder,bombDropEvents,bombs));
         for (Bomb b : bombs){
-            if (b.fuseLengths().isEmpty()){//gérer les explosions par contact de particule
+            if (b.fuseLengths().isEmpty() || blastedCells1.contains(b.position())){//gérer les explosions par contact de particule
                 explosions1.addAll(b.explosion());
             }else {
                 newBombs.add(new Bomb(b.ownerId(),b.position(),b.fuseLengths().tail(),b.range()));
             }
         }
         
-        List<Player> players1=nextPlayers();
+        List<Player> players1=nextPlayers(null, null, null, null, null, null);
         
         //traitement des explosions, retirer les bombes explosées du tableau, appeler la méthode newlyDroppedBomb()
         //la liste de players en paramètre est PERMUTATIONS.get(ticks%PERMUTATIONS.size())
