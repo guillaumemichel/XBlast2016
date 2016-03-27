@@ -342,4 +342,8 @@ public final class GameState {
         bombs1.removeAll(bombs0);
         return bombs1;
     }
+    
+    private static List<Player> nextPlayers(List<Player> players0, Map<PlayerID, Bonus> playerBonuses, Set<Cell> bombedCells1, Board board1, Set<Cell> blastedCells1, Map<PlayerID, Optional<Direction>> speedChangeEvents){
+        return null;
+    }
 }
