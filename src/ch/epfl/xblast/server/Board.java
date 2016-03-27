@@ -32,7 +32,7 @@ public final class Board {
         if(blocks.size()!=Cell.COUNT){
             throw new IllegalArgumentException();
         }else{
-            this.blocks=blocks;
+            this.blocks=new ArrayList<>(blocks);
         }
     }
     
