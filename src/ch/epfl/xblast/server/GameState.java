@@ -104,10 +104,10 @@ public final class GameState {
      * Determines if this game state is corresponding to a game that is over, and returns the appropriate boolean
      * 
      * @return
-     *      <b>True</b> if thhis game state corresponds to a game that is over, <b>false</b> otherwise
+     *      <b>True</b> if this game state corresponds to a game that is over, <b>false</b> otherwise
      */
     public boolean isGameOver(){
-        return (ticks>=Ticks.TOTAL_TICKS)||(alivePlayers().size()<2);
+        return (ticks>Ticks.TOTAL_TICKS)||(alivePlayers().size()<2);
     }
     
     /**
@@ -192,8 +192,7 @@ public final class GameState {
         for (Bomb b : bombs){
             if (b.fuseLengths().isEmpty()){//gérer les explosions par contact de particule
                 explosions.addAll(b.explosion());
-            }
-            else {
+            }else {
                 newBombs.add(new Bomb(b.ownerId(),b.position(),b.fuseLengths().tail(),b.range()));
             }
         }
