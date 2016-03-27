@@ -2,6 +2,7 @@ package ch.epfl.xblast.server;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -34,7 +35,7 @@ public final class GameState {
     private final List<Sq<Cell>> blasts;
     
     
-    private final static List<List<PlayerID>> PERMUTATIONS=Lists.permutations(Arrays.asList(PlayerID.values()));
+    private final static List<List<PlayerID>> PERMUTATIONS=Collections.unmodifiableList(Lists.permutations(Arrays.asList(PlayerID.values())));
     private final static Random RANDOM=new Random(2016);
     
     /**
@@ -272,6 +273,25 @@ public final class GameState {
             }
         }
         return new Board(blocks);
+    }
+    
+    private static List<Sq<Sq<Cell>>> nextExplosions(List<Sq<Sq<Cell>>> explosions0){
+        List<Sq<Sq<Cell>>> explosions1=new ArrayList<>();
+        Sq<Cell> particle;
+        int count;
+        
+        for (Sq<Sq<Cell>> explosionArm : explosions0) {
+            count=0;
+            particle=explosionArm.head().tail();
+            
+            while(!explosionArm.isEmpty()){
+                explosionArm=explosionArm.tail();
+                count++;
+            }
+            
+            explosions1.add(Sq.constant(particle).limit(count));
+        }
+        return explosions1;
     }
 
     private static List<Bomb> newlyDroppedBombs(List<Player> players0, Set<PlayerID> bombDropEvents, List<Bomb> bombs0){
