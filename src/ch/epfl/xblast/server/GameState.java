@@ -18,6 +18,10 @@ import ch.epfl.xblast.Cell;
 import ch.epfl.xblast.Direction;
 import ch.epfl.xblast.Lists;
 import ch.epfl.xblast.PlayerID;
+import ch.epfl.xblast.SubCell;
+import ch.epfl.xblast.server.Player.DirectedPosition;
+import ch.epfl.xblast.server.Player.LifeState;
+import ch.epfl.xblast.server.Player.LifeState.State;
 
 /**
  * A game state
@@ -257,7 +261,14 @@ public final class GameState {
             }
         }
         
-        List<Player> players1=nextPlayers(null, null, null, null, null, null);
+        //We can create a set containing the new bombed cells
+        Set<Cell> bombedCells1=new HashSet<>();
+        for (Bomb bomb : newBombs) {
+            bombedCells1.add(bomb.position());
+        }
+        
+        //We can now get the "next" players
+        List<Player> players1=nextPlayers(players, bonusMap, bombedCells1, board1, blastedCells1, speedChangeEvents);
         
         //traitement des explosions, retirer les bombes explosées du tableau, appeler la méthode newlyDroppedBomb()
         //la liste de players en paramètre est PERMUTATIONS.get(ticks%PERMUTATIONS.size())
@@ -377,6 +388,58 @@ public final class GameState {
     }
     
     private static List<Player> nextPlayers(List<Player> players0, Map<PlayerID, Bonus> playerBonuses, Set<Cell> bombedCells1, Board board1, Set<Cell> blastedCells1, Map<PlayerID, Optional<Direction>> speedChangeEvents){
-        return null;
+        List<Player> players1=new ArrayList<>();
+        Sq<DirectedPosition> nextDirectedPos;
+        Sq<LifeState> nextLifeState;
+        Player player1;
+        Optional<Direction> chosenDir;
+        
+        for (Player player : players0) {
+            
+            SubCell nearestCentral=(player.directedPositions().findFirst(d -> d.position().isCentral())).position();
+            
+            //First of all we compute the new sequence of directedPosition depending on the chosen direction:
+            
+            if(speedChangeEvents.containsKey(player.id())){
+                chosenDir=speedChangeEvents.get(player.id());
+                if(chosenDir.isPresent()){//the player has chosen a direction
+                    if(chosenDir.get().isParallelTo(player.direction())){//if the direction chosen is parallel to the one he is already going, he can immediately move backwards or forwards 
+                        nextDirectedPos=DirectedPosition.moving(new DirectedPosition(player.position(), chosenDir.get()));
+                    }else{//otherwise he first need to reach the first central subCell in his path, to finally turn where he wants to
+                        nextDirectedPos=player.directedPositions().takeWhile(s -> !s.position().equals(nearestCentral));
+                        nextDirectedPos.concat(DirectedPosition.moving(new DirectedPosition(nearestCentral, chosenDir.get())));
+                    }
+                }else{//the player has chosen to stop (he first needs to reach the first central subCell in his path
+                    nextDirectedPos=player.directedPositions().takeWhile(s -> !s.position().equals(nearestCentral));
+                    nextDirectedPos.concat(DirectedPosition.stopped(player.directedPositions().findFirst(s -> s.position().isCentral())));
+                }
+                
+            }else{//the player hasn't chosen anything, so he keeps going where he is going
+                nextDirectedPos=player.directedPositions();
+            }
+            
+            
+                
+            if(player.lifeState().canMove()){//A faire
+            }
+            
+            //We create the new lifeState sequence for the next state
+            if(blastedCells1.contains(nextDirectedPos.head().position().containingCell()) && player.lifeState().state()==State.VULNERABLE){
+                nextLifeState=player.statesForNextLife();
+            }else{
+                nextLifeState=player.lifeStates().tail();
+            }
+            
+            //We are now able to create the evolved player
+            player1=new Player(player.id(), nextLifeState, nextDirectedPos, player.maxBombs(), player.bombRange());
+            
+            //We apply the bonus if the player has taken one, and we add the evolved player in the list of evolved players
+            if(playerBonuses.containsKey(player.id())){
+                players1.add(playerBonuses.get(player.id()).applyTo(player1));
+            }else{
+                players1.add(player1);
+            }
+        }
+        return players1;
     }
 }
