@@ -409,7 +409,7 @@ public final class GameState {
                         nextDirectedPos=player.directedPositions().takeWhile(s -> !s.position().equals(nearestCentral));
                         nextDirectedPos.concat(DirectedPosition.moving(new DirectedPosition(nearestCentral, chosenDir.get())));
                     }
-                }else{//the player has chosen to stop (he first needs to reach the first central subCell in his path
+                }else{//the player has chosen to stop (he first needs to reach the first central subCell in his path)
                     nextDirectedPos=player.directedPositions().takeWhile(s -> !s.position().equals(nearestCentral));
                     nextDirectedPos.concat(DirectedPosition.stopped(player.directedPositions().findFirst(s -> s.position().isCentral())));
                 }
@@ -417,10 +417,17 @@ public final class GameState {
             }else{//the player hasn't chosen anything, so he keeps going where he is going
                 nextDirectedPos=player.directedPositions();
             }
+
+            //Here, we determine if the player can move. If so, the sequence of directedPosition is consumed
+            boolean canMove=true;   
+            if((!player.lifeState().canMove()) || 
+                    (!board1.blockAt(player.position().containingCell().neighbor(player.direction())).canHostPlayer() && player.position().isCentral()) || 
+                    (bombedCells1.contains(player.position().containingCell()) && (player.position().neighbor(player.direction())).distanceToCentral()==5)){
+                canMove=false;
+            }
             
-            
-                
-            if(player.lifeState().canMove()){//A faire
+            if(canMove){
+                nextDirectedPos=nextDirectedPos.tail();
             }
             
             //We create the new lifeState sequence for the next state
