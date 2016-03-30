@@ -31,9 +31,15 @@ public final class GameStatePrinter {
                 }
                 
                 if(blastedCells.contains(c)){
-                    System.out.println("B");
+                    System.out.print("\u001b[43m"+"\u001b[30m"+"**"+"\u001b[m");
                     continue xLoop;
                 }
+                
+                if(bombedCells.containsKey(c)){
+                    System.out.print(stringForBombs(bombedCells.get(c)));
+                    continue xLoop;
+                }
+                
                 
                 Block b = board.blockAt(c);
                 System.out.print(stringForBlock(b));
@@ -44,25 +50,33 @@ public final class GameStatePrinter {
 
     private static String stringForPlayer(Player p) {
         StringBuilder b = new StringBuilder();
-        b.append(p.id().ordinal() + 1);
+        b.append("\u001b[46m"+"\u001b[30m"+(p.id().ordinal() + 1));
         switch (p.direction()) {
-        case N: b.append('^'); break;
-        case E: b.append('>'); break;
-        case S: b.append('v'); break;
-        case W: b.append('<'); break;
+        case N: b.append('^'+"\u001b[m"); break;
+        case E: b.append('>'+"\u001b[m"); break;
+        case S: b.append('v'+"\u001b[m"); break;
+        case W: b.append('<'+"\u001b[m"); break;
         }
         return b.toString();
     }
 
     private static String stringForBlock(Block b) {
         switch (b) {
-        case FREE: return "  ";
-        case INDESTRUCTIBLE_WALL: return "##";
-        case DESTRUCTIBLE_WALL: return "??";
-        case CRUMBLING_WALL: return "¿¿";
-        case BONUS_BOMB: return "+b";
-        case BONUS_RANGE: return "+r";
+        case FREE: return "\u001b[47;107m"+"  "+"\u001b[m";
+        case INDESTRUCTIBLE_WALL: return "\u001b[40m"+"\u001b[30m"+"##"+"\u001b[m";
+        case DESTRUCTIBLE_WALL: return "\u001b[40m"+"\u001b[37m"+"??"+"\u001b[m";
+        case CRUMBLING_WALL: return "\u001b[30;1m"+"¿¿"+"\u001b[m";
+        case BONUS_BOMB: return "\u001b[41m"+"\u001b[37;107m"+"+ò"+"\u001b[m";
+        case BONUS_RANGE: return "\u001b[41m"+"\u001b[37;107m"+"+*"+"\u001b[m";
         default: throw new Error();
+        }
+    }
+    
+    private static String stringForBombs(Bomb b){
+        if(b.fuseLength()<10){
+            return "\u001b[44;6m"+"\u001b[37m"+"òò"+"\u001b[m";
+        }else{
+            return "\u001b[44;5m"+"\u001b[37m"+"òò"+"\u001b[m";
         }
     }
 }

@@ -3,9 +3,11 @@ package ch.epfl.xblast.server.debug;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import ch.epfl.xblast.Cell;
 import ch.epfl.xblast.Direction;
@@ -35,14 +37,14 @@ public class RandomGame {
         List<Player> players = new ArrayList<>();
         players.add(new Player(PlayerID.PLAYER_1,3, new Cell(1, 1), 5, 5));
         players.add(new Player(PlayerID.PLAYER_2, 3, new Cell(13, 1), 5, 5));
-        players.add(new Player(PlayerID.PLAYER_3, 3, new Cell(1, 11), 5, 5));
-        players.add(new Player(PlayerID.PLAYER_4, 3, new Cell(13, 11), 5, 5));
+        players.add(new Player(PlayerID.PLAYER_3, 3, new Cell(13, 11), 5, 5));
+        players.add(new Player(PlayerID.PLAYER_4, 3, new Cell(1, 11), 5, 5));
+        
+        Set<PlayerID> set=new HashSet<>();
+        set.add(PlayerID.PLAYER_4);
         
         Map<PlayerID, Optional<Direction>> map=new HashMap<>();
         map.put(PlayerID.PLAYER_1, Optional.of(Direction.E));
-        map.put(PlayerID.PLAYER_2, Optional.of(Direction.E));
-        map.put(PlayerID.PLAYER_3, Optional.of(Direction.E));
-        map.put(PlayerID.PLAYER_4, Optional.of(Direction.E));
 
         GameState g = new GameState(board, players);
         for(int i=0;i<100;++i){
@@ -50,6 +52,7 @@ public class RandomGame {
             Thread.sleep(100);
             //System.out.print("\u001b[2J");
             g=g.next(randomShit.randomSpeedChangeEvents(), randomShit.randomBombDropEvents());
+            System.out.println();
         }
         
     }

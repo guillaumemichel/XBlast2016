@@ -1,3 +1,7 @@
+Changement dans GamesState:next() pour explosion d'une bombe + changement ajout newlyDropped à newBombs et pas bombs
+
+
+
 Todo :
 
 1. Board.java références de block (copie ou pas)
