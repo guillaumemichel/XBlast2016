@@ -91,7 +91,7 @@ public final class GameState {
      *      The players
      */
     public GameState(Board board, List<Player> players){
-        this(0,board,players,new ArrayList<Bomb>(),new ArrayList<Sq<Sq<Cell>>>(),new ArrayList<Sq<Cell>>());
+        this(0,board,players,Arrays.asList(new Bomb(PlayerID.PLAYER_1, new Cell(9, 7), 15, 3)),new ArrayList<Sq<Sq<Cell>>>(),new ArrayList<Sq<Cell>>());
     }
     
     /**
@@ -222,7 +222,9 @@ public final class GameState {
         //The blasted cells (depending on the new blasts)
         Set<Cell> blastedCells1=new HashSet<>();
         for (Sq<Cell> sq : blasts1) {
-            blastedCells1.add(sq.head());
+            if(!sq.isEmpty()){
+                blastedCells1.add(sq.head());
+            }
         }
         
         //We arrange the list of player so that it has the same order as the current permutation
@@ -252,9 +254,9 @@ public final class GameState {
         //We create the next explosions
         List<Sq<Sq<Cell>>> explosions1=nextExplosions(explosions);
         
-        bombs.addAll(newlyDroppedBombs(playersOrder,bombDropEvents,bombs));
+        newBombs.addAll(newlyDroppedBombs(playersOrder,bombDropEvents,bombs));
         for (Bomb b : bombs){
-            if (b.fuseLengths().isEmpty() || blastedCells1.contains(b.position())){//gérer les explosions par contact de particule
+            if (b.fuseLength()==1 || blastedCells1.contains(b.position())){//gérer les explosions par contact de particule
                 explosions1.addAll(b.explosion());
             }else {
                 newBombs.add(new Bomb(b.ownerId(),b.position(),b.fuseLengths().tail(),b.range()));
@@ -278,7 +280,7 @@ public final class GameState {
     private static List<Sq<Cell>> nextBlasts(List<Sq<Cell>> blasts0, Board board0, List<Sq<Sq<Cell>>> explosions0){
         List<Sq<Cell>> blasts1=new ArrayList<>();
         for (Sq<Cell> c : blasts0){
-            if (!c.isEmpty() && board0.blockAt(c.head()).isFree()){
+            if (!c.tail().isEmpty() && board0.blockAt(c.head()).isFree()){
                 blasts1.add(c.tail());
             }
         }
@@ -313,6 +315,8 @@ public final class GameState {
                     Sq<Block> bonusDisappearing=Sq.repeat(Ticks.BONUS_DISAPPEARING_TICKS, board0.blockAt(c));
                     bonusDisappearing.concat(Sq.constant(Block.FREE));
                     blocks.add(bonusDisappearing);
+                }else{
+                    blocks.add(board0.blocksAt(c));
                 }
             }else if(board0.blockAt(c)==Block.DESTRUCTIBLE_WALL && blastedCells1.contains(c)){
                 Sq<Block> destructibleWall=Sq.repeat(Ticks.WALL_CRUMBLING_TICKS, Block.CRUMBLING_WALL);
@@ -331,6 +335,7 @@ public final class GameState {
                         break;
                 }
                 destructibleWall.concat(Sq.constant(newBlock));
+                blocks.add(destructibleWall);
             }else{
                 blocks.add(board0.blocksAt(c));
             }
@@ -345,14 +350,16 @@ public final class GameState {
         
         for (Sq<Sq<Cell>> explosionArm : explosions0) {
             count=0;
-            particle=explosionArm.head().tail();
-            
-            while(!explosionArm.isEmpty()){
-                explosionArm=explosionArm.tail();
-                count++;
+            if(!explosionArm.head().tail().isEmpty()){
+                particle=explosionArm.head().tail();
+                
+                while(!explosionArm.isEmpty()){
+                    explosionArm=explosionArm.tail();
+                    count++;
+                }
+                
+                explosions1.add(Sq.constant(particle).limit(count));
             }
-            
-            explosions1.add(Sq.constant(particle).limit(count));
         }
         return explosions1;
     }
@@ -393,43 +400,60 @@ public final class GameState {
         Sq<LifeState> nextLifeState;
         Player player1;
         Optional<Direction> chosenDir;
+        DirectedPosition newDirectedPos;
         
         for (Player player : players0) {
-            
-            SubCell nearestCentral=(player.directedPositions().findFirst(d -> d.position().isCentral())).position();
-            
             //First of all we compute the new sequence of directedPosition depending on the chosen direction:
             
             if(speedChangeEvents.containsKey(player.id())){
+                SubCell nextCentral;
+                if(player.position().isCentral()){
+                    nextCentral=player.position();
+                }else{
+                    nextCentral=(player.directedPositions().findFirst(d -> d.position().isCentral())).position();
+                }
                 chosenDir=speedChangeEvents.get(player.id());
                 if(chosenDir.isPresent()){//the player has chosen a direction
                     if(chosenDir.get().isParallelTo(player.direction())){//if the direction chosen is parallel to the one he is already going, he can immediately move backwards or forwards 
                         nextDirectedPos=DirectedPosition.moving(new DirectedPosition(player.position(), chosenDir.get()));
                     }else{//otherwise he first need to reach the first central subCell in his path, to finally turn where he wants to
-                        nextDirectedPos=player.directedPositions().takeWhile(s -> !s.position().equals(nearestCentral));
-                        nextDirectedPos.concat(DirectedPosition.moving(new DirectedPosition(nearestCentral, chosenDir.get())));
+                        if(!player.position().isCentral()){
+                            nextDirectedPos=player.directedPositions().takeWhile(s -> !s.position().equals(nextCentral));
+                            nextDirectedPos.concat(DirectedPosition.moving(new DirectedPosition(nextCentral, chosenDir.get())));
+                        }else{
+                            nextDirectedPos=DirectedPosition.moving(new DirectedPosition(nextCentral, chosenDir.get()));
+                        }
                     }
                 }else{//the player has chosen to stop (he first needs to reach the first central subCell in his path)
-                    nextDirectedPos=player.directedPositions().takeWhile(s -> !s.position().equals(nearestCentral));
-                    nextDirectedPos.concat(DirectedPosition.stopped(player.directedPositions().findFirst(s -> s.position().isCentral())));
+                    if(!player.position().isCentral()){
+                        nextDirectedPos=player.directedPositions().takeWhile(s -> !s.position().equals(nextCentral));
+                        nextDirectedPos.concat(DirectedPosition.stopped(player.directedPositions().findFirst(s -> s.position().isCentral())));
+                    }else{
+                        nextDirectedPos=DirectedPosition.stopped(player.directedPositions().findFirst(s -> s.position().isCentral()));
+                    }
                 }
                 
             }else{//the player hasn't chosen anything, so he keeps going where he is going
                 nextDirectedPos=player.directedPositions();
+                //nextDirectedPos=DirectedPosition.moving(new DirectedPosition(player.position(), player.direction()));
             }
-
+            
+            newDirectedPos=nextDirectedPos.head();
+            System.out.print(player.position().toString()+"-->");
+            System.out.println(newDirectedPos.position().toString());
+            
             //Here, we determine if the player can move. If so, the sequence of directedPosition is consumed
             boolean canMove=true;   
             if((!player.lifeState().canMove()) || 
-                    (!board1.blockAt(player.position().containingCell().neighbor(player.direction())).canHostPlayer() && player.position().isCentral()) || 
-                    (bombedCells1.contains(player.position().containingCell()) && (player.position().neighbor(player.direction())).distanceToCentral()==5)){
+                    (!board1.blockAt(newDirectedPos.position().containingCell().neighbor(newDirectedPos.direction())).canHostPlayer() && newDirectedPos.position().isCentral()) || 
+                    (bombedCells1.contains(newDirectedPos.position().containingCell()) && (newDirectedPos.position().neighbor(newDirectedPos.direction())).distanceToCentral()==5)){
                 canMove=false;
             }
-            
+
             if(canMove){
                 nextDirectedPos=nextDirectedPos.tail();
             }
-            
+
             //We create the new lifeState sequence for the next state
             if(blastedCells1.contains(nextDirectedPos.head().position().containingCell()) && player.lifeState().state()==State.VULNERABLE){
                 nextLifeState=player.statesForNextLife();
