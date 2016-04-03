@@ -397,14 +397,21 @@ public final class GameState {
         Sq<DirectedPosition> nextDirectedPos;
         Sq<LifeState> nextLifeState;
         SubCell central;
+        Optional<Direction> chosenDir;
         int b = 0; //boolean bomb bonus
         int r = 0; //boolean range bonus
         
         
         for (Player p : players0){
             if (speedChangeEvents.containsKey(p.id()) && !speedChangeEvents.get(p.id()).equals(p.direction())){
-                if (speedChangeEvents.get(p.id()).get().isParallelTo(p.direction())){
-                    
+                central = (p.directedPositions().findFirst(u -> u.position().isCentral())).position(); //1e argument pris en compte ?
+                chosenDir = speedChangeEvents.get(p.id());
+                if (chosenDir.isPresent()){
+                    if (chosenDir.get().isParallelTo(p.direction())){
+                        nextDirectedPos = Player.DirectedPosition.moving(new DirectedPosition(p.position(),chosenDir.get()));
+                    }
+                }else {
+                    nextDirectedPos = 
                 }
             }else {
                 nextDirectedPos = p.directedPositions();
