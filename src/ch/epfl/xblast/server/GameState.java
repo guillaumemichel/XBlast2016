@@ -395,6 +395,7 @@ public final class GameState {
     private static List<Player> nextPlayers1(List<Player> players0, Map<PlayerID, Bonus> playerBonuses,Set<Cell> bombedCells1, Board board1, Set<Cell> blastedCells1, Map<PlayerID, Optional<Direction>> speedChangeEvents){
         List<Player> players1 = new ArrayList<>();
         Sq<DirectedPosition> nextDirectedPos;
+        DirectedPosition newDirectedPos;
         Sq<LifeState> nextLifeState;
         SubCell central;
         Optional<Direction> chosenDir;
@@ -409,13 +410,25 @@ public final class GameState {
                 if (chosenDir.isPresent()){
                     if (chosenDir.get().isParallelTo(p.direction())){
                         nextDirectedPos = Player.DirectedPosition.moving(new DirectedPosition(p.position(),chosenDir.get()));
+                    }else {
+                        nextDirectedPos = p.directedPositions().takeWhile(u -> !u.position().isCentral());
+                        nextDirectedPos.concat(Player.DirectedPosition.moving(new DirectedPosition(central,chosenDir.get())));
                     }
                 }else {
-                    nextDirectedPos = 
+                    nextDirectedPos = p.directedPositions().takeWhile(u -> !u.position().isCentral());
+                    nextDirectedPos.concat(Player.DirectedPosition.stopped(new DirectedPosition(central,p.direction())));
                 }
             }else {
                 nextDirectedPos = p.directedPositions();
             }
+            newDirectedPos = nextDirectedPos.head();
+            
+            
+            if (p.lifeState().canMove() &&
+                    (board1.blockAt(newDirectedPos.position().containingCell().neighbor(newDirectedPos.direction())).canHostPlayer() && newDirectedPos.position().isCentral())
+                    ) //ajouter le blocage des bombes
+                nextDirectedPos = nextDirectedPos.tail();
+            
             //players1.add(new Player(p.id(),nextLifeState,nextDirectedPos,p.maxBombs()+b,p.bombRange()+r));
         }
         
