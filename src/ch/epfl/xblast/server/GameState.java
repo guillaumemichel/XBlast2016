@@ -272,8 +272,6 @@ public final class GameState {
         //We can now get the "next" players
         List<Player> players1=nextPlayers(players, bonusMap, bombedCells1, board1, blastedCells1, speedChangeEvents);
         
-        //traitement des explosions, retirer les bombes explosées du tableau, appeler la méthode newlyDroppedBomb()
-        //la liste de players en paramètre est PERMUTATIONS.get(ticks%PERMUTATIONS.size())
         return new GameState(ticks+1,board1,players1,newBombs,explosions1,blasts1);
     }
     
