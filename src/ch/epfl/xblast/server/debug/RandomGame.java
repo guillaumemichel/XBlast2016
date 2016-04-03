@@ -54,10 +54,10 @@ public class RandomGame {
 
         GameState g = new GameState(board, players);
         for(int i=0;i<100;++i){
+            g=g.next(randomEvents.randomSpeedChangeEvents(), randomEvents.randomBombDropEvents());
             GameStatePrinter.printGameState(g);
             Thread.sleep(100);
             //System.out.print("\u001b[2J");
-            g=g.next(randomEvents.randomSpeedChangeEvents(), randomEvents.randomBombDropEvents());
             System.out.println();
         }
         
