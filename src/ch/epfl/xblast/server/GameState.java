@@ -275,9 +275,9 @@ public final class GameState {
     
     private static List<Sq<Cell>> nextBlasts(List<Sq<Cell>> blasts0, Board board0, List<Sq<Sq<Cell>>> explosions0){
         List<Sq<Cell>> blasts1=new ArrayList<>();
-        for (Sq<Cell> c : blasts0){
-            if (!c.tail().isEmpty() && board0.blockAt(c.head()).isFree()){
-                blasts1.add(c.tail());
+        for (Sq<Cell> b : blasts0){
+            if (!b.tail().isEmpty() && board0.blockAt(b.head()).isFree()){
+                blasts1.add(b.tail());
             }
         }
         
