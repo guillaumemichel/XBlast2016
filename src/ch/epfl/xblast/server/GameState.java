@@ -91,7 +91,7 @@ public final class GameState {
      *      The players
      */
     public GameState(Board board, List<Player> players){
-        this(0,board,players,Arrays.asList(new Bomb(PlayerID.PLAYER_1, new Cell(9, 7), 15, 6)),new ArrayList<Sq<Sq<Cell>>>(),new ArrayList<Sq<Cell>>());
+        this(0,board,players,Arrays.asList(new Bomb(PlayerID.PLAYER_1, new Cell(9, 7), 10, 2)),new ArrayList<Sq<Sq<Cell>>>(),new ArrayList<Sq<Cell>>());
     }
     
     /**
