@@ -399,14 +399,12 @@ public final class GameState {
     
     private static List<Player> nextPlayers1(List<Player> players0, Map<PlayerID, Bonus> playerBonuses,Set<Cell> bombedCells1, Board board1, Set<Cell> blastedCells1, Map<PlayerID, Optional<Direction>> speedChangeEvents){
         List<Player> players1 = new ArrayList<>();
+        Player p1;
         Sq<DirectedPosition> nextDirectedPos;
         DirectedPosition newDirectedPos;
         Sq<LifeState> nextLifeState;
         SubCell central;
         Optional<Direction> chosenDir;
-        int b = 0; //boolean bomb bonus
-        int r = 0; //boolean range bonus
-        
         
         for (Player p : players0){
             if (speedChangeEvents.containsKey(p.id()) && !speedChangeEvents.get(p.id()).equals(p.direction())){
@@ -428,13 +426,22 @@ public final class GameState {
             }
             newDirectedPos = nextDirectedPos.head();
             
-            
             if (p.lifeState().canMove() &&
-                    (board1.blockAt(newDirectedPos.position().containingCell().neighbor(newDirectedPos.direction())).canHostPlayer() && newDirectedPos.position().isCentral())
-                    ) //ajouter le blocage des bombes
+                    (!(newDirectedPos.position().isCentral() && !board1.blockAt(newDirectedPos.position().containingCell().neighbor(newDirectedPos.direction())).canHostPlayer())) &&
+                    (!(bombedCells1.contains(newDirectedPos.position().containingCell()) && newDirectedPos.position().neighbor(newDirectedPos.direction()).distanceToCentral()>6)))
                 nextDirectedPos = nextDirectedPos.tail();
             
-            //players1.add(new Player(p.id(),nextLifeState,nextDirectedPos,p.maxBombs()+b,p.bombRange()+r));
+            if (p.lifeState().state()==State.VULNERABLE && blastedCells1.contains(newDirectedPos.position().containingCell()))
+                nextLifeState = p.statesForNextLife();
+            else
+                nextLifeState = p.lifeStates().tail();
+            
+            p1 = new Player(p.id(),nextLifeState,nextDirectedPos,p.maxBombs(),p.bombRange());
+            
+            if (playerBonuses.containsKey(p1.id()))
+                playerBonuses.get(p1.id()).applyTo(p1);
+            
+            players1.add(p1);
         }
         
         
