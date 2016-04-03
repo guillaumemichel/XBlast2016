@@ -17,10 +17,16 @@ import ch.epfl.xblast.server.Board;
 import ch.epfl.xblast.server.GameState;
 import ch.epfl.xblast.server.Player;
 
+/**
+ * A random game
+ * @author Guillaume Michel (258066)
+ * @author Adrien Vandenbroucque (258715)
+ *
+ */
 public class RandomGame {
 
     public static void main(String[] args) throws InterruptedException{
-        RandomEventGenerator randomShit=new RandomEventGenerator(2016, 30, 100);
+        RandomEventGenerator randomEvents=new RandomEventGenerator(2016, 30, 100);
         //java -classpath jar/sq.jar:bin ch.epfl.xblast.server.debug.RandomGame
         Block __ = Block.FREE;
         Block XX = Block.INDESTRUCTIBLE_WALL;
@@ -51,7 +57,7 @@ public class RandomGame {
             GameStatePrinter.printGameState(g);
             Thread.sleep(100);
             //System.out.print("\u001b[2J");
-            g=g.next(randomShit.randomSpeedChangeEvents(), randomShit.randomBombDropEvents());
+            g=g.next(randomEvents.randomSpeedChangeEvents(), randomEvents.randomBombDropEvents());
             System.out.println();
         }
         
