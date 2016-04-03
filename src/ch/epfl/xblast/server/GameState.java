@@ -91,7 +91,7 @@ public final class GameState {
      *      The players
      */
     public GameState(Board board, List<Player> players){
-        this(0,board,players,Arrays.asList(new Bomb(PlayerID.PLAYER_1, new Cell(9, 7), 15, 4)),new ArrayList<Sq<Sq<Cell>>>(),new ArrayList<Sq<Cell>>());
+        this(0,board,players,Arrays.asList(new Bomb(PlayerID.PLAYER_1, new Cell(9, 7), 10, 2)),new ArrayList<Sq<Sq<Cell>>>(),new ArrayList<Sq<Cell>>());
     }
     
     /**
@@ -279,7 +279,7 @@ public final class GameState {
     private static List<Sq<Cell>> nextBlasts(List<Sq<Cell>> blasts0, Board board0, List<Sq<Sq<Cell>>> explosions0){
         List<Sq<Cell>> blasts1=new ArrayList<>();
         for (Sq<Cell> b : blasts0){
-            if (!b.tail().isEmpty() && board0.blockAt(b.head()).isFree()){
+            if (!b.tail().isEmpty() && board0.blockAt(b.tail().head()).isFree()){//Attention pas exactement comme consigne
                 blasts1.add(b.tail());
             }
         }
@@ -346,21 +346,10 @@ public final class GameState {
     
     private static List<Sq<Sq<Cell>>> nextExplosions(List<Sq<Sq<Cell>>> explosions0){
         List<Sq<Sq<Cell>>> explosions1=new ArrayList<>();
-        Sq<Cell> particle;
-        int count;
         
-        for (Sq<Sq<Cell>> explosionArm : explosions0) {
-            count=0;
-            if(!explosionArm.head().tail().isEmpty()){
-                particle=explosionArm.head().tail();
-                
-                while(!explosionArm.isEmpty()){
-                    explosionArm=explosionArm.tail();
-                    count++;
-                }
-                
-                explosions1.add(Sq.repeat(count, particle));
-            }
+        for (Sq<Sq<Cell>> sq : explosions0) {
+            if(!sq.tail().isEmpty())
+                explosions1.add(sq.tail());     
         }
         return explosions1;
     }
