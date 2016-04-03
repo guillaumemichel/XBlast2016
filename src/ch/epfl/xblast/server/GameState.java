@@ -212,7 +212,6 @@ public final class GameState {
      *      The game state at the next tick, depending on the actual one and the given events
      */
     public GameState next(Map<PlayerID, Optional<Direction>> speedChangeEvents, Set<PlayerID> bombDropEvents){
-        List<Bomb> newBombs = new ArrayList<>();
         List<PlayerID> pid = new ArrayList<>(PERMUTATIONS.get(ticks%PERMUTATIONS.size()));
         List<Player> playersOrder = new ArrayList<>();
         
@@ -249,8 +248,12 @@ public final class GameState {
         
         //We create the next board
         Board board1=nextBoard(board, consumedBonuses, blastedCells1);
+        
         //We create the next explosions
         List<Sq<Sq<Cell>>> explosions1=nextExplosions(explosions);
+        
+        //List that will contain the new bombs
+        List<Bomb> newBombs = new ArrayList<>();
         
         newBombs.addAll(newlyDroppedBombs(playersOrder,bombDropEvents,bombs));
         for (Bomb b : bombs){
