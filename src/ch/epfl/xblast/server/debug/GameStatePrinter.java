@@ -49,6 +49,11 @@ public final class GameStatePrinter {
             }
             System.out.println();
         }
+        for (Player player : ps) {
+            System.out.println("J"+(player.id().ordinal()+1)+": "+player.lives()+" vies "+"("+player.lifeState().state()+")");
+            System.out.println("Position: "+player.position().containingCell());
+            System.out.println();
+        }
     }
 
     private static String stringForPlayer(Player p) {

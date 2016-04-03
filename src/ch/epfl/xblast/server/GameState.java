@@ -365,7 +365,7 @@ public final class GameState {
     private static List<Bomb> newlyDroppedBombs(List<Player> players0, Set<PlayerID> bombDropEvents, List<Bomb> bombs0){
         
         if (bombDropEvents.isEmpty())
-            return bombs0;
+            return new ArrayList<>();
         
         boolean canBomb;
         Player p;
