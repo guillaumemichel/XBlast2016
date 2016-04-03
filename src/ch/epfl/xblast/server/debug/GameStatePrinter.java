@@ -15,7 +15,7 @@ public final class GameStatePrinter {
     private GameStatePrinter() {}
 
     public static void printGameState(GameState s) {
-        List<Player> ps = s.alivePlayers();
+        List<Player> players = s.alivePlayers();
         Set<Cell> blastedCells=s.blastedCells();
         Map<Cell, Bomb> bombedCells=s.bombedCells();
         Board board = s.board();
@@ -24,7 +24,7 @@ public final class GameStatePrinter {
             xLoop: for (int x = 0; x < Cell.COLUMNS; ++x) {
                 Cell c = new Cell(x, y);
                 //Players display
-                for (Player p: ps) {
+                for (Player p: players) {
                     if (p.position().containingCell().equals(c)) {
                         System.out.print(stringForPlayer(p));
                         continue xLoop;
@@ -49,11 +49,12 @@ public final class GameStatePrinter {
             }
             System.out.println();
         }
-        for (Player player : ps) {
+        for (Player player : players) {
             System.out.println("J"+(player.id().ordinal()+1)+": "+player.lives()+" vies "+"("+player.lifeState().state()+")");
-            System.out.println("Position: "+player.position().containingCell());
-            System.out.println();
+            System.out.println("Position: "+player.position().containingCell()+"\n");
         }
+        
+        System.out.println("Temps restant :"+s.remainingTime()+" secondes"+"\n");
     }
 
     private static String stringForPlayer(Player p) {

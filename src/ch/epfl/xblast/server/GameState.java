@@ -91,7 +91,7 @@ public final class GameState {
      *      The players
      */
     public GameState(Board board, List<Player> players){
-        this(0,board,players,Arrays.asList(new Bomb(PlayerID.PLAYER_1, new Cell(9, 7), 15, 2)),new ArrayList<Sq<Sq<Cell>>>(),new ArrayList<Sq<Cell>>());
+        this(0,board,players,Arrays.asList(new Bomb(PlayerID.PLAYER_1, new Cell(9, 7), 15, 4)),new ArrayList<Sq<Sq<Cell>>>(),new ArrayList<Sq<Cell>>());
     }
     
     /**
@@ -121,7 +121,7 @@ public final class GameState {
      *      The remaining time before the end of this game (in seconds)
      */
     public double remainingTime(){
-        return (Ticks.TOTAL_TICKS-ticks)/Ticks.TICKS_PER_SECOND;
+        return ((double)(Ticks.TOTAL_TICKS-ticks))/(double)(Ticks.TICKS_PER_SECOND);
     }
     
     /**
@@ -212,7 +212,6 @@ public final class GameState {
      *      The game state at the next tick, depending on the actual one and the given events
      */
     public GameState next(Map<PlayerID, Optional<Direction>> speedChangeEvents, Set<PlayerID> bombDropEvents){
-        List<Bomb> newBombs = new ArrayList<>();
         List<PlayerID> pid = new ArrayList<>(PERMUTATIONS.get(ticks%PERMUTATIONS.size()));
         List<Player> playersOrder = new ArrayList<>();
         
@@ -249,8 +248,12 @@ public final class GameState {
         
         //We create the next board
         Board board1=nextBoard(board, consumedBonuses, blastedCells1);
+        
         //We create the next explosions
         List<Sq<Sq<Cell>>> explosions1=nextExplosions(explosions);
+        
+        //List that will contain the new bombs
+        List<Bomb> newBombs = new ArrayList<>();
         
         newBombs.addAll(newlyDroppedBombs(playersOrder,bombDropEvents,bombs));
         for (Bomb b : bombs){
@@ -275,9 +278,9 @@ public final class GameState {
     
     private static List<Sq<Cell>> nextBlasts(List<Sq<Cell>> blasts0, Board board0, List<Sq<Sq<Cell>>> explosions0){
         List<Sq<Cell>> blasts1=new ArrayList<>();
-        for (Sq<Cell> c : blasts0){
-            if (!c.tail().isEmpty() && board0.blockAt(c.head()).isFree()){
-                blasts1.add(c.tail());
+        for (Sq<Cell> b : blasts0){
+            if (!b.tail().isEmpty() && board0.blockAt(b.head()).isFree()){
+                blasts1.add(b.tail());
             }
         }
         
@@ -379,11 +382,13 @@ public final class GameState {
                 for (Bomb b : bombs1){
                     if (b.ownerId().equals(p.id()))
                         ++count;
+                    
                     if (b.position().equals(p.position().containingCell()))
                         canBomb=false;
                 }
                 if (count>=p.maxBombs())
                     canBomb=false;
+                
                 if (canBomb)
                     bombs1.add(p.newBomb());
             }
