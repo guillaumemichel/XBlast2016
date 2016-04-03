@@ -121,7 +121,7 @@ public final class GameState {
      *      The remaining time before the end of this game (in seconds)
      */
     public double remainingTime(){
-        return (Ticks.TOTAL_TICKS-ticks)/Ticks.TICKS_PER_SECOND;
+        return ((double)(Ticks.TOTAL_TICKS-ticks))/(double)(Ticks.TICKS_PER_SECOND);
     }
     
     /**
