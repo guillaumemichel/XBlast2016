@@ -270,8 +270,6 @@ public final class GameState {
         //We can now get the "next" players
         List<Player> players1=nextPlayers(players, bonusMap, bombedCells1, board1, blastedCells1, speedChangeEvents);
         
-        //traitement des explosions, retirer les bombes explosées du tableau, appeler la méthode newlyDroppedBomb()
-        //la liste de players en paramètre est PERMUTATIONS.get(ticks%PERMUTATIONS.size())
         return new GameState(ticks+1,board1,players1,newBombs,explosions1,blasts1);
     }
     
@@ -392,6 +390,23 @@ public final class GameState {
         }
         bombs1.removeAll(bombs0);
         return bombs1;
+    }
+    
+    private static List<Player> nextPlayers1(List<Player> players0, Map<PlayerID, Bonus> playerBonuses,Set<Cell> bombedCells1, Board board1, Set<Cell> blastedCells1, Map<PlayerID, Optional<Direction>> speedChangeEvents){
+        List<Player> players1 = new ArrayList<>();
+        Sq<DirectedPosition> nextDirectedPos;
+        
+        for (Player p : players0){
+            
+        }
+        
+        
+        /*for (Player p : players0){
+            if (bombedCells1.contains(p.position().containingCell())){
+                
+            }
+        }*/
+        return null;
     }
     
     private static List<Player> nextPlayers(List<Player> players0, Map<PlayerID, Bonus> playerBonuses, Set<Cell> bombedCells1, Board board1, Set<Cell> blastedCells1, Map<PlayerID, Optional<Direction>> speedChangeEvents){
