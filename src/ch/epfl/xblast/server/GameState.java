@@ -91,7 +91,7 @@ public final class GameState {
      *      The players
      */
     public GameState(Board board, List<Player> players){
-        this(0,board,players,Arrays.asList(new Bomb(PlayerID.PLAYER_1, new Cell(9, 7), 15, 3)),new ArrayList<Sq<Sq<Cell>>>(),new ArrayList<Sq<Cell>>());
+        this(0,board,players,Arrays.asList(new Bomb(PlayerID.PLAYER_1, new Cell(9, 7), 15, 2)),new ArrayList<Sq<Sq<Cell>>>(),new ArrayList<Sq<Cell>>());
     }
     
     /**
@@ -222,9 +222,7 @@ public final class GameState {
         //The blasted cells (depending on the new blasts)
         Set<Cell> blastedCells1=new HashSet<>();
         for (Sq<Cell> sq : blasts1) {
-            if(!sq.isEmpty()){
                 blastedCells1.add(sq.head());
-            }
         }
         
         //We arrange the list of player so that it has the same order as the current permutation
@@ -282,8 +280,10 @@ public final class GameState {
                 blasts1.add(c.tail());
             }
         }
+        
         for (Sq<Sq<Cell>> sq : explosions0) {
-            blasts1.add(sq.head());
+            if(!sq.head().isEmpty())
+                blasts1.add(sq.head());
         }
         return blasts1;
     }
@@ -356,7 +356,7 @@ public final class GameState {
                     count++;
                 }
                 
-                explosions1.add(Sq.constant(particle).limit(count));
+                explosions1.add(Sq.repeat(count, particle));
             }
         }
         return explosions1;

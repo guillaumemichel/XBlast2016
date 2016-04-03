@@ -23,6 +23,7 @@ public final class GameStatePrinter {
         for (int y = 0; y < Cell.ROWS; ++y) {
             xLoop: for (int x = 0; x < Cell.COLUMNS; ++x) {
                 Cell c = new Cell(x, y);
+                //Players display
                 for (Player p: ps) {
                     if (p.position().containingCell().equals(c)) {
                         System.out.print(stringForPlayer(p));
@@ -30,11 +31,13 @@ public final class GameStatePrinter {
                     }
                 }
                 
+                //Blasts display
                 if(blastedCells.contains(c)){
                     System.out.print("\u001b[43m"+"\u001b[30m"+"**"+"\u001b[m");
                     continue xLoop;
                 }
                 
+                //Bombs display
                 if(bombedCells.containsKey(c)){
                     System.out.print(stringForBombs(bombedCells.get(c)));
                     continue xLoop;
