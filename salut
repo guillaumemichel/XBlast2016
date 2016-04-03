@@ -1,6 +1,6 @@
 Changement dans GamesState:next() pour explosion d'une bombe + changement ajout newlyDropped à newBombs et pas bombs
 
-
+Changement dans GameState:nextBasts() pas exactement comme dans la consigne
 
 Todo :
 
