@@ -392,6 +392,23 @@ public final class GameState {
         return bombs1;
     }
     
+    private static List<Player> nextPlayers1(List<Player> players0, Map<PlayerID, Bonus> playerBonuses,Set<Cell> bombedCells1, Board board1, Set<Cell> blastedCells1, Map<PlayerID, Optional<Direction>> speedChangeEvents){
+        List<Player> players1 = new ArrayList<>();
+        Sq<DirectedPosition> nextDirectedPos;
+        
+        for (Player p : players0){
+            
+        }
+        
+        
+        /*for (Player p : players0){
+            if (bombedCells1.contains(p.position().containingCell())){
+                
+            }
+        }*/
+        return null;
+    }
+    
     private static List<Player> nextPlayers(List<Player> players0, Map<PlayerID, Bonus> playerBonuses, Set<Cell> bombedCells1, Board board1, Set<Cell> blastedCells1, Map<PlayerID, Optional<Direction>> speedChangeEvents){
         List<Player> players1=new ArrayList<>();
         Sq<DirectedPosition> nextDirectedPos;
