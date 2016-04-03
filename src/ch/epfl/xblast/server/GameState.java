@@ -395,9 +395,21 @@ public final class GameState {
     private static List<Player> nextPlayers1(List<Player> players0, Map<PlayerID, Bonus> playerBonuses,Set<Cell> bombedCells1, Board board1, Set<Cell> blastedCells1, Map<PlayerID, Optional<Direction>> speedChangeEvents){
         List<Player> players1 = new ArrayList<>();
         Sq<DirectedPosition> nextDirectedPos;
+        Sq<LifeState> nextLifeState;
+        SubCell central;
+        int b = 0; //boolean bomb bonus
+        int r = 0; //boolean range bonus
+        
         
         for (Player p : players0){
-            
+            if (speedChangeEvents.containsKey(p.id()) && !speedChangeEvents.get(p.id()).equals(p.direction())){
+                if (speedChangeEvents.get(p.id()).get().isParallelTo(p.direction())){
+                    
+                }
+            }else {
+                nextDirectedPos = p.directedPositions();
+            }
+            //players1.add(new Player(p.id(),nextLifeState,nextDirectedPos,p.maxBombs()+b,p.bombRange()+r));
         }
         
         
@@ -406,7 +418,7 @@ public final class GameState {
                 
             }
         }*/
-        return null;
+        return players1;
     }
     
     private static List<Player> nextPlayers(List<Player> players0, Map<PlayerID, Bonus> playerBonuses, Set<Cell> bombedCells1, Board board1, Set<Cell> blastedCells1, Map<PlayerID, Optional<Direction>> speedChangeEvents){
