@@ -91,7 +91,7 @@ public final class GameState {
      *      The players
      */
     public GameState(Board board, List<Player> players){
-        this(0,board,players,Arrays.asList(new Bomb(PlayerID.PLAYER_1, new Cell(9, 7), 10, 2)),new ArrayList<Sq<Sq<Cell>>>(),new ArrayList<Sq<Cell>>());
+        this(0,board,players,Arrays.asList(new Bomb(PlayerID.PLAYER_1, new Cell(9, 7), 5, 2)),new ArrayList<Sq<Sq<Cell>>>(),new ArrayList<Sq<Cell>>());
     }
     
     /**
@@ -212,8 +212,17 @@ public final class GameState {
      *      The game state at the next tick, depending on the actual one and the given events
      */
     public GameState next(Map<PlayerID, Optional<Direction>> speedChangeEvents, Set<PlayerID> bombDropEvents){
+        
         List<PlayerID> pid = new ArrayList<>(PERMUTATIONS.get(ticks%PERMUTATIONS.size()));
         List<Player> playersOrder = new ArrayList<>();
+        //We arrange the list of player so that it has the same order as the current permutation
+        for (Player p : players){
+            for (PlayerID id : pid){
+                if (p.id().equals(id)){
+                    playersOrder.add(p);
+                }
+            }
+        } 
         
         //The next blasts
         List<Sq<Cell>> blasts1=nextBlasts(blasts, board, explosions);
@@ -223,15 +232,6 @@ public final class GameState {
         for (Sq<Cell> sq : blasts1) {
                 blastedCells1.add(sq.head());
         }
-        
-        //We arrange the list of player so that it has the same order as the current permutation
-        for (Player p : players){
-            for (PlayerID id : pid){
-                if (p.id().equals(id)){
-                    playersOrder.add(p);
-                }
-            }
-        } 
         
         //Map that will contain the bonuses taken by the players, and associate the id of the player with the bonus that he has taken
         Map<PlayerID, Bonus> bonusMap = new HashMap<>();
@@ -279,14 +279,13 @@ public final class GameState {
     private static List<Sq<Cell>> nextBlasts(List<Sq<Cell>> blasts0, Board board0, List<Sq<Sq<Cell>>> explosions0){
         List<Sq<Cell>> blasts1=new ArrayList<>();
         for (Sq<Cell> b : blasts0){
-            if (!b.tail().isEmpty() && board0.blockAt(b.tail().head()).isFree()){//Attention pas exactement comme consigne
+            if (!b.tail().isEmpty() && board0.blockAt(b.tail().head()).isFree()){//Attention pas exactement comme consigne(correct sans le tail mais bug à l'affichage)
                 blasts1.add(b.tail());
             }
         }
         
         for (Sq<Sq<Cell>> sq : explosions0) {
-            if(!sq.head().isEmpty())
-                blasts1.add(sq.head());
+            blasts1.add(sq.head());
         }
         return blasts1;
     }
@@ -360,11 +359,9 @@ public final class GameState {
             return new ArrayList<>();
         
         boolean canBomb;
-        Player p;
         int count;
         List<Bomb> bombs1 = new ArrayList<>(bombs0);
-        for (int i=0;i<players0.size();++i){
-            p=players0.get(i);
+        for (Player p : players0){
             if (bombDropEvents.contains(p.id()) && p.isAlive()){
                 canBomb=true;
                 count=0;
@@ -428,7 +425,7 @@ public final class GameState {
             p1 = new Player(p.id(),nextLifeState,nextDirectedPos,p.maxBombs(),p.bombRange());
             
             if (playerBonuses.containsKey(p1.id()))
-                playerBonuses.get(p1.id()).applyTo(p1);
+                p1=playerBonuses.get(p1.id()).applyTo(p1);
             
             players1.add(p1);
         }

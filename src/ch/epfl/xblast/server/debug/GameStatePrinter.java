@@ -51,7 +51,7 @@ public final class GameStatePrinter {
         }
         for (Player player : players) {
             System.out.println("J"+(player.id().ordinal()+1)+": "+player.lives()+" vies "+"("+player.lifeState().state()+")");
-            System.out.println("Position: "+player.position().containingCell()+"\n");
+            System.out.println("Position: "+player.position()+"\n");
         }
         
         System.out.println("Temps restant :"+s.remainingTime()+" secondes"+"\n");
