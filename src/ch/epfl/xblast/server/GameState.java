@@ -271,7 +271,7 @@ public final class GameState {
         }
         
         //We can now get the "next" players
-        List<Player> players1=nextPlayers(players, bonusMap, bombedCells1, board1, blastedCells1, speedChangeEvents);
+        List<Player> players1=nextPlayers1(players, bonusMap, bombedCells1, board1, blastedCells1, speedChangeEvents);
         
         return new GameState(ticks+1,board1,players1,newBombs,explosions1,blasts1);
     }
