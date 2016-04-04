@@ -399,18 +399,43 @@ public final class GameState {
             if (speedChangeEvents.containsKey(p.id()) && !speedChangeEvents.get(p.id()).equals(p.direction())){
                 central = (p.directedPositions().findFirst(u -> u.position().isCentral())).position(); //1e argument pris en compte ?
                 chosenDir = speedChangeEvents.get(p.id());
-                if (chosenDir.isPresent()){
-                    if (chosenDir.get().isParallelTo(p.direction())){
+                if (chosenDir.isPresent()){ // change direction
+                    if (chosenDir.get().isParallelTo(p.direction())){ // change to opposite direction
                         nextDirectedPos = Player.DirectedPosition.moving(new DirectedPosition(p.position(),chosenDir.get()));
-                    }else {
+                    }else { // change to orthogonal direction
                         nextDirectedPos = p.directedPositions().takeWhile(u -> !u.position().isCentral());
+                        Sq<DirectedPosition> nextDirectedPos1;
+                        nextDirectedPos1 = Player.DirectedPosition.moving(new DirectedPosition(central,chosenDir.get()));
+                        System.out.println(nextDirectedPos1.isEmpty());
+                        System.out.println(p.position());
+                        for (int i=0;i<10;++i){
+                            System.out.print(nextDirectedPos1.head().position()+" ");
+                            nextDirectedPos1 = nextDirectedPos1.tail();
+                        }
+                        System.out.println("\n"+central);
                         nextDirectedPos.concat(Player.DirectedPosition.moving(new DirectedPosition(central,chosenDir.get())));
+                        nextDirectedPos1 = nextDirectedPos;
+                        while (!nextDirectedPos1.isEmpty()){
+                            System.out.print(nextDirectedPos1.head().position()+" ");
+                            nextDirectedPos1 = nextDirectedPos1.tail();
+                        }
+                        System.out.println();
+                        nextDirectedPos1 = nextDirectedPos;
+                        for (int i=0;i<10;++i){
+                            System.out.print(nextDirectedPos1.head().position()+" ");
+                            if (nextDirectedPos1.isEmpty()){
+                                System.out.println("caca");
+                                break;
+                            }
+                            nextDirectedPos1 = nextDirectedPos1.tail();
+                        }
+                        System.out.println("\n"+SubCell.centralSubCellOf(p.position().containingCell()));
                     }
-                }else {
+                }else { // stop
                     nextDirectedPos = p.directedPositions().takeWhile(u -> !u.position().isCentral());
                     nextDirectedPos.concat(Player.DirectedPosition.stopped(new DirectedPosition(central,p.direction())));
                 }
-            }else {
+            }else { // direction doesn't change
                 nextDirectedPos = p.directedPositions();
             }
             newDirectedPos = nextDirectedPos.head();
@@ -428,17 +453,10 @@ public final class GameState {
             p1 = new Player(p.id(),nextLifeState,nextDirectedPos,p.maxBombs(),p.bombRange());
             
             if (playerBonuses.containsKey(p1.id()))
-                playerBonuses.get(p1.id()).applyTo(p1);
+               p1 = playerBonuses.get(p1.id()).applyTo(p1);
             
             players1.add(p1);
         }
-        
-        
-        /*for (Player p : players0){
-            if (bombedCells1.contains(p.position().containingCell())){
-                
-            }
-        }*/
         return players1;
     }
     
