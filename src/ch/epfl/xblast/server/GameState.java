@@ -281,7 +281,7 @@ public final class GameState {
     private static List<Sq<Cell>> nextBlasts(List<Sq<Cell>> blasts0, Board board0, List<Sq<Sq<Cell>>> explosions0){
         List<Sq<Cell>> blasts1=new ArrayList<>();
         for (Sq<Cell> b : blasts0){
-            if (!b.tail().isEmpty() && board0.blockAt(b.tail().head()).isFree()){//Attention pas exactement comme consigne(correct sans le tail mais bug à l'affichage)
+            if (!b.tail().isEmpty() && board0.blockAt(b.head()).isFree()){//Attention pas exactement comme consigne(correct sans le tail mais bug à l'affichage)
                 blasts1.add(b.tail());
             }
         }
@@ -315,7 +315,7 @@ public final class GameState {
                 //Only if the bonus block is not already disappearing, we add the bonus_disappearing time before it becomes a free block
                 if(!alreadyDisappearing){
                     Sq<Block> bonusDisappearing=Sq.repeat(Ticks.BONUS_DISAPPEARING_TICKS, board0.blockAt(c));
-                    bonusDisappearing.concat(Sq.constant(Block.FREE));
+                    bonusDisappearing=bonusDisappearing.concat(Sq.constant(Block.FREE));
                     blocks.add(bonusDisappearing);
                 }else{
                     blocks.add(board0.blocksAt(c));
@@ -336,7 +336,7 @@ public final class GameState {
                         newBlock=Block.FREE;
                         break;
                 }
-                destructibleWall.concat(Sq.constant(newBlock));
+                destructibleWall=destructibleWall.concat(Sq.constant(newBlock));
                 blocks.add(destructibleWall);
             }else{
                 blocks.add(board0.blocksAt(c));
@@ -407,7 +407,7 @@ public final class GameState {
                     }
                 }else {
                     nextDirectedPos = p.directedPositions().takeWhile(u -> !u.position().isCentral());
-                    nextDirectedPos.concat(Player.DirectedPosition.stopped(new DirectedPosition(central,p.direction())));
+                    nextDirectedPos = nextDirectedPos.concat(Player.DirectedPosition.stopped(new DirectedPosition(central,p.direction())));
                 }
             }else {
                 nextDirectedPos = p.directedPositions();
@@ -466,7 +466,7 @@ public final class GameState {
                     }else{//otherwise he first need to reach the first central subCell in his path, to finally turn where he wants to
                         if(!player.position().isCentral()){
                             nextDirectedPos=player.directedPositions().takeWhile(s -> !s.position().equals(nextCentral));
-                            nextDirectedPos.concat(DirectedPosition.moving(new DirectedPosition(nextCentral, chosenDir.get())));
+                            nextDirectedPos=nextDirectedPos.concat(DirectedPosition.moving(new DirectedPosition(nextCentral, chosenDir.get())));
                         }else{
                             nextDirectedPos=DirectedPosition.moving(new DirectedPosition(nextCentral, chosenDir.get()));
                         }
@@ -474,7 +474,7 @@ public final class GameState {
                 }else{//the player has chosen to stop (he first needs to reach the first central subCell in his path)
                     if(!player.position().isCentral()){
                         nextDirectedPos=player.directedPositions().takeWhile(s -> !s.position().equals(nextCentral));
-                        nextDirectedPos.concat(DirectedPosition.stopped(player.directedPositions().findFirst(s -> s.position().isCentral())));
+                        nextDirectedPos=nextDirectedPos.concat(DirectedPosition.stopped(player.directedPositions().findFirst(s -> s.position().isCentral())));
                     }else{
                         nextDirectedPos=DirectedPosition.stopped(player.directedPositions().findFirst(s -> s.position().isCentral()));
                     }

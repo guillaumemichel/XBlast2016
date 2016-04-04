@@ -43,7 +43,6 @@ public final class GameStatePrinter {
                     continue xLoop;
                 }
                 
-                
                 Block b = board.blockAt(c);
                 System.out.print(stringForBlock(b));
             }
@@ -74,9 +73,9 @@ public final class GameStatePrinter {
         case FREE: return "\u001b[47;107m"+"  "+"\u001b[m";
         case INDESTRUCTIBLE_WALL: return "\u001b[40m"+"\u001b[30m"+"##"+"\u001b[m";
         case DESTRUCTIBLE_WALL: return "\u001b[40m"+"\u001b[37m"+"??"+"\u001b[m";
-        case CRUMBLING_WALL: return "\u001b[30;1m"+"¿¿"+"\u001b[m";
-        case BONUS_BOMB: return "\u001b[41m"+"\u001b[37;107m"+"+ò"+"\u001b[m";
-        case BONUS_RANGE: return "\u001b[41m"+"\u001b[37;107m"+"+*"+"\u001b[m";
+        case CRUMBLING_WALL: return "\u001b[37m"+"¿¿"+"\u001b[m";
+        case BONUS_BOMB: return "\u001b[41m"+"\u001b[37m"+"+ò"+"\u001b[m";
+        case BONUS_RANGE: return "\u001b[41m"+"\u001b[37m"+"+*"+"\u001b[m";
         default: throw new Error();
         }
     }
