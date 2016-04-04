@@ -53,6 +53,8 @@ public class RandomGame {
         map.put(PlayerID.PLAYER_1, Optional.of(Direction.E));
 
         GameState g = new GameState(board, players);
+        GameStatePrinter.printGameState(g);
+
         for(int i=0;i<100;++i){
             g=g.next(randomEvents.randomSpeedChangeEvents(), randomEvents.randomBombDropEvents());
             GameStatePrinter.printGameState(g);
