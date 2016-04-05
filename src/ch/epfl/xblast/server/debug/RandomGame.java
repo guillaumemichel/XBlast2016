@@ -55,11 +55,18 @@ public class RandomGame {
         GameState g = new GameState(board, players);
         GameStatePrinter.printGameState(g);
 
-        while(!g.isGameOver()){
+        while(! g.isGameOver()){
             g=g.next(randomEvents.randomSpeedChangeEvents(), randomEvents.randomBombDropEvents());
             GameStatePrinter.printGameState(g);
             Thread.sleep(50);
             //System.out.print("\u001b[2J");
+            System.out.println();
+        }
+        int t=0;
+        while (!g.isGameOver()){
+            
+            GameStatePrinter.printGameState(g);
+            Thread.sleep(50);
             System.out.println();
         }
         
