@@ -33,8 +33,10 @@ public final class GameStatePrinter {
                 
                 //Blasts display
                 if(blastedCells.contains(c)){
-                    System.out.print("\u001b[43m"+"\u001b[30m"+"**"+"\u001b[m");
-                    continue xLoop;
+                    if(board.blockAt(c)==Block.FREE){
+                        System.out.print("\u001b[43m"+"\u001b[30m"+"**"+"\u001b[m");
+                        continue xLoop;
+                    }
                 }
                 
                 //Bombs display
@@ -49,7 +51,7 @@ public final class GameStatePrinter {
             System.out.println();
         }
         for (Player player : players) {
-            System.out.println("J"+(player.id().ordinal()+1)+": "+player.lives()+" vies "+"("+player.lifeState().state()+")");
+            System.out.println("J"+(player.id().ordinal()+1)+": "+player.lives()+" vies "+"("+player.lifeState().state()+")\tportée "+player.bombRange()+" bombs "+player.maxBombs());
             System.out.println("Position: "+player.position()+"\n");
         }
         
