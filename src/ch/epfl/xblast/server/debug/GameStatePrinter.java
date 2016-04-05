@@ -81,7 +81,7 @@ public final class GameStatePrinter {
     }
     
     private static String stringForBombs(Bomb b){
-        if(b.fuseLength()<10){
+        if(b.fuseLength()<31){
             return "\u001b[44;6m"+"\u001b[37m"+"òò"+"\u001b[m";
         }else{
             return "\u001b[44;5m"+"\u001b[37m"+"òò"+"\u001b[m";
