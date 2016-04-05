@@ -33,8 +33,10 @@ public final class GameStatePrinter {
                 
                 //Blasts display
                 if(blastedCells.contains(c)){
-                    System.out.print("\u001b[43m"+"\u001b[30m"+"**"+"\u001b[m");
-                    continue xLoop;
+                    if(board.blockAt(c)==Block.FREE){
+                        System.out.print("\u001b[43m"+"\u001b[30m"+"**"+"\u001b[m");
+                        continue xLoop;
+                    }
                 }
                 
                 //Bombs display
@@ -81,10 +83,10 @@ public final class GameStatePrinter {
     }
     
     private static String stringForBombs(Bomb b){
-        if(b.fuseLength()<31){
-            return "\u001b[44;6m"+"\u001b[37m"+"òò"+"\u001b[m";
-        }else{
+        if(b.fuseLength()<51){
             return "\u001b[44;5m"+"\u001b[37m"+"òò"+"\u001b[m";
+        }else{
+            return "\u001b[44m"+"\u001b[37m"+"òò"+"\u001b[m";
         }
     }
 }
