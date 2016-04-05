@@ -33,7 +33,7 @@ public final class GameStatePrinter {
                 
                 //Blasts display
                 if(blastedCells.contains(c)){
-                    if(board.blockAt(c)==Block.FREE){
+                    if(board.blockAt(c).isFree()){
                         System.out.print("\u001b[43m"+"\u001b[30m"+"**"+"\u001b[m");
                         continue xLoop;
                     }
