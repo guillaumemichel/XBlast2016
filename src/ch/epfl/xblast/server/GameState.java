@@ -383,55 +383,6 @@ public final class GameState {
         return bombs1;
     }
     
-    private static List<Player> nextPlayers1(List<Player> players0, Map<PlayerID, Bonus> playerBonuses,Set<Cell> bombedCells1, Board board1, Set<Cell> blastedCells1, Map<PlayerID, Optional<Direction>> speedChangeEvents){
-        List<Player> players1 = new ArrayList<>();
-        Player p1;
-        Sq<DirectedPosition> nextDirectedPos;
-        DirectedPosition newDirectedPos;
-        Sq<LifeState> nextLifeState;
-        SubCell central;
-        Optional<Direction> chosenDir;
-        
-        for (Player p : players0){
-            if (speedChangeEvents.containsKey(p.id()) && !speedChangeEvents.get(p.id()).equals(p.direction())){
-                central = (p.directedPositions().findFirst(u -> u.position().isCentral())).position(); //1e argument pris en compte ?
-                chosenDir = speedChangeEvents.get(p.id());
-                if (chosenDir.isPresent()){
-                    if (chosenDir.get().isParallelTo(p.direction())){
-                        nextDirectedPos = Player.DirectedPosition.moving(new DirectedPosition(p.position(),chosenDir.get()));
-                    }else {
-                        nextDirectedPos = p.directedPositions().takeWhile(u -> !u.position().isCentral());
-                        nextDirectedPos=nextDirectedPos.concat(Player.DirectedPosition.moving(new DirectedPosition(central,chosenDir.get())));
-                    }
-                }else {
-                    nextDirectedPos = p.directedPositions().takeWhile(u -> !u.position().isCentral());
-                    nextDirectedPos=nextDirectedPos.concat(Player.DirectedPosition.stopped(new DirectedPosition(central,p.direction())));
-                }
-            }else {
-                nextDirectedPos = p.directedPositions();
-            }
-            newDirectedPos = nextDirectedPos.head();
-            
-            if (p.lifeState().canMove() &&
-                    (!(newDirectedPos.position().isCentral() && !board1.blockAt(newDirectedPos.position().containingCell().neighbor(newDirectedPos.direction())).canHostPlayer())) &&
-                    (!(bombedCells1.contains(newDirectedPos.position().containingCell()) && newDirectedPos.position().neighbor(newDirectedPos.direction()).distanceToCentral()>6)))
-                nextDirectedPos = nextDirectedPos.tail();
-            
-            if (p.lifeState().state()==State.VULNERABLE && blastedCells1.contains(newDirectedPos.position().containingCell()))
-                nextLifeState = p.statesForNextLife();
-            else
-                nextLifeState = p.lifeStates().tail();
-            
-            p1 = new Player(p.id(),nextLifeState,nextDirectedPos,p.maxBombs(),p.bombRange());
-            
-            if (playerBonuses.containsKey(p1.id()))
-                p1=playerBonuses.get(p1.id()).applyTo(p1);
-            
-            players1.add(p1);
-        }
-        return players1;
-    }
-    
     private static List<Player> nextPlayers(List<Player> players0, Map<PlayerID, Bonus> playerBonuses, Set<Cell> bombedCells1, Board board1, Set<Cell> blastedCells1, Map<PlayerID, Optional<Direction>> speedChangeEvents){
         List<Player> players1=new ArrayList<>();
         Sq<DirectedPosition> nextDirectedPos;
