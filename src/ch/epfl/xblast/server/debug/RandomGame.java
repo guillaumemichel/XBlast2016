@@ -41,10 +41,10 @@ public class RandomGame {
             Arrays.asList(xx, XX, xx, XX, xx, XX, __)));
         
         List<Player> players = new ArrayList<>();
-        players.add(new Player(PlayerID.PLAYER_1,3, new Cell(1, 1), 5, 5));
-        players.add(new Player(PlayerID.PLAYER_2, 3, new Cell(13, 1), 5, 5));
-        players.add(new Player(PlayerID.PLAYER_3, 3, new Cell(13, 11), 5, 5));
-        players.add(new Player(PlayerID.PLAYER_4, 3, new Cell(1, 11), 5, 5));
+        players.add(new Player(PlayerID.PLAYER_1,3, new Cell(1, 1), 2, 3));
+        players.add(new Player(PlayerID.PLAYER_2, 3, new Cell(13, 1), 2, 3));
+        players.add(new Player(PlayerID.PLAYER_3, 3, new Cell(13, 11), 2, 3));
+        players.add(new Player(PlayerID.PLAYER_4, 3, new Cell(1, 11), 2, 3));
         
         Set<PlayerID> set=new HashSet<>();
         set.add(PlayerID.PLAYER_4);
