@@ -8,6 +8,7 @@ Todo :
 2. SpiralOrder pour les Walls
 3. Tests
 4. Crumbling Walls remplacés par des Bonus ?
+5. isGameOver();
 
 Alternatives methods : 
 Lists.java permutations
