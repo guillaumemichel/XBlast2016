@@ -32,19 +32,28 @@ public class GameTest {
         Block XX = Block.INDESTRUCTIBLE_WALL;
         Block xx = Block.DESTRUCTIBLE_WALL;
         Block br = Block.BONUS_RANGE;
-        Board board = Board.ofQuadrantNWBlocksWalled(
+        Block bb = Block.BONUS_BOMB;
+        Board board = Board.ofRows(
           Arrays.asList(
-            Arrays.asList(br, br, br, br, br, br, br),
-            Arrays.asList(__, XX, xx, XX, xx, XX, xx),
-            Arrays.asList(__, xx, __, __, __, xx, __),
-            Arrays.asList(__, XX, __, XX, XX, XX, XX),
-            Arrays.asList(__, xx, __, xx, __, __, __),
-            Arrays.asList(__, __, __, __, __, __, __)));
+            Arrays.asList(XX, __, XX, XX, XX, XX, XX, __, __, bb, XX, XX, XX, XX, XX),
+            Arrays.asList(XX, br, br, br, br, br, br, br, br, br, br, br, br, br, br),
+            Arrays.asList(XX, __, XX, __, XX, xx, XX, __, __, __, __, __, __, __, __),
+            Arrays.asList(XX, __, xx, __, __, __, xx, __, __, __, __, __, __, __, __),
+            Arrays.asList(XX, __, xx, __, __, __, xx, __, __, __, __, __, __, __, __),
+            Arrays.asList(XX, __, xx, __, __, __, xx, __, __, __, __, __, __, __, __),
+            Arrays.asList(__, __, __, __, __, __, __, __, __, __, __, __, __, __, __),
+            Arrays.asList(XX, __, xx, __, __, __, xx, __, __, __, __, __, __, __, __),
+            Arrays.asList(XX, __, xx, __, __, __, xx, __, __, __, __, __, __, __, __),
+            Arrays.asList(XX, __, xx, __, __, __, xx, __, __, __, __, __, __, __, __),
+            Arrays.asList(XX, __, xx, __, __, __, xx, __, __, __, __, __, __, __, __),
+            Arrays.asList(XX, __, xx, __, __, __, xx, __, __, bb, __, __, __, __, __),
+            Arrays.asList(XX, __, xx, __, __, __, xx, __, __, bb, __, __, __, __, __)));
+
         
         List<Player> players = new ArrayList<>();
         players.add(new Player(PlayerID.PLAYER_1,3, new Cell(1, 1), 2, 1));
-        players.add(new Player(PlayerID.PLAYER_2,1, new Cell(10, 10), 2, 1));
-        players.add(new Player(PlayerID.PLAYER_3,0, new Cell(13, 13), 2, 1));
+        players.add(new Player(PlayerID.PLAYER_2,1, new Cell(10, 6), 2, 1));
+        players.add(new Player(PlayerID.PLAYER_3,2, new Cell(9, 7), 2, 1));
         players.add(new Player(PlayerID.PLAYER_4,0, new Cell(13, 12), 2, 1));
 
         GameState g = new GameState(board, players);
@@ -53,7 +62,11 @@ public class GameTest {
         int t=0;
         Map<PlayerID,Optional<Direction>> map1 = new HashMap<>();
         map1.put(PlayerID.PLAYER_1,Optional.of(Direction.E));
-        while (t<1000){
+        map1.put(PlayerID.PLAYER_2,Optional.of(Direction.W));
+        map1.put(PlayerID.PLAYER_3,Optional.of(Direction.N));
+
+
+        while (t<10000){
             if (t==0)
                 g = g.next(map1, new HashSet<>());
             else
