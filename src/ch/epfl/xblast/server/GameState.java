@@ -111,7 +111,7 @@ public final class GameState {
      *      <b>True</b> if this game state corresponds to a game that is over, <b>false</b> otherwise
      */
     public boolean isGameOver(){
-        return (ticks>Ticks.TOTAL_TICKS)||(alivePlayers().size()<2);
+        return (ticks>=Ticks.TOTAL_TICKS)||(alivePlayers().size()<2);
     }
     
     /**
