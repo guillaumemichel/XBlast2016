@@ -51,10 +51,10 @@ public class GameTest {
 
         
         List<Player> players = new ArrayList<>();
-        players.add(new Player(PlayerID.PLAYER_1,3, new Cell(1, 1), 2, 1));
-        players.add(new Player(PlayerID.PLAYER_2,1, new Cell(10, 6), 2, 1));
-        players.add(new Player(PlayerID.PLAYER_3,2, new Cell(9, 7), 2, 1));
-        players.add(new Player(PlayerID.PLAYER_4,0, new Cell(13, 12), 2, 1));
+        players.add(new Player(PlayerID.PLAYER_1,3, new Cell(1, 1), 2, 3));
+        players.add(new Player(PlayerID.PLAYER_2,2, new Cell(10, 6), 2, 3));
+        players.add(new Player(PlayerID.PLAYER_3,2, new Cell(9, 7), 2, 3));
+        players.add(new Player(PlayerID.PLAYER_4,2, new Cell(7, 2), 2, 3));
 
         GameState g = new GameState(board, players);
         GameStatePrinter.printGameState(g);
@@ -64,11 +64,22 @@ public class GameTest {
         map1.put(PlayerID.PLAYER_1,Optional.of(Direction.E));
         map1.put(PlayerID.PLAYER_2,Optional.of(Direction.W));
         map1.put(PlayerID.PLAYER_3,Optional.of(Direction.N));
+        map1.put(PlayerID.PLAYER_4, Optional.of(Direction.S));
 
+        Map<PlayerID,Optional<Direction>> map2 = new HashMap<>();
+        map2.put(PlayerID.PLAYER_1, Optional.of(Direction.S));
+        map2.put(PlayerID.PLAYER_3, Optional.of(Direction.E));
 
-        while (t<10000){
-            if (t==0)
+        Set<PlayerID> set1 = new HashSet<>();
+        set1.add(PlayerID.PLAYER_1);
+        set1.add(PlayerID.PLAYER_2);
+        set1.add(PlayerID.PLAYER_4);
+        
+        while (!g.isGameOver()){
+            if (t%311==0)
                 g = g.next(map1, new HashSet<>());
+            else if (t%24==0)
+                g = g.next(map2,set1);
             else
                 g = g.next(new HashMap<>(), new HashSet<>());
             GameStatePrinter.printGameState(g);
