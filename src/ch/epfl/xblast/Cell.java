@@ -55,7 +55,7 @@ public final class Cell {
         return y;
     }
     /**
-     * Create an array with all the cells in order by lines from right to left, top to bottom.
+     * Create and returns an array with all the cells in order by lines from right to left, top to bottom.
      * 
      * @return
      * 		An array with all the cells in Row Major Order
@@ -69,7 +69,7 @@ public final class Cell {
         return rowMajorOrder;
     }
     /**
-     * Create an array with all the cells in a clockwise spiral order beginning on corner top-left.
+     * Create and returns an array with all the cells in a clockwise spiral order beginning on corner top-left.
      * 
      * @return
      * 		An array with all the cells in a Spiral Order
