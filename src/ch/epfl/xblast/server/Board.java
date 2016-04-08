@@ -2,11 +2,12 @@ package ch.epfl.xblast.server;
 
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 
 import ch.epfl.cs108.Sq;
 import ch.epfl.xblast.Cell;
+import ch.epfl.xblast.Lists;
 
 /**
  * A board
@@ -31,7 +32,7 @@ public final class Board {
         if(blocks.size()!=Cell.COUNT){
             throw new IllegalArgumentException();
         }else{
-            this.blocks=blocks; //Attention voir references!!!
+            this.blocks=new ArrayList<>(blocks);
         }
     }
     
@@ -51,12 +52,15 @@ public final class Board {
      *      If the dimensions are not as desired 
      */
     private static void checkBlockMatrix(List<List<Block>> matrix, int rows, int columns) throws IllegalArgumentException{
+        if (matrix==null||matrix.isEmpty()){
+            throw new IllegalArgumentException();
+        }
         if(matrix.size()!=rows){
             throw new IllegalArgumentException();
         }
         for (List<Block> list : matrix) {
             if(list.size()!=columns){
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("Dimensions are incorrect !");
             }  
         }
     }
@@ -73,12 +77,13 @@ public final class Board {
      *      If the matrix has not the dimensions 13*15
      */
     public static Board ofRows(List<List<Block>> rows) throws IllegalArgumentException{
-        checkBlockMatrix(rows, 13, 15);
-        List<Sq<Block>> sequence= new ArrayList<>();
+        checkBlockMatrix(rows, Cell.ROWS, Cell.COLUMNS);
+        
+        List<Sq<Block>> sequence= new ArrayList<Sq<Block>>();
         
         for (int i = 0; i < rows.size(); ++i) {
             for (int j = 0; j < rows.get(i).size(); ++j) {
-                sequence.set(i+rows.size()*j, Sq.constant(rows.get(i).get(j)));
+                sequence.add(Sq.constant(rows.get(i).get(j)));
             }
         }
         
@@ -86,7 +91,7 @@ public final class Board {
     }
     
     /**
-     * Constructand returns a walled board with the given inner blocks
+     * Constructs and returns a walled board with the given inner blocks
      * 
      * @param innerBlocks
      *      The matrix that contains the inner blocks
@@ -98,23 +103,73 @@ public final class Board {
      *      If the matrix of inner blocks has not the dimensions 11*13
      */
     public static Board ofInnerBlocksWalled(List<List<Block>> innerBlocks) throws IllegalArgumentException{
-        checkBlockMatrix(innerBlocks, 11, 13);
-        List<Sq<Block>> sequence= new ArrayList<>();
+        checkBlockMatrix(innerBlocks, Cell.ROWS-2, Cell.COLUMNS-2);
         
-        for (int i = 0; i < 13; ++i) {
-            for (int j = 0; j < 15; ++j) {
-                if(i==0 || i==12 || j==0 || j==14){
-                    sequence.set(i+13*j, Sq.constant(Block.INDESTRUCTIBLE_WALL));
-                }else{
-                    sequence.set(i+13*j, Sq.constant(innerBlocks.get(i).get(j)));
-                }
+        List<Sq<Block>> sequence= new ArrayList<Sq<Block>>();
+        
+        sequence.addAll(Collections.nCopies(Cell.COLUMNS, Sq.constant(Block.INDESTRUCTIBLE_WALL)));
+        for(int i=0;i<innerBlocks.size();++i){
+            sequence.add(Sq.constant(Block.INDESTRUCTIBLE_WALL));
+            for(int j=0;j<innerBlocks.get(i).size();++j){
+                sequence.add(Sq.constant(innerBlocks.get(i).get(j)));
             }
+            sequence.add(Sq.constant(Block.INDESTRUCTIBLE_WALL));
         }
+        sequence.addAll(Collections.nCopies(Cell.COLUMNS, Sq.constant(Block.INDESTRUCTIBLE_WALL)));
+
         return new Board(sequence);
     }
     
+    /**
+     * Constructs and returns a symmetrical walled board with the given blocks of the north-west quadrant
+     * 
+     * @param innerBlocks
+     *      The matrix that contains blocks of the north-west quadrant
+     *      
+     * @return
+     *      A symmetrical walled board, with the given blocks of the north-west quadrant
+     *      
+     * @throws IllegalArgumentException
+     *      If the given matrix of blocks has not the dimensions 6*7
+     */
+    public static Board ofQuadrantNWBlocksWalled(List<List<Block>> quadrantNWBlocks) throws IllegalArgumentException{
+        checkBlockMatrix(quadrantNWBlocks, (Cell.ROWS-1)/2, (Cell.COLUMNS-1)/2);
+        
+        List<List<Block>> innerBoard=new ArrayList<List<Block>>();
+        
+        for (int i = 0; i < quadrantNWBlocks.size(); ++i) {
+            quadrantNWBlocks.set(i, Lists.mirrored(quadrantNWBlocks.get(i)));
+            innerBoard.add(quadrantNWBlocks.get(i));
+        }
+        innerBoard = Lists.mirrored(quadrantNWBlocks);
+        
+        return ofInnerBlocksWalled(innerBoard);
+        
+    }
+    
+    /**
+     * Returns the sequence of blocks for the given cell
+     * 
+     * @param c
+     *      The cell from which we retrieve the sequence of blocks
+     *      
+     * @return
+     *      The sequence of blocks for the given cell
+     */
     public Sq<Block> blocksAt(Cell c){
-        //A faire
-        return null;
+        return blocks.get(c.rowMajorIndex());
+    }
+    
+    /**
+     * Returns the block for the given cell (the head of the sequence of blocks)
+     * 
+     * @param c
+     *      The cell from which we retrieve the block
+     *      
+     * @return
+     *      The block for the given cell
+     */
+    public Block blockAt(Cell c){
+        return blocksAt(c).head();
     }
 }
