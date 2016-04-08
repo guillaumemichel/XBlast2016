@@ -62,13 +62,6 @@ public class RandomGame {
             //System.out.print("\u001b[2J");
             System.out.println();
         }
-        int t=0;
-        while (!g.isGameOver()){
-            
-            GameStatePrinter.printGameState(g);
-            Thread.sleep(50);
-            System.out.println();
-        }
         
     }
 
