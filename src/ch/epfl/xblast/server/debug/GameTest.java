@@ -33,7 +33,15 @@ public class GameTest {
         Block xx = Block.DESTRUCTIBLE_WALL;
         Block br = Block.BONUS_RANGE;
         Block bb = Block.BONUS_BOMB;
-        Board board = Board.ofRows(
+        Board board = Board.ofQuadrantNWBlocksWalled(
+                Arrays.asList(
+                        Arrays.asList(__,xx,__,__,__,xx,xx),
+                        Arrays.asList(__,__,xx,__,xx,xx,xx),
+                        Arrays.asList(xx,xx,__,__,__,xx,__),
+                        Arrays.asList(__,__,xx,__,xx,__,__),
+                        Arrays.asList(__,xx,__,xx,xx,__,xx),
+                        Arrays.asList(__,__,xx,__,xx,xx,__)));
+        /*Board board = Board.ofRows(
           Arrays.asList(
             Arrays.asList(XX, __, XX, XX, XX, XX, XX, __, __, bb, XX, XX, XX, XX, XX),
             Arrays.asList(XX, br, br, br, br, br, br, br, br, br, br, br, br, br, br),
@@ -47,7 +55,7 @@ public class GameTest {
             Arrays.asList(XX, __, xx, __, __, __, xx, __, __, __, __, __, __, __, __),
             Arrays.asList(XX, __, xx, __, __, __, xx, __, __, __, __, __, __, __, __),
             Arrays.asList(XX, __, xx, __, __, __, xx, __, __, bb, __, __, __, __, __),
-            Arrays.asList(XX, __, xx, __, __, __, xx, __, __, bb, __, __, __, __, __)));
+            Arrays.asList(XX, __, xx, __, __, __, xx, __, __, bb, __, __, __, __, __)));*/
 
         
         List<Player> players = new ArrayList<>();

@@ -23,7 +23,7 @@ public class ListsTest {
         trueOne.add("y");
         trueOne.add("a");
         trueOne.add("k");
-        testOne = Lists.mirrored(trueOne);
+        testOne = Lists.mirrored(testOne);
         
         for (int i=0;i<testOne.size();++i)
             assertEquals(testOne.get(i), trueOne.get(i));
