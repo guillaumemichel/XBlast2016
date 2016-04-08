@@ -214,6 +214,7 @@ public final class GameState {
     public GameState next(Map<PlayerID, Optional<Direction>> speedChangeEvents, Set<PlayerID> bombDropEvents){
         
         List<PlayerID> pid = new ArrayList<>(PERMUTATIONS.get(ticks%PERMUTATIONS.size()));
+        System.out.println(pid);
         List<Player> playersOrder = new ArrayList<>();
         //We arrange the list of player so that it has the same order as the current permutation
         for (Player p : players){
@@ -222,7 +223,7 @@ public final class GameState {
                     playersOrder.add(p);
                 }
             }
-        } 
+        }
         
         //The next blasts
         List<Sq<Cell>> blasts1=nextBlasts(blasts, board, explosions);
@@ -240,7 +241,7 @@ public final class GameState {
         
         //For each player, we determine if he is on a bonus. If so, then the bonus is consumed. We also fill the map of <PlayerID, Bonus> at the same time.
         for (Player p : playersOrder){
-            if (board.blockAt(p.position().containingCell()).isBonus() && !consumedBonuses.contains(p.position().containingCell())){
+            if (p.position().isCentral() && board.blockAt(p.position().containingCell()).isBonus() && !consumedBonuses.contains(p.position().containingCell())){
                 consumedBonuses.add(p.position().containingCell());
                 bonusMap.put(p.id(), board.blockAt(p.position().containingCell()).associatedBonus());
             }
