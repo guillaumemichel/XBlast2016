@@ -168,7 +168,7 @@ public final class GameState {
         List<Player> alivePlayers = new ArrayList<>();
         for (Player p:players){
             if (p.isAlive())
-                alivePlayers.add(p); 
+                alivePlayers.add(p);
         }
         return alivePlayers;
     }
@@ -215,12 +215,11 @@ public final class GameState {
         
         List<PlayerID> pid = new ArrayList<>(PERMUTATIONS.get(ticks%PERMUTATIONS.size()));
         List<Player> playersOrder = new ArrayList<>();
-        //We arrange the list of player so that it has the same order as the current permutation
-        for (Player p : players){
-            for (PlayerID id : pid){
-                if (p.id().equals(id)){
+        //We arrange the list of player so that it has the same order as the current permutation        
+        for (PlayerID id : pid){
+            for (Player p : players){
+                if (p.id().equals(id))
                     playersOrder.add(p);
-                }
             }
         }
         
