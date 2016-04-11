@@ -254,13 +254,15 @@ public final class GameState {
         
         //List that will contain the new bombs
         List<Bomb> newBombs = new ArrayList<>();
+        List<Bomb> newBombs1 = new ArrayList<>();
         
         newBombs.addAll(newlyDroppedBombs(playersOrder,bombDropEvents,bombs));
-        for (Bomb b : bombs){
+        newBombs.addAll(bombs);
+        for (Bomb b :newBombs){
             if (b.fuseLength()==1 || blastedCells1.contains(b.position())){//gérer les explosions par contact de particule
                 explosions1.addAll(b.explosion());
             }else {
-                newBombs.add(new Bomb(b.ownerId(),b.position(),b.fuseLengths().tail(),b.range()));
+                newBombs1.add(new Bomb(b.ownerId(),b.position(),b.fuseLengths().tail(),b.range()));
             }
         }
         
@@ -273,7 +275,7 @@ public final class GameState {
         //We can now get the "next" players
         List<Player> players1=nextPlayers(players, bonusMap, bombedCells1, board1, blastedCells1, speedChangeEvents);
         
-        return new GameState(ticks+1,board1,players1,newBombs,explosions1,blasts1);
+        return new GameState(ticks+1,board1,players1,newBombs1,explosions1,blasts1);
     }
     
     private static List<Sq<Cell>> nextBlasts(List<Sq<Cell>> blasts0, Board board0, List<Sq<Sq<Cell>>> explosions0){
@@ -375,11 +377,15 @@ public final class GameState {
                 if (count>=p.maxBombs())
                     canBomb=false;
                 
-                if (canBomb)
+                if (canBomb){
                     bombs1.add(p.newBomb());
+                    //Bomb b = p.newBomb();
+                    //bombs1.add(new Bomb(b.ownerId(), b.position(), b.fuseLength(), b.range()));
+                }
             }
         }
         bombs1.removeAll(bombs0);
+        
         return bombs1;
     }
     
