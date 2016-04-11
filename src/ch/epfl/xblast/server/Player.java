@@ -82,7 +82,7 @@ public final class Player {
      */
     public Player(PlayerID id, int lives, Cell position, int maxBombs, int bombRange){
         this(id, 
-                createLifeStateSequence(lives),
+                createLifeStateSequence(ArgumentChecker.requireNonNegative(lives)),
                 DirectedPosition.stopped(new DirectedPosition(SubCell.centralSubCellOf(position),Direction.S)),
                 maxBombs,
                 bombRange);

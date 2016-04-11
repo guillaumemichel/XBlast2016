@@ -214,7 +214,6 @@ public final class GameState {
     public GameState next(Map<PlayerID, Optional<Direction>> speedChangeEvents, Set<PlayerID> bombDropEvents){
         
         List<PlayerID> pid = new ArrayList<>(PERMUTATIONS.get(ticks%PERMUTATIONS.size()));
-        System.out.println(pid);
         List<Player> playersOrder = new ArrayList<>();
         //We arrange the list of player so that it has the same order as the current permutation
         for (Player p : players){

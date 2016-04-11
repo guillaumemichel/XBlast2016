@@ -5,7 +5,7 @@ import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
 
-public class CellTest {
+public class CellTest1 {
     @Test
     public void rowMajorIndexCorrespondsToOrder() {
         int i = 0;
