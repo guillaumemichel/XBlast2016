@@ -4,11 +4,7 @@ Changement dans GameState:nextBasts() pas exactement comme dans la consigne
 
 Todo :
 
-1. Board.java références de block (copie ou pas)
-2. SpiralOrder pour les Walls
-3. Tests
-4. Crumbling Walls remplacés par des Bonus ?
-5. isGameOver();
+1. BombDrop, ordre des joueurs en utilisant la key de la map (Gui)
 
 Alternatives methods : 
 Lists.java permutations
