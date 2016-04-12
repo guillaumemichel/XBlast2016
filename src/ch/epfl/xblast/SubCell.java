@@ -44,7 +44,7 @@ public final class SubCell {
     }
     
     /**
-     * Given a cell, it determines its central subcell
+     * Returns the central subcell of the given cell
      * 
      * @param cell
      *      The cell where we look for the central subcell
@@ -58,7 +58,7 @@ public final class SubCell {
     
     
     /**
-     * Determines the Manhattan distance between this subcell and the nearest central subcell
+     * Returns the Manhattan distance between this subcell and the nearest central subcell
      * 
      * @return
      *      The Manhattan distance between this subcell and the nearest central subcell
@@ -79,7 +79,8 @@ public final class SubCell {
     }
     
     /**
-     * Determines the adjacent subcell of this subcell, according to the direction that is given
+     * Returns the adjacent subcell of this subcell, according to the direction that is given
+     * 
      * @param d
      *      The direction in which we look for the adjacent subcell
      *      

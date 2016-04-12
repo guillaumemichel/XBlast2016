@@ -71,13 +71,16 @@ public final class GameState {
      */
     public GameState(int ticks, Board board, List<Player> players, List<Bomb> bombs, List<Sq<Sq<Cell>>> explosions, List<Sq<Cell>> blasts) throws IllegalArgumentException, NullPointerException{
         this.ticks = ArgumentChecker.requireNonNegative(ticks);
+        this.board = Objects.requireNonNull(board);
+        
         if(players.size()!=4) 
             throw new IllegalArgumentException();
-        this.players = new ArrayList<>(Objects.requireNonNull(players));
-        this.board = Objects.requireNonNull(board);
-        this.bombs = new ArrayList<>(Objects.requireNonNull(bombs));
-        this.explosions = new ArrayList<>(Objects.requireNonNull(explosions));
-        this.blasts = new ArrayList<>(Objects.requireNonNull(blasts));
+        
+        this.players = Collections.unmodifiableList(new ArrayList<>(Objects.requireNonNull(players)));
+        
+        this.bombs = Collections.unmodifiableList(new ArrayList<>(Objects.requireNonNull(bombs)));
+        this.explosions = Collections.unmodifiableList(new ArrayList<>(Objects.requireNonNull(explosions)));
+        this.blasts = Collections.unmodifiableList(new ArrayList<>(Objects.requireNonNull(blasts)));
     }
     
     
@@ -131,7 +134,7 @@ public final class GameState {
      *      The identity of the winner of this game if there is one, or an empty optional value otherwise
      */
     public Optional<PlayerID> winner(){
-        if (alivePlayers().size()==1 && isGameOver()){//useless but beautiful (isGameOver)
+        if (alivePlayers().size()==1 && isGameOver()){
             return Optional.of(alivePlayers().get(0).id());
         }
         //if the last players die at the same time there is no winner

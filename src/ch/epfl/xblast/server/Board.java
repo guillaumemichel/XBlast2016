@@ -29,11 +29,10 @@ public final class Board {
      *      If not all blocks are given
      */
     public Board(List<Sq<Block>> blocks) throws IllegalArgumentException{
-        if(blocks.size()!=Cell.COUNT){
+        if(blocks.size()!=Cell.COUNT)
             throw new IllegalArgumentException();
-        }else{
-            this.blocks=new ArrayList<>(blocks);
-        }
+        
+        this.blocks=new ArrayList<>(blocks);
     }
     
     /**
