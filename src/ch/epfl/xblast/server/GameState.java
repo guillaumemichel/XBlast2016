@@ -429,10 +429,18 @@ public final class GameState {
             
             //Here, we determine if the player can move. If so, the sequence of directedPosition is consumed
             
-            if (!((!player.lifeState().canMove()) || 
+            /*if (!((!player.lifeState().canMove()) || 
                     (!board1.blockAt(newDirectedPos.position().containingCell().neighbor(newDirectedPos.direction())).canHostPlayer() && newDirectedPos.position().isCentral()) || 
                     (bombedCells1.contains(newDirectedPos.position().containingCell()) && newDirectedPos.position().distanceToCentral()==6 && nextDirectedPos.findFirst(s -> s.position().isCentral()).equals(SubCell.centralSubCellOf(newDirectedPos.position().containingCell())))))
-                nextDirectedPos = nextDirectedPos.tail();
+                nextDirectedPos = nextDirectedPos.tail();*/
+            
+            if(player.lifeState().canMove()){
+                if(!player.position().isCentral() || (player.position().isCentral() && board1.blockAt(player.position().containingCell().neighbor(newDirectedPos.direction())).canHostPlayer())){
+                    if((player.position().distanceToCentral()!=6) || !(player.position().distanceToCentral()==6 && bombedCells1.contains(player.position().containingCell()) && nextDirectedPos.findFirst(u -> u.position().isCentral()).position().equals(SubCell.centralSubCellOf(player.position().containingCell())))){
+                        nextDirectedPos=nextDirectedPos.tail();
+                    }
+                }
+            }
 
             //We create the new lifeState sequence for the next state
             if(blastedCells1.contains(nextDirectedPos.head().position().containingCell()) && player.lifeState().state()==State.VULNERABLE){
