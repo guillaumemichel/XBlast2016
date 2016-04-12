@@ -258,7 +258,7 @@ public final class GameState {
         newBombs.addAll(newlyDroppedBombs(playersOrder,bombDropEvents,bombs));
         newBombs.addAll(bombs);
         for (Bomb b :newBombs){
-            if (b.fuseLength()==1 || blastedCells1.contains(b.position())){//gérer les explosions par contact de particule
+            if (b.fuseLength()==1 || blastedCells1.contains(b.position())){
                 explosions1.addAll(b.explosion());
             }else {
                 newBombs1.add(new Bomb(b.ownerId(),b.position(),b.fuseLengths().tail(),b.range()));
@@ -411,8 +411,14 @@ public final class GameState {
                         nextDirectedPos=nextDirectedPos.concat(DirectedPosition.moving(new DirectedPosition(nextCentral, chosenDir.get())));
                     }
                 }else{//the player has chosen to stop (he first needs to reach the first central subCell in his path)
+                    Sq<DirectedPosition> sq = player.directedPositions();
+          
+                    for (int i = 0; i < 15; ++i) {
+                        sq=sq.tail();
+                    }
+                    
                     nextDirectedPos=player.directedPositions().takeWhile(s -> !s.position().isCentral());
-                    nextDirectedPos=nextDirectedPos.concat(DirectedPosition.stopped(player.directedPositions().findFirst(s -> s.position().isCentral())));
+                    nextDirectedPos=nextDirectedPos.concat(DirectedPosition.stopped(new DirectedPosition(player.directedPositions().findFirst(s -> s.position().isCentral()).position(),sq.head().direction())));
                 }
                 
             }else{//the player hasn't chosen anything, so he keeps going where he is going
@@ -422,6 +428,7 @@ public final class GameState {
             newDirectedPos=nextDirectedPos.head();
             
             //Here, we determine if the player can move. If so, the sequence of directedPosition is consumed
+            
             if (!((!player.lifeState().canMove()) || 
                     (!board1.blockAt(newDirectedPos.position().containingCell().neighbor(newDirectedPos.direction())).canHostPlayer() && newDirectedPos.position().isCentral()) || 
                     (bombedCells1.contains(newDirectedPos.position().containingCell()) && newDirectedPos.position().distanceToCentral()==6 && nextDirectedPos.findFirst(s -> s.position().isCentral()).equals(SubCell.centralSubCellOf(newDirectedPos.position().containingCell())))))
