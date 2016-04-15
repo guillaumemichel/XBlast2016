@@ -4,7 +4,7 @@ package ch.epfl.xblast;
  * Interface Time
  * 
  * @author Guillaume Michel (258066)
- * @author adrien Vandenbroucque (258715)
+ * @author Adrien Vandenbroucque (258715)
  *
  */
 public interface Time {
