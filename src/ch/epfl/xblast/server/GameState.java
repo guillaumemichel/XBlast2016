@@ -381,8 +381,6 @@ public final class GameState {
                 
                 if (canBomb){
                     bombs1.add(p.newBomb());
-                    //Bomb b = p.newBomb();
-                    //bombs1.add(new Bomb(b.ownerId(), b.position(), b.fuseLength(), b.range()));
                 }
             }
         }
@@ -416,9 +414,8 @@ public final class GameState {
                 }else{//the player has chosen to stop (he first needs to reach the first central subCell in his path)
                     Sq<DirectedPosition> sq = player.directedPositions();
           
-                    for (int i = 0; i < 15; ++i) {
+                    for (int i = 0; i < 15; ++i)
                         sq=sq.tail();
-                    }
                     
                     nextDirectedPos=player.directedPositions().takeWhile(s -> !s.position().isCentral());
                     nextDirectedPos=nextDirectedPos.concat(DirectedPosition.stopped(new DirectedPosition(player.directedPositions().findFirst(s -> s.position().isCentral()).position(),sq.head().direction())));
@@ -437,13 +434,13 @@ public final class GameState {
                     (bombedCells1.contains(newDirectedPos.position().containingCell()) && newDirectedPos.position().distanceToCentral()==6 && nextDirectedPos.findFirst(s -> s.position().isCentral()).equals(SubCell.centralSubCellOf(newDirectedPos.position().containingCell())))))
                 nextDirectedPos = nextDirectedPos.tail();*/
             
-            //if(player.lifeState().canMove()){
+            if(player.lifeState().canMove()){
                 if(!player.position().isCentral() || (player.position().isCentral() && board1.blockAt(player.position().containingCell().neighbor(newDirectedPos.direction())).canHostPlayer())){
-                    if((player.position().distanceToCentral()!=6) || !(player.position().distanceToCentral()==6 && bombedCells1.contains(player.position().containingCell()) && nextDirectedPos.findFirst(u -> u.position().isCentral()).position().equals(SubCell.centralSubCellOf(player.position().containingCell())))){
+                    if(!(newDirectedPos.position().distanceToCentral()==6 && bombedCells1.contains(newDirectedPos.position().containingCell()) && newDirectedPos.position().neighbor(newDirectedPos.direction()).distanceToCentral()==5)){
                         nextDirectedPos=nextDirectedPos.tail();
                     }
                 }
-            //}
+            }
 
             //We create the new lifeState sequence for the next state
             if(blastedCells1.contains(nextDirectedPos.head().position().containingCell()) && player.lifeState().state()==State.VULNERABLE){
