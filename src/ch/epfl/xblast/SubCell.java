@@ -75,7 +75,7 @@ public final class SubCell {
      *      <b>true</b> if it is a central subcell, <b>false</b> otherwise
      */
     public boolean isCentral(){
-        return (x%16==8 && y%16==8);
+        return distanceToCentral()==0;
     }
     
     /**
