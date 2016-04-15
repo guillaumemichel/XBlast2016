@@ -72,12 +72,9 @@ public final class GameState {
     public GameState(int ticks, Board board, List<Player> players, List<Bomb> bombs, List<Sq<Sq<Cell>>> explosions, List<Sq<Cell>> blasts) throws IllegalArgumentException, NullPointerException{
         this.ticks = ArgumentChecker.requireNonNegative(ticks);
         this.board = Objects.requireNonNull(board);
-        
         if(players.size()!=4) 
             throw new IllegalArgumentException();
-        
         this.players = Collections.unmodifiableList(new ArrayList<>(Objects.requireNonNull(players)));
-        
         this.bombs = Collections.unmodifiableList(new ArrayList<>(Objects.requireNonNull(bombs)));
         this.explosions = Collections.unmodifiableList(new ArrayList<>(Objects.requireNonNull(explosions)));
         this.blasts = Collections.unmodifiableList(new ArrayList<>(Objects.requireNonNull(blasts)));
@@ -258,6 +255,7 @@ public final class GameState {
         List<Bomb> newBombs = new ArrayList<>();
         List<Bomb> newBombs1 = new ArrayList<>();
         
+        //We add the newly dropped bombs, and we make the current bombs explode if their fuse length is zero
         newBombs.addAll(newlyDroppedBombs(playersOrder,bombDropEvents,bombs));
         newBombs.addAll(bombs);
         for (Bomb b :newBombs){
@@ -283,7 +281,7 @@ public final class GameState {
     private static List<Sq<Cell>> nextBlasts(List<Sq<Cell>> blasts0, Board board0, List<Sq<Sq<Cell>>> explosions0){
         List<Sq<Cell>> blasts1=new ArrayList<>();
         for (Sq<Cell> b : blasts0){
-            if (!b.tail().isEmpty() && board0.blockAt(b.head()).isFree()){//Attention pas exactement comme consigne(correct sans le tail mais bug à l'affichage)
+            if (!b.tail().isEmpty() && board0.blockAt(b.head()).isFree()){
                 blasts1.add(b.tail());
             }
         }
@@ -298,10 +296,15 @@ public final class GameState {
         List<Sq<Block>> blocks=new ArrayList<>();
         boolean alreadyDisappearing;
         
+        //We iterate over all cells
         for (Cell c : Cell.ROW_MAJOR_ORDER) {
+            
+            //if there is a consumed bonus at this place, we set the new block as free block
             if(consumedBonuses.contains(c)){
                 blocks.add(Sq.constant(Block.FREE));
-            }else if(board0.blockAt(c).isBonus() && blastedCells1.contains(c)){
+            }else if(board0.blockAt(c).isBonus() && blastedCells1.contains(c)){/*if the current block is a bonus and there is
+                also a blast at this cell, then the bonus has to disappear after a certain amount of time*/
+                
                 alreadyDisappearing=false;
                 Sq<Block> boardBlocks=board0.blocksAt(c);
                 
@@ -322,7 +325,8 @@ public final class GameState {
                 }else{
                     blocks.add(board0.blocksAt(c).tail());
                 }
-            }else if(board0.blockAt(c)==Block.DESTRUCTIBLE_WALL && blastedCells1.contains(c)){
+            }else if(board0.blockAt(c)==Block.DESTRUCTIBLE_WALL && blastedCells1.contains(c)){/*if the current block is destructible
+            and there is also a blast at this cell, then it has to crumble a while, and finally it has to change into another block*/
                 Sq<Block> destructibleWall=Sq.repeat(Ticks.WALL_CRUMBLING_TICKS, Block.CRUMBLING_WALL);
                 int randomBlock=RANDOM.nextInt(3);
                 Block newBlock;
@@ -340,7 +344,7 @@ public final class GameState {
                 }
                 destructibleWall=destructibleWall.concat(Sq.constant(newBlock));
                 blocks.add(destructibleWall);
-            }else{
+            }else{//else we just consume the sequence of blocks to make it "evolve"
                 blocks.add(board0.blocksAt(c).tail());
             }
         }
@@ -350,6 +354,7 @@ public final class GameState {
     private static List<Sq<Sq<Cell>>> nextExplosions(List<Sq<Sq<Cell>>> explosions0){
         List<Sq<Sq<Cell>>> explosions1=new ArrayList<>();
         
+        //We iterate over the current explosions and make them "age", by consuming the sequence
         for (Sq<Sq<Cell>> sq : explosions0) {
             if(!sq.tail().isEmpty())
                 explosions1.add(sq.tail());     
@@ -359,24 +364,24 @@ public final class GameState {
 
     private static List<Bomb> newlyDroppedBombs(List<Player> players0, Set<PlayerID> bombDropEvents, List<Bomb> bombs0){
         
-        if (bombDropEvents.isEmpty())
+        if (bombDropEvents.isEmpty()) //if there is no new bomb in bombDropEvent return an empty array.
             return new ArrayList<>();
         
         boolean canBomb;
         int count;
-        List<Bomb> bombs1 = new ArrayList<>(bombs0);
-        for (Player p : players0){
+        List<Bomb> bombs1 = new ArrayList<>(bombs0);//we create a list that will contain all the bombs on the board
+        for (Player p : players0){//we iterate on players in the "random" order
             if (bombDropEvents.contains(p.id()) && p.isAlive()){
                 canBomb=true;
                 count=0;
                 for (Bomb b : bombs1){
-                    if (b.ownerId().equals(p.id()))
+                    if (b.ownerId().equals(p.id()))//we count the number of bombs of each player to determine whether it's possible to drop one
                         ++count;
                     
-                    if (b.position().equals(p.position().containingCell()))
+                    if (b.position().equals(p.position().containingCell()))//if there is already a bomb on this cell
                         canBomb=false;
                 }
-                if (count>=p.maxBombs())
+                if (count>=p.maxBombs())//if the max number of bombs is already reached
                     canBomb=false;
                 
                 if (canBomb){
@@ -384,7 +389,7 @@ public final class GameState {
                 }
             }
         }
-        bombs1.removeAll(bombs0);
+        bombs1.removeAll(bombs0);//remove the bombs that were already present
         
         return bombs1;
     }
@@ -401,7 +406,7 @@ public final class GameState {
         for (Player player : players0) {
             //First of all we compute the new sequence of directedPosition depending on the chosen direction:
             
-            if(speedChangeEvents.containsKey(player.id())){
+            if(speedChangeEvents.containsKey(player.id())){//if the player has made a speed or direction change
                 nextCentral=(player.directedPositions().findFirst(d -> d.position().isCentral())).position();
                 chosenDir=speedChangeEvents.get(player.id());
                 if(chosenDir.isPresent()){//the player has chosen a direction
@@ -433,9 +438,6 @@ public final class GameState {
                     ((player.position().distanceToCentral()!=6) || !(player.position().distanceToCentral()==6 && bombedCells1.contains(player.position().containingCell()) && newDirectedPos.position().neighbor(newDirectedPos.direction()).distanceToCentral()==5)))
                         nextDirectedPos=nextDirectedPos.tail();
                     
-                
-            
-            
             //We create the new lifeState sequence for the next state
             if(blastedCells1.contains(nextDirectedPos.head().position().containingCell()) && player.lifeState().state()==State.VULNERABLE){
                 nextLifeState=player.statesForNextLife();
