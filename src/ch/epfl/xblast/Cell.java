@@ -54,13 +54,13 @@ public final class Cell {
     public int y(){
         return y;
     }
+    
     /**
      * Create and returns an array with all the cells in order by lines from right to left, top to bottom.
      * 
      * @return
      * 		An array with all the cells in Row Major Order
-     */
-    
+     */ 
     private static ArrayList<Cell> rowMajorOrder(){
         ArrayList<Cell> rowMajorOrder= new ArrayList<Cell>();
         for(int i=0;i<COUNT;++i){
@@ -74,7 +74,6 @@ public final class Cell {
      * @return
      * 		An array with all the cells in a Spiral Order
      */
-    
     private static ArrayList<Cell> spiralOrder(){
         ArrayList<Integer> ix = new ArrayList<Integer>();
         ArrayList<Integer> iy = new ArrayList<Integer>();
@@ -125,7 +124,7 @@ public final class Cell {
     }
     
     /**
-     * Determines the adjacent cell of this cell, according to the direction that is given
+     * Returns the adjacent cell of this cell, according to the direction that is given
      * @param d
      *      The direction in which we look for the adjacent cell
      *      

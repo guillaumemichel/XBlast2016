@@ -66,7 +66,7 @@ public final class Lists {
         l1.addAll(permutations(copy.subList(1, s1)));
         List<T> temp;
         T el = copy.get(0);
-        for (List<T> t:l1){
+        for (List<T> t : l1){
             for (int i=0;i<s1;++i){
                 temp= new ArrayList<>(t);
                 temp.add(i,el);
