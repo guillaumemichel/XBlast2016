@@ -14,19 +14,10 @@ public enum Block {
     
     private Bonus maybeAssociatedBonus;
     
-   /**
-    * Constructs a block
-    */
     private Block(){
         this.maybeAssociatedBonus=null;
     }
-    
-    /**
-     * Constructs a bonus block with the given bonus
-     * 
-     * @param maybeAssociatedBonus
-     *      the bonus associated with the block
-     */
+
     private Block(Bonus maybeAssociatedBonus){
         this.maybeAssociatedBonus = maybeAssociatedBonus;
     }
