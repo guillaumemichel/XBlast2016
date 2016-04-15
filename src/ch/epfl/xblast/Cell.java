@@ -74,7 +74,7 @@ public final class Cell {
      * @return
      * 		An array with all the cells in a Spiral Order
      */
-    private static ArrayList<Cell> spiralOrder(){
+    private static ArrayList<Cell> spiralOrder(){//from the given algorithm
         ArrayList<Integer> ix = new ArrayList<Integer>();
         ArrayList<Integer> iy = new ArrayList<Integer>();
         for (int i=0;i<COLUMNS;++i){
