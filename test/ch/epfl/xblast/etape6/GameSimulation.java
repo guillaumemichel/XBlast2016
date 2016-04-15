@@ -101,11 +101,6 @@ public class GameSimulation {
 
                 for(List<Integer> e: pos) {
                 	DirectedPosition h = seq.head();
-                	if(!GameSimulation.compare(h, e)){
-                	    System.out.println("testGameSimulation");
-                	    System.out.println("Our DirectedPos: "+h.position()+", "+h.direction().ordinal());
-                	    System.out.println("Expected: "+e);
-                	}
                 	assertTrue(GameSimulation.compare(h, e));
 
                 	seq = seq.tail();                	
