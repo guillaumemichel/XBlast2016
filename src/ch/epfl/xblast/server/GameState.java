@@ -280,12 +280,15 @@ public final class GameState {
     
     private static List<Sq<Cell>> nextBlasts(List<Sq<Cell>> blasts0, Board board0, List<Sq<Sq<Cell>>> explosions0){
         List<Sq<Cell>> blasts1=new ArrayList<>();
+        
+        //For every current blasts, we move them if the block they are at is free
         for (Sq<Cell> b : blasts0){
             if (!b.tail().isEmpty() && board0.blockAt(b.head()).isFree()){
                 blasts1.add(b.tail());
             }
         }
         
+        //For every current explosions, we add the blasts created by the explosions
         for (Sq<Sq<Cell>> sq : explosions0) {
             blasts1.add(sq.head());
         }

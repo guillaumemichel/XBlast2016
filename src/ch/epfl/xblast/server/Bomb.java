@@ -46,13 +46,12 @@ public final class Bomb {
      *      If ownerId, position, or the sequence of fuse lengths are null
      */
     public Bomb(PlayerID ownerId, Cell position, Sq<Integer> fuseLengths, int range) throws IllegalArgumentException, NullPointerException{
+        if(fuseLengths.isEmpty())
+            throw new IllegalArgumentException("The sequence of fuse lengths is empty !");
         this.ownerId=Objects.requireNonNull(ownerId);
         this.position=Objects.requireNonNull(position);
         this.fuseLengths=Objects.requireNonNull(fuseLengths);
         this.range=ArgumentChecker.requireNonNegative(range);
-        
-        if(fuseLengths.isEmpty())
-            throw new IllegalArgumentException("The sequence of fuse lengths is empty !");
     }
     
     /**
@@ -133,7 +132,9 @@ public final class Bomb {
      */
     public List<Sq<Sq<Cell>>> explosion(){
         List<Sq<Sq<Cell>>> explosion=new ArrayList<>();
+        
         Direction[] directions = Direction.values();
+        //For every direction, we add the corresponding explosion arm
         for (int i = 0; i < 4; i++) {
             explosion.add(explosionArmTowards(directions[i]));
         }
