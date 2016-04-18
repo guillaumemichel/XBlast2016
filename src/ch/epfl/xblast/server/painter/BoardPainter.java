@@ -3,6 +3,7 @@ package ch.epfl.xblast.server.painter;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import ch.epfl.xblast.Cell;
 import ch.epfl.xblast.Direction;
@@ -29,9 +30,9 @@ public final class BoardPainter {
      * @param imageForFreeBlock
      *      The image to use for the shadowed free blocks
      */
-    public BoardPainter(Map<Block, BlockImage> palette, BlockImage imageForFreeBlock){
-        this.palette=Collections.unmodifiableMap(new HashMap<Block, BlockImage>(palette));
-        this.imageForFreeBlock=imageForFreeBlock;
+    public BoardPainter(Map<Block, BlockImage> palette, BlockImage imageForFreeBlock) throws NullPointerException{
+        this.palette = Collections.unmodifiableMap(new HashMap<>(Objects.requireNonNull(palette)));
+        this.imageForFreeBlock = imageForFreeBlock;
     }
     
     /**
