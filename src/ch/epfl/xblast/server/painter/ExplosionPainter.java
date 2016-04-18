@@ -55,7 +55,4 @@ public final class ExplosionPainter {
         if (W) n+=1;
         return n;
     }
-    
-    
-
 }
