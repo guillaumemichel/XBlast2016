@@ -28,7 +28,7 @@ public final class PlayerPainter {
         
         switch (p.lifeState().state()){
             case INVULNERABLE:
-                if (tick%2==1)
+                if (tick%2==0)
                     n=80;
             case VULNERABLE:
                 switch (p.direction()){
@@ -48,7 +48,7 @@ public final class PlayerPainter {
                 if (p.position().y()%4==1)
                     n+=1;
                 if (p.position().y()%4==3)
-                    n+=3;
+                    n+=2;
             }
             break;
             case DYING:
