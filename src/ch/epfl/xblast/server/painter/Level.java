@@ -22,7 +22,4 @@ public final class Level {
     public GameState gameState(){
         return gamestate;
     }
-    
-    
-
 }
