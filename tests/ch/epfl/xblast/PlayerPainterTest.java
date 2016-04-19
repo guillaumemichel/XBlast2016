@@ -26,23 +26,6 @@ public class PlayerPainterTest {
     
     @Test
     public void byteForPlayerIsOk(){
-        
-        Player p01 = new Player(PlayerID.PLAYER_1,Sq.constant(new Player.LifeState(3, Player.LifeState.State.INVULNERABLE)),Player.DirectedPosition.moving(new DirectedPosition(new SubCell(24,24),Direction.E)),5,5);
-        Player p02 = new Player(PlayerID.PLAYER_2,Sq.constant(new Player.LifeState(3, Player.LifeState.State.VULNERABLE)),Player.DirectedPosition.moving(new DirectedPosition(new SubCell(24,24),Direction.S)),5,5);
-
-        /*System.out.println(p01.position()+" "+p02.position());
-        assertEquals(3, PlayerPainter.byteForPlayer(tick, p01));
-        assertEquals(46, PlayerPainter.byteForPlayer(tick, p2));
-        assertEquals(PlayerPainter.byteForPlayer(tick, p1), 26);
-        
-        g=g.next(map1,new HashSet<PlayerID>());tick+=1;
-        System.out.println(p01.position()+" "+p02.position());
-        assertEquals(84, PlayerPainter.byteForPlayer(tick, p01));
-        assertEquals(27, PlayerPainter.byteForPlayer(tick, p2));
-        
-        g=g.next(new HashMap<PlayerID, Optional<Direction>>(),new HashSet<PlayerID>());tick+=1;
-        System.out.println(p01.position()+" "+p02.position());
-        assertEquals(6, PlayerPainter.byteForPlayer(tick, p01));*/
 
         int t=0;
         
