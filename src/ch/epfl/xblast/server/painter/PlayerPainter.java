@@ -6,7 +6,19 @@ public final class PlayerPainter {
 
     private PlayerPainter() {
     }
-
+    
+    /**
+     * Method that determine what image to use for a player at a given time depending on his state, his id and his position
+     * 
+     * @param tick
+     *      The time of the game to make the INVULNERABLE blink
+     *      
+     * @param p
+     *      Player whose image will be returned
+     *      
+     * @return
+     *      The byte code for the current image of the player
+     */
     public static byte byteForPlayer(int tick, Player p){
         byte n;
         switch (p.id()){
