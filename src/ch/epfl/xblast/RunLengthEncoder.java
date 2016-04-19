@@ -2,8 +2,8 @@ package ch.epfl.xblast;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 public final class RunLengthEncoder {
     
@@ -22,7 +22,6 @@ public final class RunLengthEncoder {
             else
                 nextByte=-1;
           
-            
             if(b<0)
                 throw new IllegalArgumentException();
             
@@ -43,19 +42,23 @@ public final class RunLengthEncoder {
         return encodedSequence;
     }
     
-    public static List<Byte> decode(List<Byte> sequence){
+    public static List<Byte> decode(List<Byte> sequence) throws IllegalArgumentException{
         List<Byte> decodedSequence=new ArrayList<>();
-        int count;
-        for (Byte b : sequence) {
+        Iterator<Byte> it=sequence.iterator();
+        byte b;
+        
+        if(sequence.get(sequence.size()-1)<0)
+            throw new IllegalArgumentException();
+        
+        while(it.hasNext()){
+            b =it.next();
             
             if(b<0)
-                count=b;
+                decodedSequence.addAll(Collections.nCopies(-b+2, it.next()));
             else
-                count=1;
-            
-            decodedSequence.addAll(Collections.nCopies(count, b));
-                
+                decodedSequence.add(b);
+      
         }
-        return null;
+        return decodedSequence;
     }
 }

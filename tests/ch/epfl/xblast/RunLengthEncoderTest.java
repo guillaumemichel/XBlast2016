@@ -76,18 +76,23 @@ public class RunLengthEncoderTest {
     @Test
     public void decodeWorksProperlyWithEncodeArrays(){
         List<Byte> l = new LinkedList<>(Arrays.asList((byte) 3, (byte) 3, (byte) 3, (byte) 3));
+        System.out.println(RunLengthEncoder.decode(RunLengthEncoder.encode(l)));
         assertEquals(l, RunLengthEncoder.decode(RunLengthEncoder.encode(l)));
         
         List<Byte> l1 = new LinkedList<>(Arrays.asList((byte) 3, (byte) 3, (byte) 3, (byte) 3 ,(byte) 4));
+        System.out.println(RunLengthEncoder.decode(RunLengthEncoder.encode(l1)));
         assertEquals(l1, RunLengthEncoder.decode(RunLengthEncoder.encode(l1)));
         
         List<Byte> l2 = new LinkedList<>(Arrays.asList((byte) 3, (byte) 3, (byte) 4, (byte) 4));
+        System.out.println(RunLengthEncoder.decode(RunLengthEncoder.encode(l2)));
         assertEquals(l2, RunLengthEncoder.decode(RunLengthEncoder.encode(l2)));
         
         List<Byte> l3 = new LinkedList<>(Arrays.asList((byte) 4, (byte) 3, (byte) 3));
+        System.out.println(RunLengthEncoder.decode(RunLengthEncoder.encode(l3)));
         assertEquals(l3, RunLengthEncoder.decode(RunLengthEncoder.encode(l3)));
         
         List<Byte> l4 = new LinkedList<>(Arrays.asList((byte) 4, (byte) 3));
+        System.out.println(RunLengthEncoder.decode(RunLengthEncoder.encode(l4)));
         assertEquals(l4, RunLengthEncoder.decode(RunLengthEncoder.encode(l4)));
         
         List<Byte> l5 = new LinkedList<>(Arrays.asList((byte) 3, (byte) 3, (byte) 4, (byte) 5, (byte) 5));
@@ -104,5 +109,18 @@ public class RunLengthEncoderTest {
         
         List<Byte> l9 = new LinkedList<>(Arrays.asList((byte) 1, (byte) 0, (byte) 1, (byte) 1, (byte) 1, (byte) 0, (byte) 1, (byte) 0, (byte) 0, (byte) 0, (byte) 1, (byte) 0, (byte) 1, (byte) 1, (byte) 0, (byte) 1, (byte) 0, (byte) 1, (byte) 0, (byte) 0, (byte) 0, (byte) 0));
         assertEquals(l9, RunLengthEncoder.decode(RunLengthEncoder.encode(l9)));
+    }
+    
+    @Test (expected=IllegalArgumentException.class)
+    public void decodeThrowsException(){
+        List<Byte> l = new LinkedList<>(Arrays.asList((byte) 2, (byte) -3));
+        RunLengthEncoder.decode(l);
+    }
+    
+    @Test
+    public void decodeWorksOnRandomArray(){
+        List<Byte> l1 = new LinkedList<>(Arrays.asList((byte) 1, (byte) 0, (byte) 1, (byte) 1, (byte) 1, (byte) 0, (byte) 1, (byte) 0, (byte) 0, (byte) 0, (byte) 1, (byte) 0, (byte) 1, (byte) 1, (byte) 0, (byte) 1, (byte) 0, (byte) 1, (byte) 0, (byte) 0, (byte) 0, (byte) 0));
+        List<Byte> t1 = new LinkedList<>(Arrays.asList((byte) 1, (byte) 0, (byte) -1, (byte) 1, (byte) 0, (byte) 1, (byte) -1, (byte) 0, (byte) 1, (byte) 0, (byte) 1, (byte) 1, (byte) 0, (byte) 1, (byte) 0, (byte) 1, (byte) -2, (byte) 0));
+        assertEquals(l1, RunLengthEncoder.decode(t1));
     }
 }

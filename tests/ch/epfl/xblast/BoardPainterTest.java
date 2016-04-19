@@ -23,12 +23,8 @@ public class BoardPainterTest {
             for(int i=1;i<Block.values().length;i++)
                 palette.put(Block.values()[i], BlockImage.values()[i+1]);
             
-            for(Map.Entry<Block, BlockImage> map : palette.entrySet())
-                System.out.println("Key: "+ map.getKey()+"\nValue: "+map.getValue());
-            
             BoardPainter bp= new BoardPainter(palette, BlockImage.IRON_FLOOR_S);
 
-            
             Block __ = Block.FREE;
             Block XX = Block.INDESTRUCTIBLE_WALL;
             Block xx = Block.DESTRUCTIBLE_WALL;
@@ -52,5 +48,9 @@ public class BoardPainterTest {
             assertEquals(myByteDestructible, 3);
         }
         
+        @Test(expected=NullPointerException.class)
+        public void constructorThrowNullPointerException(){
+            BoardPainter b= new BoardPainter(null, BlockImage.IRON_FLOOR_S);
+        }
 
 }
