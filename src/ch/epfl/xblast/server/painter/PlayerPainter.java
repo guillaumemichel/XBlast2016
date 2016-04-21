@@ -2,6 +2,14 @@ package ch.epfl.xblast.server.painter;
 
 import ch.epfl.xblast.server.Player;
 
+/**
+ * A player painter
+ * 
+ * @author Guillaume Michel (258066)
+ * @author Adrien Vandenbroucque (258715)
+ *
+ */
+
 public final class PlayerPainter {
 
     private PlayerPainter() {
