@@ -9,9 +9,30 @@ import ch.epfl.xblast.RunLengthEncoder;
 import ch.epfl.xblast.server.GameState;
 import ch.epfl.xblast.server.Player;
 
+/**
+ * A GameState serializer
+ * 
+ * @author Guillaume Michel (258066)
+ * @author Adrien Vandenbroucque (258715)
+ *
+ */
+
 public final class GameStateSerializer {
     
     private GameStateSerializer(){};
+    
+    /**
+     * Serializes the GameState from a BoardPainter and sends the list of bytes to the clients
+     * 
+     * @param p
+     *      The Boardpainter that will be used to serialize the game
+     *      
+     * @param g
+     *      The GameState that will be serialized
+     * 
+     * @return
+     *      The serialized list of bytes that will be sent to the clients
+     */
     
     public static List<Byte> serialize(BoardPainter p, GameState g){
         List<Byte> list = new ArrayList<>();
