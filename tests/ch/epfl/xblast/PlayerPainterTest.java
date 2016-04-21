@@ -19,7 +19,6 @@ import ch.epfl.xblast.server.Board;
 import ch.epfl.xblast.server.GameState;
 import ch.epfl.xblast.server.Player;
 import ch.epfl.xblast.server.Player.DirectedPosition;
-import ch.epfl.xblast.server.debug.GameStatePrinter;
 import ch.epfl.xblast.server.painter.PlayerPainter;
 
 public class PlayerPainterTest {
