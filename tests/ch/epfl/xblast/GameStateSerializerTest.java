@@ -1,6 +1,7 @@
 package ch.epfl.xblast;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,12 +22,11 @@ import ch.epfl.xblast.server.debug.RandomEventGenerator;
 import ch.epfl.xblast.server.painter.BlockImage;
 import ch.epfl.xblast.server.painter.BoardPainter;
 import ch.epfl.xblast.server.painter.GameStateSerializer;
+import ch.epfl.xblast.server.painter.Level;
 
 public class GameStateSerializerTest {
     
-    @Test
-    public void serializeIsGood(){
-        RandomEventGenerator randomEvents=new RandomEventGenerator(2016, 30, 100);
+    public static List<Byte> getList(){
         Block __ = Block.FREE;
         Block XX = Block.INDESTRUCTIBLE_WALL;
         Block xx = Block.DESTRUCTIBLE_WALL;
@@ -54,8 +54,13 @@ public class GameStateSerializerTest {
         
         BoardPainter p= new BoardPainter(palette, BlockImage.IRON_FLOOR_S);
         
-        List<Byte> list = GameStateSerializer.serialize(p, g);
-        List<Integer> exp = Arrays.asList(-50, 2, 1, -2, 0, 3, 1, 3, 1, -2, 0, 1, 1, 3, 1, 3,
+        Level l = new Level(p,g);
+        
+        return GameStateSerializer.serialize(l);
+    }
+    
+    public static List<Integer> getExp(){
+        return Arrays.asList(121, -50, 2, 1, -2, 0, 3, 1, 3, 1, -2, 0, 1, 1, 3, 1, 3,
                 1, 3, 1, 1, -2, 0, 1, 3, 1, 3, -2, 0, -1, 1, 3, 1, 3, 1,
                 3, 1, 1, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3,
                 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2,
@@ -71,25 +76,11 @@ public class GameStateSerializerTest {
                 3, 24, -72, 66,
 
                 60);
-        System.out.println(list.toString());
-        assertEquals(list.size(),exp.size());
-        
-        /*assertEquals(GameStateSerializer.serialize(p, g),Arrays.asList(-50, 2, 1, -2, 0, 3, 1, 3, 1, -2, 0, 1, 1, 3, 1, 3,
-                                                          1, 3, 1, 1, -2, 0, 1, 3, 1, 3, -2, 0, -1, 1, 3, 1, 3, 1,
-                                                          3, 1, 1, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3,
-                                                          2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2,
-                                                          3, 1, 0, 0, 3, 1, 3, 1, 0, 0, 1, 1, 3, 1, 1, 0, 0, 1, 3,
-                                                          1, 3, 0, 0, -1, 1, 3, 1, 1, -5, 2, 3, 2, 3, -5, 2, 3, 2,
-                                                          3, 1, -2, 0, 3, -2, 0, 1, 3, 2, 1, 2,
-
-                                                          4, -128, 16, -63, 16,
-
-                                                          3, 24, 24, 6,
-                                                          3, -40, 24, 26,
-                                                          3, -40, -72, 46,
-                                                          3, 24, -72, 66,
-
-                                                          60));*/
+    }
+    
+    @Test
+    public void timeIsOk(){
+        assertTrue(((int)getList().get(getList().size()-1))==(getExp().get(getExp().size()-1)));
     }
 
 }
