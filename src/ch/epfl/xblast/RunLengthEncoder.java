@@ -5,10 +5,28 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * A run-length encoder
+ * @author Guillaume Michel (258066)
+ * @author Adrien Vandenbroucque (258715)
+ *
+ */
 public final class RunLengthEncoder {
     
     private RunLengthEncoder(){}
     
+    /**
+     * Returns a list that contains the run-length encoded version of the given list of bytes
+     * 
+     * @param sequence
+     *      The list of bytes to encode
+     *      
+     * @return
+     *      The run-length encoded version of the given list of bytes
+     *      
+     * @throws IllegalArgumentException
+     *      If an element of the given list is negative
+     */
     public static List<Byte> encode(List<Byte> sequence) throws IllegalArgumentException{
         List<Byte> encodedSequence=new ArrayList<>();
         int count=1;
@@ -42,6 +60,18 @@ public final class RunLengthEncoder {
         return encodedSequence;
     }
     
+    /**
+     * Returns the decoded version of the given list of bytes that is run-length encoded
+     * 
+     * @param sequence
+     *      The run-length encoded list of bytes to decode
+     *      
+     * @return
+     *      The decoded version of the given list of bytes
+     *      
+     * @throws IllegalArgumentException
+     *      If the last element of the given list is negative
+     */
     public static List<Byte> decode(List<Byte> sequence) throws IllegalArgumentException{
         List<Byte> decodedSequence=new ArrayList<>();
         Iterator<Byte> it=sequence.iterator();
