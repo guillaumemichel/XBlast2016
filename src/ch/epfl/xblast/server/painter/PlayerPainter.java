@@ -12,8 +12,7 @@ import ch.epfl.xblast.server.Player;
 
 public final class PlayerPainter {
 
-    private PlayerPainter() {
-    }
+    private PlayerPainter() {}
     
     /**
      * Method that determine what image to use for a player at a given time depending on his state, his id and his position
