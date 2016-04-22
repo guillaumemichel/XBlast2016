@@ -21,13 +21,13 @@ public final class GameStateSerializer {
     private GameStateSerializer(){};
     
     /**
-     * Serializes a level (formed by a GameState and a BoardPainter) and sends the list of bytes to the clients
+     * Serializes a level (composed of a game state and a board painter) and returns a list of bytes that represents the level
      * 
      * @param l
-     *      The Level that will be serialized (formed with a GameState and a BoardPainter)
+     *      The Level that will be serialized (composed of a game state and a board painter)
      * 
      * @return
-     *      The serialized list of bytes that will be sent to the clients
+     *      The serialized list of bytes
      */
     public static List<Byte> serialize(Level l){
         List<Byte> list = new ArrayList<>();
