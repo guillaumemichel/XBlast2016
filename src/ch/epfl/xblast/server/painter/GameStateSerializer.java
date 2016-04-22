@@ -6,7 +6,6 @@ import java.util.List;
 import ch.epfl.xblast.Cell;
 import ch.epfl.xblast.Direction;
 import ch.epfl.xblast.RunLengthEncoder;
-import ch.epfl.xblast.server.GameState;
 import ch.epfl.xblast.server.Player;
 
 /**
@@ -33,11 +32,11 @@ public final class GameStateSerializer {
     public static List<Byte> serialize(Level l){
         List<Byte> list = new ArrayList<>();
         List<Byte> temp = new ArrayList<>();
-        for (Cell c : Cell.SPIRAL_ORDER){
+        for (Cell c : Cell.SPIRAL_ORDER)
             temp.add(l.boardPainter().byteForCell(l.gameState().board(),c));
-        }
+        
         list.addAll(RunLengthEncoder.encode(temp));
-        temp = new ArrayList<>();
+        temp.clear();
         for (Cell c : Cell.ROW_MAJOR_ORDER){
             if (l.gameState().board().blockAt(c).isFree()){
                 if (l.gameState().blastedCells().contains(c))

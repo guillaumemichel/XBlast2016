@@ -52,25 +52,26 @@ public final class PlayerPainter {
                     n=80;
             case VULNERABLE:
                 switch (p.direction()){
-                case W:
-                    n+=3;
-                case S:
-                    n+=3;
-                case E:
-                    n+=3;
-            }
-            if (p.direction().isHorizontal()){
-                if (p.position().x()%4==1)
-                    n+=1;
-                if (p.position().x()%4==3)
-                    n+=2;
-            } else{
-                if (p.position().y()%4==1)
-                    n+=1;
-                if (p.position().y()%4==3)
-                    n+=2;
-            }
-            break;
+                    case W:
+                        n+=3;
+                    case S:
+                        n+=3;
+                    case E:
+                        n+=3;
+                    case N:
+                }
+                if (p.direction().isHorizontal()){
+                    if (p.position().x()%4==1)
+                        n+=1;
+                    if (p.position().x()%4==3)
+                        n+=2;
+                } else{
+                    if (p.position().y()%4==1)
+                        n+=1;
+                    if (p.position().y()%4==3)
+                        n+=2;
+                }
+                break;
             case DYING:
                 if (p.lives()>1)
                     n+=12;

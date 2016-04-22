@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * A run-length encoder
+ * 
  * @author Guillaume Michel (258066)
  * @author Adrien Vandenbroucque (258715)
  *
