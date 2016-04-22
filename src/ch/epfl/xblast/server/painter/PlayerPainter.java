@@ -47,7 +47,7 @@ public final class PlayerPainter {
         
         switch (p.lifeState().state()){
             case INVULNERABLE:
-                if (tick%2==0)
+                if (tick%2==1)
                     n=80;
             case VULNERABLE:
                 switch (p.direction()){
