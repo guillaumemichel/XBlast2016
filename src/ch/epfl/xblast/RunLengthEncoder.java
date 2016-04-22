@@ -64,6 +64,7 @@ public final class RunLengthEncoder {
                 }  
             }
         }
+        encodedSequence.add(0, (byte)encodedSequence.size());
         return encodedSequence;
     }
     

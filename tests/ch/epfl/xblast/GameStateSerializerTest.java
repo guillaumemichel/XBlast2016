@@ -100,8 +100,6 @@ public class GameStateSerializerTest {
     
     @Test
     public void sameLength(){
-        System.out.println(getList().size()+"---"+getExp().size());
-        System.out.println(getList());
         assertEquals(getList().size(),getExp().size());
     }
     
