@@ -1,7 +1,6 @@
 package ch.epfl.xblast;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -49,8 +48,13 @@ public class BoardPainterTest {
         }
         
         @Test(expected=NullPointerException.class)
-        public void constructorThrowNullPointerException(){
+        public void constructorThrowNullPointerExceptionWithNullMap(){
             BoardPainter b= new BoardPainter(null, BlockImage.IRON_FLOOR_S);
+        }
+        
+        @Test(expected=NullPointerException.class)
+        public void constructorThrowNullPointerExceptionWithNullBlockImage(){
+            BoardPainter b= new BoardPainter(new HashMap<>(), null);
         }
 
 }

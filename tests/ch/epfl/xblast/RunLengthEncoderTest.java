@@ -18,6 +18,16 @@ public class RunLengthEncoderTest {
     }
     
     @Test
+    public void encodeWorksOnLongArray() {
+        List<Byte> l = new LinkedList<Byte>();
+        for (int i = 0; i < 195; i++) {
+            l.add((byte) 3);
+        }
+        List<Byte> t = new LinkedList<>(Arrays.asList((byte) -128,(byte) 3, (byte) -63, (byte) 3));
+        assertEquals(t, RunLengthEncoder.encode(l));
+    }
+    
+    @Test
     public void encodeWorksOnConstantPlusElementArray(){
         List<Byte> l1 = new LinkedList<>(Arrays.asList((byte) 3, (byte) 3, (byte) 3, (byte) 3 ,(byte) 4));
         List<Byte> t1 = new LinkedList<>(Arrays.asList((byte) -2, (byte) 3, (byte) 4));

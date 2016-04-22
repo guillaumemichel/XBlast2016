@@ -32,7 +32,7 @@ public final class BoardPainter {
      */
     public BoardPainter(Map<Block, BlockImage> palette, BlockImage imageForFreeBlock) throws NullPointerException{
         this.palette = Collections.unmodifiableMap(new HashMap<>(Objects.requireNonNull(palette)));
-        this.imageForFreeBlock = imageForFreeBlock;
+        this.imageForFreeBlock = Objects.requireNonNull(imageForFreeBlock);
     }
     
     /**

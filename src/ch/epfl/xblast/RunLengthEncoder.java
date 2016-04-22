@@ -35,28 +35,34 @@ public final class RunLengthEncoder {
         
         for (int i=0;i<sequence.size();++i) {
             b=sequence.get(i);
-            
-            if(i<sequence.size()-1)
-                nextByte=sequence.get(i+1);
-            else
-                nextByte=-1;
-          
             if(b<0)
                 throw new IllegalArgumentException();
             
-            if(b==nextByte){
-                ++count;
+            if(i<sequence.size()-1){
+                nextByte=sequence.get(i+1);
             }else{
-                if(count==1 || count==2){
-                    encodedSequence.addAll(Collections.nCopies(count, b));
-                    count=1;
+                nextByte=-1;
+            }
+            
+            if(count>=130){
+                encodedSequence.add((byte)(-count+2));
+                encodedSequence.add(b);
+                count=1;
+            }else{
+                if(b==nextByte){
+                    ++count;
                 }else{
-                    encodedSequence.add((byte)(-count+2));
-                    encodedSequence.add(b);
-                    count=1;
-                }
-                    
-            }   
+                    if(count==1 || count==2){
+                        encodedSequence.addAll(Collections.nCopies(count, b));
+                        count=1;
+                    }else{
+                        encodedSequence.add((byte)(-count+2));
+                        encodedSequence.add(b);
+                        count=1;
+                    }
+                        
+                }  
+            }
         }
         return encodedSequence;
     }
