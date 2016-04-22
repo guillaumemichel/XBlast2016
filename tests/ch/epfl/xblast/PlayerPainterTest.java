@@ -72,7 +72,7 @@ public class PlayerPainterTest {
 	        	assertEquals(6,PlayerPainter.byteForPlayer(t, g.players().get(1))%20);
 	        }
 	        
-	        if (t%2==0) assertEquals(85, PlayerPainter.byteForPlayer(t, g.players().get(1)),5);
+	        if (t%2==1) assertEquals(85, PlayerPainter.byteForPlayer(t, g.players().get(1)),5);
 	        else assertEquals(25, PlayerPainter.byteForPlayer(t, g.players().get(1)),5);
 	        
 	        assertEquals(52, PlayerPainter.byteForPlayer(t, g.players().get(2)));

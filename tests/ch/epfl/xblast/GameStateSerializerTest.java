@@ -1,16 +1,12 @@
 package ch.epfl.xblast;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 
 import org.junit.Test;
 
@@ -18,7 +14,6 @@ import ch.epfl.xblast.server.Block;
 import ch.epfl.xblast.server.Board;
 import ch.epfl.xblast.server.GameState;
 import ch.epfl.xblast.server.Player;
-import ch.epfl.xblast.server.debug.RandomEventGenerator;
 import ch.epfl.xblast.server.painter.BlockImage;
 import ch.epfl.xblast.server.painter.BoardPainter;
 import ch.epfl.xblast.server.painter.GameStateSerializer;
@@ -80,7 +75,39 @@ public class GameStateSerializerTest {
     
     @Test
     public void timeIsOk(){
-        assertTrue(((int)getList().get(getList().size()-1))==(getExp().get(getExp().size()-1)));
+        assertEquals((int)getList().get(getList().size()-1),(int)getExp().get(getExp().size()-1));
+    }
+    
+    @Test
+    public void playersAreOk(){
+        for (int i=0;i<16;++i)
+            assertEquals((int)getExp().get(getExp().size()-2-i),(int)getList().get(getList().size()-2-i));
+    }
+    
+    @Test
+    public void explosionsAreOk(){
+        for (int i=0;i<5;++i){
+            assertEquals((int)getExp().get(getExp().size()-18-i),(int)getList().get(getList().size()-18-i));
+        }
+    }
+    
+    @Test
+    public void boardIsOk(){
+        for (int i=0;i<getExp().size()-23;++i){
+            assertEquals((int)getExp().get(i),(int)getList().get(i));
+        }
+    }
+    
+    @Test
+    public void sameLength(){
+        assertEquals(getList().size(),getExp().size());
+    }
+    
+    @Test
+    public void toutFonctionne(){
+        assertEquals(getList().size(),getExp().size());
+        for (int i=0;i<getList().size();++i)
+            assertEquals((int)getList().get(i),(int)getExp().get(i));
     }
 
 }
