@@ -49,6 +49,7 @@ public final class GameStateSerializer {
             }
             else temp.add(ExplosionPainter.BYTE_FOR_EMPTY);
         }
+
         list.addAll(RunLengthEncoder.encode(temp));
         for (Player player : l.gameState().players()){
             list.add((byte) player.lives());
