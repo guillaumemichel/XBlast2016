@@ -14,21 +14,55 @@ import ch.epfl.xblast.server.Board;
 import ch.epfl.xblast.server.GameState;
 import ch.epfl.xblast.server.Player;
 
+/**
+ * A level
+ * 
+ * @author Guillaume Michel (258066)
+ * @author Adrien Vandenbroucque (258715)
+ *
+ */
 public final class Level {
     private final BoardPainter boardPainter;
     private final GameState gamestate;
     
+    /**
+     * Variable that contains a "default level"
+     */
     public static final Level DEFAULT_LEVEL=defaultLevel();
     
+    /**
+     * Constructs a level with the given parameters
+     * 
+     * @param boardPainter
+     *      The board painter
+     *      
+     * @param gamestate
+     *      The initial game state
+     *      
+     * @throws NullPointerException
+     *      If the board painter or the game state is "null"
+     */
     public Level(BoardPainter boardPainter, GameState gamestate) throws NullPointerException{
         this.boardPainter=Objects.requireNonNull(boardPainter);
         this.gamestate=Objects.requireNonNull(gamestate);
     }
     
+    /**
+     * Returns the board painter of this level
+     * 
+     * @return
+     *      The board painter of this level
+     */
     public BoardPainter boardPainter(){
         return boardPainter;
     }
     
+    /**
+     * Returns the game state of this level
+     * 
+     * @return
+     *      The game state of this level
+     */
     public GameState gameState(){
         return gamestate;
     }
