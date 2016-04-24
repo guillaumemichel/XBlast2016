@@ -32,9 +32,11 @@ public final class GameStateSerializer {
     public static List<Byte> serialize(Level l){
         List<Byte> list = new ArrayList<>();
         List<Byte> temp = new ArrayList<>();
+
         for (Cell c : Cell.SPIRAL_ORDER)
             temp.add(l.boardPainter().byteForCell(l.gameState().board(),c));
         
+        list.add((byte)RunLengthEncoder.encode(temp).size());
         list.addAll(RunLengthEncoder.encode(temp));
         temp.clear();
         for (Cell c : Cell.ROW_MAJOR_ORDER){
@@ -49,8 +51,9 @@ public final class GameStateSerializer {
             }
             else temp.add(ExplosionPainter.BYTE_FOR_EMPTY);
         }
-
+        list.add((byte)RunLengthEncoder.encode(temp).size());
         list.addAll(RunLengthEncoder.encode(temp));
+        
         for (Player player : l.gameState().players()){
             list.add((byte) player.lives());
             list.add((byte) player.position().x());
