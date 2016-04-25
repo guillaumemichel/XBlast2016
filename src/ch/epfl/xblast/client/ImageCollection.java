@@ -21,11 +21,11 @@ public final class ImageCollection {
                 .getResource(dirName)
                 .toURI());
         File[] images=dir.listFiles();
-        for(int i=0;i<images.length;++i){
-            if(index==Integer.parseInt(images[i].getName().substring(0, 3))){
+        
+        for(int i=0;i<images.length;++i)
+            if(index==Integer.parseInt(images[i].getName().substring(0, 3)))
                 return ImageIO.read(images[i]);
-            }
-        }
+        
         return null;
     }
     
