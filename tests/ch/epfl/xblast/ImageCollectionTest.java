@@ -43,11 +43,7 @@ public class ImageCollectionTest {
         
         for(int i=0; i<6; i++){
             assertEquals(i, Integer.parseInt(files[i].getName().substring(0, 3)));
-        }
-        
-        ImageCollection collection = new ImageCollection("player");
-        Image image = collection.image(20);
-        
+        } 
     }
 
 }
