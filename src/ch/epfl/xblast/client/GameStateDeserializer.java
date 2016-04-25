@@ -34,6 +34,8 @@ public final class GameStateDeserializer {
             explosionImage.add(c2.image(b));
         }
         
+        
+        
         return new GameState(null,boardImage,explosionImage,null,null);
     }
 }
