@@ -74,6 +74,7 @@ public final class GameState {
         this.board = Objects.requireNonNull(board);
         if(players.size()!=4) 
             throw new IllegalArgumentException();
+        Collections.sort(players, (p1, p2) -> Integer.compare(p1.id().ordinal(), p2.id().ordinal()));
         this.players = Collections.unmodifiableList(new ArrayList<>(Objects.requireNonNull(players)));
         this.bombs = Collections.unmodifiableList(new ArrayList<>(Objects.requireNonNull(bombs)));
         this.explosions = Collections.unmodifiableList(new ArrayList<>(Objects.requireNonNull(explosions)));

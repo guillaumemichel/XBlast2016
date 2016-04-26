@@ -29,7 +29,7 @@ public final class GameState {
         private final Image image;
         
         public Player(PlayerID id, int lives, SubCell position, Image image){
-            this.id=Objects.requireNonNull(id);
+            this.id=Objects.requireNonNull(id);//WTF ?
             this.lives=ArgumentChecker.requireNonNegative(lives);
             this.position=Objects.requireNonNull(position);
             this.image=Objects.requireNonNull(image);
