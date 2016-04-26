@@ -34,9 +34,7 @@ public final class RunLengthEncoder {
         byte b, nextByte;
         
         for (int i=0;i<sequence.size();++i) {
-            b=sequence.get(i);
-            if(b<0)
-                throw new IllegalArgumentException();
+            b=(byte) ArgumentChecker.requireNonNegative(sequence.get(i));
             
             if(i<sequence.size()-1){
                 nextByte=sequence.get(i+1);

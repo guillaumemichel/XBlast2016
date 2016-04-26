@@ -35,10 +35,7 @@ public class ImageCollectionTest {
     
     @Test
     public void imageCollectionWorksProperly() throws NoSuchElementException, URISyntaxException, IOException {
-        File dir = new File(ImageCollection.class
-                .getClassLoader()
-                .getResource("block")
-                .toURI());
+        File dir = new File(ImageCollection.class.getClassLoader().getResource("block").toURI());
         File[] files = dir.listFiles();
         
         for(int i=0; i<6; i++){
