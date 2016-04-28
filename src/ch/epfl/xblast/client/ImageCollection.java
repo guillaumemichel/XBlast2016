@@ -50,7 +50,7 @@ public final class ImageCollection {
         return imagesOfDir.get(index);
     }
     
-    public Image image(int index){
+    public Image image(int index) throws NoSuchElementException{
         Image image = imageOrNull(index);
         if(image==null)
             throw new NoSuchElementException();
