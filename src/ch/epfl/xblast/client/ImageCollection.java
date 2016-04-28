@@ -8,16 +8,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 import javax.imageio.ImageIO;
 
 public final class ImageCollection {
     private final String dirName;
     
-    private final List<Image> imagesOfDir=Collections.unmodifiableList(loadFiles(this.dirName));
+    private final List<Image> imagesOfDir;
     
-    public ImageCollection(String dirName){
+    public ImageCollection(String dirName) throws NullPointerException{
         this.dirName=dirName;
+        imagesOfDir = Collections.unmodifiableList(Objects.requireNonNull(loadFiles(this.dirName)));
     }
     
     private static List<Image> loadFiles(String dirName){
@@ -31,6 +33,7 @@ public final class ImageCollection {
                     .toURI());
         }catch(URISyntaxException e){
             image=null;
+            throw new NullPointerException();
         }
         
         for (File file : image.listFiles()) {
@@ -43,11 +46,11 @@ public final class ImageCollection {
         return images;
     }
     
-    public Image imageOrNull(int index) throws IOException{
+    public Image imageOrNull(int index){
         return imagesOfDir.get(index);
     }
     
-    public Image image(int index) throws URISyntaxException, IOException, NoSuchElementException{
+    public Image image(int index){
         Image image = imageOrNull(index);
         if(image==null)
             throw new NoSuchElementException();
