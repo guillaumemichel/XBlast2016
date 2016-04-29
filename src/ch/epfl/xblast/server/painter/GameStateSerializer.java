@@ -15,7 +15,6 @@ import ch.epfl.xblast.server.Player;
  * @author Adrien Vandenbroucque (258715)
  *
  */
-
 public final class GameStateSerializer {
     
     private GameStateSerializer(){};
