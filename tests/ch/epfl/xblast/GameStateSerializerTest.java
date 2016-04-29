@@ -13,6 +13,7 @@ import org.junit.Test;
 import ch.epfl.xblast.server.Block;
 import ch.epfl.xblast.server.Board;
 import ch.epfl.xblast.server.GameState;
+import ch.epfl.xblast.client.GameStateDeserializer;
 import ch.epfl.xblast.server.Player;
 import ch.epfl.xblast.server.painter.BlockImage;
 import ch.epfl.xblast.server.painter.BoardPainter;
@@ -108,6 +109,11 @@ public class GameStateSerializerTest {
         assertEquals(getList().size(),getExp().size());
         for (int i=0;i<getList().size();++i)
             assertEquals((int)getList().get(i),(int)getExp().get(i));
+    }
+    
+    @Test
+    public void deserializeBoard(){
+        ch.epfl.xblast.client.GameState c1 = GameStateDeserializer.deserializeGameState(getList());
     }
 
 }
