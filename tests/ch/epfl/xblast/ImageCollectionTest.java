@@ -32,15 +32,5 @@ public class ImageCollectionTest {
         ImageCollection col = new ImageCollection("explosion");
         assertNull(col.imageOrNull(100));
     }
-    
-    @Test
-    public void imageCollectionWorksProperly() throws NoSuchElementException, URISyntaxException, IOException {
-        File dir = new File(ImageCollection.class.getClassLoader().getResource("block").toURI());
-        File[] files = dir.listFiles();
-        
-        for(int i=0; i<6; i++){
-            assertEquals(i, Integer.parseInt(files[i].getName().substring(0, 3)));
-        } 
-    }
 
 }
