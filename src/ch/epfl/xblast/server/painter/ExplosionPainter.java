@@ -9,7 +9,6 @@ import ch.epfl.xblast.server.Bomb;
  * @author Adrien Vandenbroucque (258715)
  *
  */
-
 public final class ExplosionPainter {
     
     public static final byte BYTE_FOR_EMPTY = 16;
