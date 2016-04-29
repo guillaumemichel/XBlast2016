@@ -7,7 +7,6 @@ import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.TreeMap;
 
 import javax.imageio.ImageIO;
@@ -24,9 +23,16 @@ public final class ImageCollection {
     
     private final Map<Byte, Image> imagesOfDir;
     
-    public ImageCollection(String dirName) throws NullPointerException{
+    /**
+     * Constructs an image collection of the given directory name that contains images
+     * 
+     * @param dirName
+     *      The name of the directory where the images are
+     *      
+     */
+    public ImageCollection(String dirName){
         this.dirName=dirName;
-        imagesOfDir = Collections.unmodifiableMap(Objects.requireNonNull(loadImages()));
+        imagesOfDir = Collections.unmodifiableMap(loadImages());
     }
     
     private Map<Byte, Image> loadImages(){
@@ -54,6 +60,15 @@ public final class ImageCollection {
         return images;
     }
     
+    /**
+     * Returns the image that corresponds to the index given in this image collection
+     * 
+     * @param index
+     *      The index that allows to retrieve the expected image 
+     *      
+     * @return
+     *      The image of the collection at the index given, or null if there is no corresponding image
+     */
     public Image imageOrNull(int index){
         if(imagesOfDir.containsKey((byte) index))
             return imagesOfDir.get((byte)index);
@@ -61,6 +76,18 @@ public final class ImageCollection {
         return null;
     }
     
+    /**
+     * Returns the image that corresponds to the index given in this image collection
+     * 
+     * @param index
+     *      The index that allows to retrieve the expected image
+     *      
+     * @return
+     *      The image of the collection at the index given
+     *      
+     * @throws NoSuchElementException
+     *      If there is no corresponding image
+     */
     public Image image(int index) throws NoSuchElementException{
         Image image = imageOrNull(index);
         if(image==null)
