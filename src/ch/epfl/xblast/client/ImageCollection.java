@@ -12,6 +12,13 @@ import java.util.Objects;
 
 import javax.imageio.ImageIO;
 
+/**
+ * An image collection
+ * 
+ * @author Guillaume Michel (258066)
+ * @author Adrien Vandenbroucque (258715)
+ *
+ */
 public final class ImageCollection {
     private final String dirName;
     
@@ -19,24 +26,24 @@ public final class ImageCollection {
     
     public ImageCollection(String dirName) throws NullPointerException{
         this.dirName=dirName;
-        imagesOfDir = Collections.unmodifiableList(Objects.requireNonNull(loadFiles(this.dirName)));
+        imagesOfDir = Collections.unmodifiableList(Objects.requireNonNull(loadImages(this.dirName)));
     }
     
-    private static List<Image> loadFiles(String dirName){
+    private static List<Image> loadImages(String dirName){
         List<Image> images = new ArrayList<>();
-        File image;
+        File dir;
         
         try{
-            image=new File(ImageCollection.class
+            dir=new File(ImageCollection.class
                     .getClassLoader()
                     .getResource(dirName)
                     .toURI());
         }catch(URISyntaxException e){
-            image=null;
-            throw new NullPointerException();
+            dir=null;
+            throw new NullPointerException("Invalid diectory name !");
         }
         
-        for (File file : image.listFiles()) {
+        for (File file : dir.listFiles()) {
             try{
                 images.add(ImageIO.read(file));
             }catch(IOException e){
