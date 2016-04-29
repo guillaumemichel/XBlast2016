@@ -44,10 +44,11 @@ public final class GameStateDeserializer {
     }
     private static List<Image> boardImage(List<Byte> l) throws NoSuchElementException, URISyntaxException, IOException{
         List<Image> boardImage = new ArrayList<>();
-        Map<Integer,Image> map = new TreeMap<>();
-        for (Byte b : l)
-            map.put(Cell.SPIRAL_ORDER.get(b).hashCode(), c1.image(b));
-        for (Map.Entry<Integer, Image> b : map.entrySet())
+        Map<Cell,Image> map = new TreeMap<>();
+        for (int i=0;i<l.size();++i){
+            map.put(Cell.SPIRAL_ORDER.get(i), c1.image(l.get(i)));
+        }
+        for (Map.Entry<Cell, Image> b : map.entrySet())
             boardImage.add(b.getValue());
         return boardImage;
     }
