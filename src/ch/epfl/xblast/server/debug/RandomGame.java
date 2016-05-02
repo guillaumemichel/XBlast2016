@@ -83,15 +83,15 @@ public class RandomGame {
         frame.setSize(960, 688);
         frame.setVisible(true);
         
-        /*while(! g.isGameOver()){
+        while(! g.isGameOver()){
             g=g.next(randomEvents.randomSpeedChangeEvents(), randomEvents.randomBombDropEvents());
             
-            //component.setGameState(gClient, id);
+            component.setGameState(GameStateDeserializer.deserializeGameState(GameStateSerializer.serialize(new Level(Level.DEFAULT_LEVEL.boardPainter(), g))), PlayerID.PLAYER_1);
             //GameStatePrinter.printGameState(g);
             Thread.sleep(50);
             //System.out.print("\u001b[2J");
             System.out.println();
-        }*/
+        }
         
     }
 
