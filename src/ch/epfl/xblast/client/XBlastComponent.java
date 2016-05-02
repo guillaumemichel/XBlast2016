@@ -1,9 +1,10 @@
 package ch.epfl.xblast.client;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 
 import javax.swing.JComponent;
 
@@ -25,10 +26,23 @@ public final class XBlastComponent extends JComponent{
         
         int widthOfBlock = gameState.imagesBoard().get(0).getWidth(null);
         int heightOfBlock = gameState.imagesBoard().get(0).getHeight(null);
+        int blockX, blockY;
 
         for(int i = 0; i < gameState.imagesBoard().size(); ++i){
-            g.drawImage(gameState.imagesBoard().get(i), (i%Cell.COLUMNS)*widthOfBlock, (i/Cell.COLUMNS)*heightOfBlock, null);
+            blockX=(i%Cell.COLUMNS)*widthOfBlock;
+            blockY=(i/Cell.COLUMNS)*heightOfBlock;
+            
+            g.drawImage(gameState.imagesBoard().get(i), blockX, blockY, null);
+            g.drawImage(gameState.imagesExplosion().get(i), blockX, blockY, null);          
         }
+        
+        Font font = new Font("Arial", Font.BOLD, 25);
+        g.setColor(Color.WHITE);
+        g.setFont(font);
+        g.drawString(String.valueOf(gameState.players().get(0).lives()), 96, 659);
+        g.drawString(String.valueOf(gameState.players().get(1).lives()), 240, 659);
+        g.drawString(String.valueOf(gameState.players().get(2).lives()), 768, 659);
+        g.drawString(String.valueOf(gameState.players().get(3).lives()), 912, 659);
         
     }
     
