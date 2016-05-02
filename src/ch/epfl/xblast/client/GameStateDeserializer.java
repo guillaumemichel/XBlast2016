@@ -68,8 +68,10 @@ public final class GameStateDeserializer {
     private static List<Image> explosionImage(List<Byte> l){
         List<Image> explosionImage=new ArrayList<>();
         for (Byte b : l){
-            System.out.println(b);
-            explosionImage.add(c2.image(b));
+            if(b==16)
+                explosionImage.add(null);
+            else
+                explosionImage.add(c2.image(b));
         }
         return explosionImage;
     }

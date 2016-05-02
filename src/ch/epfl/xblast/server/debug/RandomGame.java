@@ -80,7 +80,7 @@ public class RandomGame {
         JFrame frame = new JFrame("XBlast 2016");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(component);
-        frame.setSize(960, 688);
+        frame.setSize(970, 690);
         frame.setVisible(true);
         
         /*while(! g.isGameOver()){
