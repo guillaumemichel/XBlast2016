@@ -1,5 +1,6 @@
-package ch.epfl.xblast.server.debug;
+package ch.epfl.xblast;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -8,13 +9,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import javax.swing.JFrame;
 
-import ch.epfl.xblast.Cell;
-import ch.epfl.xblast.Direction;
-import ch.epfl.xblast.PlayerID;
 import ch.epfl.xblast.client.GameStateDeserializer;
+import ch.epfl.xblast.client.KeyboardEventHandler;
 import ch.epfl.xblast.client.XBlastComponent;
 import ch.epfl.xblast.server.Block;
 import ch.epfl.xblast.server.Board;
@@ -23,17 +23,9 @@ import ch.epfl.xblast.server.Player;
 import ch.epfl.xblast.server.painter.GameStateSerializer;
 import ch.epfl.xblast.server.painter.Level;
 
-/**
- * A random game
- * @author Guillaume Michel (258066)
- * @author Adrien Vandenbroucque (258715)
- *
- */
-public class RandomGame {
+public class KeyboardEventHandlerTest {
 
-    public static void main(String[] args) throws InterruptedException{
-        RandomEventGenerator randomEvents=new RandomEventGenerator(2016, 30, 100);
-        //java -classpath jar/sq.jar:bin ch.epfl.xblast.server.debug.RandomGame
+    public static void main(String[] args) {
         Block __ = Block.FREE;
         Block XX = Block.INDESTRUCTIBLE_WALL;
         Block xx = Block.DESTRUCTIBLE_WALL;
@@ -60,19 +52,6 @@ public class RandomGame {
 
         GameState g = new GameState(board, players);
         
-        //Version in terminal
-        
-        /*GameStatePrinter.printGameState(g);
-
-        while(! g.isGameOver()){
-            g=g.next(randomEvents.randomSpeedChangeEvents(), randomEvents.randomBombDropEvents());
-            GameStatePrinter.printGameState(g);
-            Thread.sleep(50);
-            //System.out.print("\u001b[2J");
-            System.out.println();
-        }*/
-        
-        //Version in gui
         ch.epfl.xblast.client.GameState gClient = GameStateDeserializer.deserializeGameState(GameStateSerializer.serialize(Level.DEFAULT_LEVEL));
         XBlastComponent component = new XBlastComponent();
         component.setGameState(gClient, PlayerID.PLAYER_1);
@@ -83,16 +62,16 @@ public class RandomGame {
         frame.setSize(960, 688);
         frame.setVisible(true);
         
-        /*while(! g.isGameOver()){
-            g=g.next(randomEvents.randomSpeedChangeEvents(), randomEvents.randomBombDropEvents());
-            
-            //component.setGameState(gClient, id);
-            //GameStatePrinter.printGameState(g);
-            Thread.sleep(50);
-            //System.out.print("\u001b[2J");
-            System.out.println();
-        }*/
-        
+        Map<Integer, PlayerAction> kb = new HashMap<>();
+        kb.put(KeyEvent.VK_UP, PlayerAction.MOVE_N);
+        kb.put(KeyEvent.VK_DOWN, PlayerAction.MOVE_S);
+        kb.put(KeyEvent.VK_LEFT, PlayerAction.MOVE_W);
+        kb.put(KeyEvent.VK_RIGHT, PlayerAction.MOVE_E);
+        kb.put(KeyEvent.VK_SPACE, PlayerAction.DROP_BOMB);
+        kb.put(KeyEvent.VK_SHIFT, PlayerAction.STOP);
+        Consumer<PlayerAction> c = System.out::println;
+        component.addKeyListener(new KeyboardEventHandler(kb, c));
+        component.requestFocusInWindow();
     }
 
 }
