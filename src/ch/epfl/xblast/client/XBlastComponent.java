@@ -7,6 +7,7 @@ import java.awt.Image;
 
 import javax.swing.JComponent;
 
+import ch.epfl.xblast.Cell;
 import ch.epfl.xblast.PlayerID;
 
 public final class XBlastComponent extends JComponent{
@@ -26,12 +27,12 @@ public final class XBlastComponent extends JComponent{
         int heightOfBlock = gameState.imagesBoard().get(0).getHeight(null);
 
         for(int i = 0; i < gameState.imagesBoard().size(); ++i){
-            
+            g.drawImage(gameState.imagesBoard().get(i), (i%Cell.COLUMNS)*widthOfBlock, (i/Cell.COLUMNS)*heightOfBlock, null);
         }
         
     }
     
-    private void setGameState(GameState gameState, PlayerID id){
+    public void setGameState(GameState gameState, PlayerID id){
         this.gameState = gameState;
         this.id = id;
         repaint();
