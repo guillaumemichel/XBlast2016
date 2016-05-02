@@ -19,7 +19,7 @@ import ch.epfl.xblast.SubCell;
  */
 public final class GameState {
     private final List<Player> players;
-    private final List<Image> imageBoard, imageExplosion, imageScore, imageTime;
+    private final List<Image> imagesBoard, imagesExplosion, imagesScore, imagesTime;
     
     /**
      * Constructs a game state with the given parameters
@@ -41,15 +41,64 @@ public final class GameState {
      */
     public GameState(List<Player> players, List<Image> imageBoard, List<Image> imageExplosion, List<Image> imageScore, List<Image> imageTime){
         this.players=Collections.unmodifiableList(new ArrayList<>(Objects.requireNonNull(players)));
-        this.imageBoard=Collections.unmodifiableList(new ArrayList<>(Objects.requireNonNull(imageBoard)));
-        this.imageExplosion=Collections.unmodifiableList(new ArrayList<>(Objects.requireNonNull(imageExplosion)));
-        this.imageScore=Collections.unmodifiableList(new ArrayList<>(Objects.requireNonNull(imageScore)));
-        this.imageTime=Collections.unmodifiableList(new ArrayList<>(Objects.requireNonNull(imageTime)));
+        this.imagesBoard=Collections.unmodifiableList(new ArrayList<>(Objects.requireNonNull(imageBoard)));
+        this.imagesExplosion=Collections.unmodifiableList(new ArrayList<>(Objects.requireNonNull(imageExplosion)));
+        this.imagesScore=Collections.unmodifiableList(new ArrayList<>(Objects.requireNonNull(imageScore)));
+        this.imagesTime=Collections.unmodifiableList(new ArrayList<>(Objects.requireNonNull(imageTime)));
+    }
+    
+    /**
+     * Returns the list of players of this game state
+     * 
+     * @return
+     *      The list of players of this game state
+     */
+    public List<Player> players(){
+        return players;
+    }
+    
+    /**
+     * Returns the list of images that represent the board of this game state
+     * 
+     * @return
+     *      The list of images that represent the board of this game state
+     */
+    public List<Image> imagesBoard(){
+        return imagesBoard;
+    }
+    
+    /**
+     * Returns the list of images that represent the explosions of this game state
+     * 
+     * @return
+     *      The list of images that represent the explosions of this game state
+     */
+    public List<Image> imagesExplosion(){
+        return imagesExplosion;
+    }
+    
+    /**
+     * Returns the list of images that represent the score of this game state
+     * 
+     * @return
+     *      The list of images that represent the score of this game state
+     */
+    public List<Image> imagesScore(){
+        return imagesScore;
+    }
+    
+    /**
+     * Returns the list of images that represent the time for this game state
+     * 
+     * @return
+     *      The list of images that represent the time for this game state
+     */
+    public List<Image> imagesTime(){
+        return imagesTime;
     }
     
     /**
      * A player
-     *
      */
     public final static class Player{
         private final PlayerID id;
@@ -77,6 +126,46 @@ public final class GameState {
             this.lives=ArgumentChecker.requireNonNegative(lives);
             this.position=Objects.requireNonNull(position);
             this.image=Objects.requireNonNull(image);
+        }
+        
+        /**
+         * Returns the id of this player
+         * 
+         * @return
+         *      The id of this player
+         */
+        public PlayerID id(){
+            return id;
+        }
+        
+        /**
+         * Returns the number of lives of this player
+         * 
+         * @return
+         *      The number of lives of this player
+         */
+        public int lives(){
+            return lives;
+        }
+        
+        /**
+         * Returns the position of this player
+         * 
+         * @return
+         *      The position of this player
+         */
+        public SubCell position(){
+            return position;
+        }
+        
+        /**
+         * Returns the image that represents this player
+         * 
+         * @return
+         *      The image that represents this player
+         */
+        public Image image(){
+            return image;
         }
     }
 }
