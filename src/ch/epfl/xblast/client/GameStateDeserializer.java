@@ -3,9 +3,9 @@ package ch.epfl.xblast.client;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import ch.epfl.xblast.Cell;
 import ch.epfl.xblast.PlayerID;
@@ -57,7 +57,7 @@ public final class GameStateDeserializer {
     }
     private static List<Image> boardImage(List<Byte> l){
         List<Image> boardImage = new ArrayList<>();
-        Map<Cell,Image> map = new TreeMap<>();
+        Map<Cell,Image> map = new HashMap<>();
         for (int i=0;i<l.size();++i)
             map.put(Cell.SPIRAL_ORDER.get(i), c1.image(l.get(i)));
         for (Map.Entry<Cell, Image> b : map.entrySet())
@@ -68,6 +68,7 @@ public final class GameStateDeserializer {
     private static List<Image> explosionImage(List<Byte> l){
         List<Image> explosionImage=new ArrayList<>();
         for (Byte b : l){
+            System.out.println(b);
             explosionImage.add(c2.image(b));
         }
         return explosionImage;

@@ -14,7 +14,7 @@ public class ImageTest {
         EventQueue.invokeLater(new Runnable()
         {
             public void run(){
-                ImageFrame frame = new ImageFrame(new ImageCollection("explosion").image(5));
+                ImageFrame frame = new ImageFrame();
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setVisible(true);
             }
@@ -25,11 +25,11 @@ public class ImageTest {
 
 class ImageFrame extends JFrame{
 
-    public ImageFrame(Image image){
+    public ImageFrame(){
         setTitle("ImageTest");
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
-        ImageComponent component = new ImageComponent(image);
+        ImageComponent component = new ImageComponent();
         add(component);
 
     }
@@ -45,19 +45,15 @@ class ImageComponent extends JComponent{
      */
     private static final long serialVersionUID = 1L;
     private Image image;
-    public ImageComponent(Image image){
-        this.image=image;
+    public ImageComponent(){
+        this.image=new ImageCollection("explosion").image(15);
     }
     public void paintComponent (Graphics g){
         if(image == null) return;
-        int imageWidth = image.getWidth(this);
-        int imageHeight = image.getHeight(this);
+        int imageWidth = image.getWidth(null);
+        int imageHeight = image.getHeight(null);
 
-        g.drawImage(image, 50, 50, this);
-
-        for (int i = 0; i*imageWidth <= getWidth(); i++)
-            for(int j = 0; j*imageHeight <= getHeight();j++)
-                if(i+j>0) g.copyArea(0, 0, imageWidth, imageHeight, i*imageWidth, j*imageHeight);
+        g.drawImage(image, 0, 0, null);
     }
 
 }
