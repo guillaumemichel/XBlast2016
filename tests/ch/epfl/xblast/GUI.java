@@ -1,4 +1,4 @@
-package ch.epfl.xblast.server.debug;
+package ch.epfl.xblast;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -13,10 +13,6 @@ import java.util.function.Consumer;
 
 import javax.swing.JFrame;
 
-import ch.epfl.xblast.Cell;
-import ch.epfl.xblast.Direction;
-import ch.epfl.xblast.PlayerAction;
-import ch.epfl.xblast.PlayerID;
 import ch.epfl.xblast.client.GameStateDeserializer;
 import ch.epfl.xblast.client.KeyboardEventHandler;
 import ch.epfl.xblast.client.XBlastComponent;
@@ -24,18 +20,13 @@ import ch.epfl.xblast.server.Block;
 import ch.epfl.xblast.server.Board;
 import ch.epfl.xblast.server.GameState;
 import ch.epfl.xblast.server.Player;
+import ch.epfl.xblast.server.debug.RandomEventGenerator;
 import ch.epfl.xblast.server.painter.GameStateSerializer;
 import ch.epfl.xblast.server.painter.Level;
 
-/**
- * A random game
- * @author Guillaume Michel (258066)
- * @author Adrien Vandenbroucque (258715)
- *
- */
-public class RandomGame {
+public class GUI {
 
-    public static void main(String[] args) throws InterruptedException{
+    public static void main(String[] args) {
         RandomEventGenerator randomEvents=new RandomEventGenerator(2016, 30, 100);
         //java -classpath jar/sq.jar:bin ch.epfl.xblast.server.debug.RandomGame
         Block __ = Block.FREE;
@@ -87,13 +78,27 @@ public class RandomGame {
         frame.setSize(960, 688);
         frame.setVisible(true);
         
+        Map<Integer, PlayerAction> kb = new HashMap<>();
+        kb.put(KeyEvent.VK_UP, PlayerAction.MOVE_N);
+        kb.put(KeyEvent.VK_DOWN, PlayerAction.MOVE_S);
+        kb.put(KeyEvent.VK_LEFT, PlayerAction.MOVE_W);
+        kb.put(KeyEvent.VK_RIGHT, PlayerAction.MOVE_E);
+        kb.put(KeyEvent.VK_SPACE, PlayerAction.DROP_BOMB);
+        kb.put(KeyEvent.VK_SHIFT, PlayerAction.STOP);
+        Consumer<PlayerAction> c = System.out::println;
+        component.addKeyListener(new KeyboardEventHandler(kb, c));
+        component.requestFocusInWindow();
+        
         while(! g.isGameOver()){
             g=g.next(randomEvents.randomSpeedChangeEvents(), randomEvents.randomBombDropEvents());
             
             component.setGameState(GameStateDeserializer.deserializeGameState(GameStateSerializer.serialize(new Level(Level.DEFAULT_LEVEL.boardPainter(), g))), PlayerID.PLAYER_1);
-            Thread.sleep(50);
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
-        
     }
 
 }

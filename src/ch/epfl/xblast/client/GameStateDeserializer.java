@@ -49,10 +49,10 @@ public final class GameStateDeserializer {
     
     private static List<Player> getPlayers(List<Byte> l){
         List<Player> p=new ArrayList<>();
-        p.add(new GameState.Player(PlayerID.PLAYER_1, l.get(0), new SubCell(Byte.toUnsignedInt(l.get(1)),Byte.toUnsignedInt(l.get(2))), c4.image(l.get(3))));
-        p.add(new GameState.Player(PlayerID.PLAYER_2, l.get(4), new SubCell(Byte.toUnsignedInt(l.get(5)),Byte.toUnsignedInt(l.get(6))), c4.image(l.get(7))));
-        p.add(new GameState.Player(PlayerID.PLAYER_3, l.get(8), new SubCell(Byte.toUnsignedInt(l.get(9)),Byte.toUnsignedInt(l.get(10))), c4.image(l.get(11))));
-        p.add(new GameState.Player(PlayerID.PLAYER_4, l.get(12), new SubCell(Byte.toUnsignedInt(l.get(13)),Byte.toUnsignedInt(l.get(14))), c4.image(l.get(15))));
+        p.add(new GameState.Player(PlayerID.PLAYER_1, l.get(0), new SubCell(Byte.toUnsignedInt(l.get(1)),Byte.toUnsignedInt(l.get(2))), l.get(3)==15 ? null:c4.image(l.get(3))));
+        p.add(new GameState.Player(PlayerID.PLAYER_2, l.get(4), new SubCell(Byte.toUnsignedInt(l.get(5)),Byte.toUnsignedInt(l.get(6))), l.get(7)==15 ? null:c4.image(l.get(7))));
+        p.add(new GameState.Player(PlayerID.PLAYER_3, l.get(8), new SubCell(Byte.toUnsignedInt(l.get(9)),Byte.toUnsignedInt(l.get(10))), l.get(11)==15 ? null:c4.image(l.get(11))));
+        p.add(new GameState.Player(PlayerID.PLAYER_4, l.get(12), new SubCell(Byte.toUnsignedInt(l.get(13)),Byte.toUnsignedInt(l.get(14))), l.get(15)==15 ? null:c4.image(l.get(15))));
         return p;
     }
     private static List<Image> boardImage(List<Byte> l){
