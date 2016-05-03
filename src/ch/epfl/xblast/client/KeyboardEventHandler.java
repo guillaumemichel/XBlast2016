@@ -4,6 +4,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -18,8 +19,8 @@ import ch.epfl.xblast.PlayerAction;
  */
 public class KeyboardEventHandler extends KeyAdapter implements KeyListener{
     
-    Map<Integer,PlayerAction> keymap;
-    Consumer<PlayerAction> c;
+    private final Map<Integer,PlayerAction> keymap;
+    private final Consumer<PlayerAction> c;
     
     /**
      * Build a keyboard event handler from a map and a consumer
@@ -30,8 +31,8 @@ public class KeyboardEventHandler extends KeyAdapter implements KeyListener{
      * 			The consumer
      */
     public KeyboardEventHandler(Map<Integer,PlayerAction> map, Consumer<PlayerAction> cons){
-        keymap = Collections.unmodifiableMap(map);
-        c=cons;
+        this.keymap = Collections.unmodifiableMap(new HashMap<>(map));
+        this.c=cons;
     }
     
     @Override
