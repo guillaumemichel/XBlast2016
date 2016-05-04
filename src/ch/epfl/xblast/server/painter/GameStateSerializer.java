@@ -64,7 +64,7 @@ public final class GameStateSerializer {
             list.add((byte) player.position().y());
             list.add(PlayerPainter.byteForPlayer(g.ticks(), player));
         }
-        list.add((byte) (2*Math.ceil(g.remainingTime()/4)));
+        list.add((byte) Math.ceil(g.remainingTime()/2));
         return list;
     }
 }
