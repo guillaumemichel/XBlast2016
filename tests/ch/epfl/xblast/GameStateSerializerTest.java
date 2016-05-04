@@ -49,10 +49,8 @@ public class GameStateSerializerTest {
             palette.put(Block.values()[i], BlockImage.values()[i+1]);
         
         BoardPainter p= new BoardPainter(palette, BlockImage.IRON_FLOOR_S);
-        
-        Level l = new Level(p,g);
-        
-        return GameStateSerializer.serialize(l);
+                
+        return GameStateSerializer.serialize(p,g);
     }
     
     public static List<Integer> getExp(){

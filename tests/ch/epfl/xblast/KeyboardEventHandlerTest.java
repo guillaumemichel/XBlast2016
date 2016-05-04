@@ -20,6 +20,7 @@ import ch.epfl.xblast.server.Block;
 import ch.epfl.xblast.server.Board;
 import ch.epfl.xblast.server.GameState;
 import ch.epfl.xblast.server.Player;
+import ch.epfl.xblast.server.painter.BoardPainter;
 import ch.epfl.xblast.server.painter.GameStateSerializer;
 import ch.epfl.xblast.server.painter.Level;
 
@@ -51,8 +52,9 @@ public class KeyboardEventHandlerTest {
         map.put(PlayerID.PLAYER_1, Optional.of(Direction.E));
 
         GameState g = new GameState(board, players);
+        BoardPainter boardPainter = Level.DEFAULT_LEVEL.boardPainter();
         
-        ch.epfl.xblast.client.GameState gClient = GameStateDeserializer.deserializeGameState(GameStateSerializer.serialize(Level.DEFAULT_LEVEL));
+        ch.epfl.xblast.client.GameState gClient = GameStateDeserializer.deserializeGameState(GameStateSerializer.serialize(boardPainter,g));
         XBlastComponent component = new XBlastComponent();
         component.setGameState(gClient, PlayerID.PLAYER_1);
         
