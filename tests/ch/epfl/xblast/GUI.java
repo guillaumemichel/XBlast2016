@@ -78,7 +78,7 @@ public class GUI {
         JFrame frame = new JFrame("XBlast 2016");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(component);
-        frame.setSize(960, 688);
+        frame.pack();
         frame.setVisible(true);
         
         Map<Integer, PlayerAction> kb = new HashMap<>();

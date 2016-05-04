@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -16,6 +17,7 @@ import ch.epfl.xblast.Cell;
 import ch.epfl.xblast.PlayerID;
 import ch.epfl.xblast.client.GameState.Player;
 
+@SuppressWarnings("serial")
 public final class XBlastComponent extends JComponent{
     private GameState gameState = null;
     private PlayerID id = null;
@@ -29,26 +31,58 @@ public final class XBlastComponent extends JComponent{
     public void paintComponent(Graphics g0){
         Graphics2D g = (Graphics2D)g0;
         
+        List<Image> imagesBoard = gameState.imagesBoard();
+        List<Image> imagesExplosion = gameState.imagesExplosion();
+        List<Player> players = new ArrayList<>(gameState.players());
+        List<Image> imagesScore = gameState.imagesScore();
+        List<Image> imagesTime = gameState.imagesTime();
+        
+        //Board, bombs, and explosions display
         int widthOfBlock = gameState.imagesBoard().get(0).getWidth(null);
         int heightOfBlock = gameState.imagesBoard().get(0).getHeight(null);
-        int blockX, blockY;
+        
+        int blockX = 0;
+        int blockY = 0;
 
         for(int i = 0; i < gameState.imagesBoard().size(); ++i){
             blockX=(i%Cell.COLUMNS)*widthOfBlock;
             blockY=(i/Cell.COLUMNS)*heightOfBlock;
             
-            g.drawImage(gameState.imagesBoard().get(i), blockX, blockY, null);
-            g.drawImage(gameState.imagesExplosion().get(i), blockX, blockY, null);          
+            g.drawImage(imagesBoard.get(i), blockX, blockY, null);
+            g.drawImage(imagesExplosion.get(i), blockX, blockY, null);          
         }
         
-        List<Player> players = new ArrayList<>(gameState.players());
+        //Player display
         Comparator<Player> yCoordinatesComparator = (p1, p2) -> Integer.compare(p1.position().y(), p2.position().y());
-        Comparator<Player> playerIDComparator;
-        Collections.sort(players, yCoordinatesComparator);
+        Comparator<Player> playerIDComparator = (p1, p2) -> {
+            if(p1.position().y() == p2.position().y()){
+                if(p1.id()==this.id)
+                    return 1;
+            }else{
+                    return -1;
+            }
+            return 0;
+        };
+        Collections.sort(players, yCoordinatesComparator.thenComparing(playerIDComparator));
         
         for (Player player : players) {
            g.drawImage(player.image(), 4*player.position().x()-24, 3*player.position().y()-52, null);
         }
+        
+        //Score display
+        int widthOfScore = imagesScore.get(0).getWidth(null);
+        for (int i=0; i< imagesScore.size(); ++i) {
+            g.drawImage(imagesScore.get(i), i*widthOfScore, blockY+heightOfBlock, null);
+        }
+        
+        //Time display
+        int widthOfTime = imagesTime.get(0).getWidth(null);
+        for (int i=0; i< imagesTime.size(); ++i) {
+            g.drawImage(imagesTime.get(i), i*widthOfTime, blockY+heightOfBlock+widthOfScore, null);
+        }
+        
+        
+        
         
         Font font = new Font("Arial", Font.BOLD, 25);
         g.setColor(Color.WHITE);
