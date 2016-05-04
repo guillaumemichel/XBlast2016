@@ -21,6 +21,7 @@ import ch.epfl.xblast.server.Board;
 import ch.epfl.xblast.server.GameState;
 import ch.epfl.xblast.server.Player;
 import ch.epfl.xblast.server.debug.RandomEventGenerator;
+import ch.epfl.xblast.server.painter.BoardPainter;
 import ch.epfl.xblast.server.painter.GameStateSerializer;
 import ch.epfl.xblast.server.painter.Level;
 
@@ -68,7 +69,9 @@ public class GUI {
         }*/
         
         //Version in gui
-        ch.epfl.xblast.client.GameState gClient = GameStateDeserializer.deserializeGameState(GameStateSerializer.serialize(Level.DEFAULT_LEVEL));
+        BoardPainter boardPainter = Level.DEFAULT_LEVEL.boardPainter();
+        
+        ch.epfl.xblast.client.GameState gClient = GameStateDeserializer.deserializeGameState(GameStateSerializer.serialize(boardPainter, g));
         XBlastComponent component = new XBlastComponent();
         component.setGameState(gClient, PlayerID.PLAYER_1);
         
@@ -88,11 +91,11 @@ public class GUI {
         Consumer<PlayerAction> c = System.out::println;
         component.addKeyListener(new KeyboardEventHandler(kb, c));
         component.requestFocusInWindow();
-        
+               
         while(! g.isGameOver()){
             g=g.next(randomEvents.randomSpeedChangeEvents(), randomEvents.randomBombDropEvents());
             
-            component.setGameState(GameStateDeserializer.deserializeGameState(GameStateSerializer.serialize(new Level(Level.DEFAULT_LEVEL.boardPainter(), g))), PlayerID.PLAYER_1);
+            component.setGameState(GameStateDeserializer.deserializeGameState(GameStateSerializer.serialize(boardPainter, g)), PlayerID.PLAYER_1);
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {

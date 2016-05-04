@@ -6,6 +6,7 @@ import java.util.List;
 import ch.epfl.xblast.Cell;
 import ch.epfl.xblast.Direction;
 import ch.epfl.xblast.RunLengthEncoder;
+import ch.epfl.xblast.server.GameState;
 import ch.epfl.xblast.server.Player;
 
 /**
@@ -19,32 +20,36 @@ public final class GameStateSerializer {
     
     private GameStateSerializer(){};
     
+    
     /**
-     * Serializes a level (composed of a game state and a board painter) and returns a list of bytes that represents the level
+     * Serializes a game state (represented by a board painter b) and returns a list of bytes that represents the game state
      * 
-     * @param l
-     *      The Level that will be serialized (composed of a game state and a board painter)
-     * 
+     * @param b
+     *      The board painter used with the game state
+     *      
+     * @param g
+     *      The game state we want to serialize
+     *      
      * @return
-     *      The serialized list of bytes
+     *      A list of bytes that represent the serialized version of the game state
      */
-    public static List<Byte> serialize(Level l){
+    public static List<Byte> serialize(BoardPainter b, GameState g){
         List<Byte> list = new ArrayList<>();
         List<Byte> temp = new ArrayList<>();
 
         for (Cell c : Cell.SPIRAL_ORDER)
-            temp.add(l.boardPainter().byteForCell(l.gameState().board(),c));
+            temp.add(b.byteForCell(g.board(),c));
         
         list.add((byte)RunLengthEncoder.encode(temp).size());
         list.addAll(RunLengthEncoder.encode(temp));
         temp.clear();
         for (Cell c : Cell.ROW_MAJOR_ORDER){
-            if (l.gameState().board().blockAt(c).isFree()){
-                if (l.gameState().blastedCells().contains(c))
-                    temp.add(ExplosionPainter.byteForBlast(l.gameState().blastedCells().contains(c.neighbor(Direction.N)), l.gameState().blastedCells().contains(c.neighbor(Direction.E)), l.gameState().blastedCells().contains(c.neighbor(Direction.S)), l.gameState().blastedCells().contains(c.neighbor(Direction.W))));
+            if (g.board().blockAt(c).isFree()){
+                if (g.blastedCells().contains(c))
+                    temp.add(ExplosionPainter.byteForBlast(g.blastedCells().contains(c.neighbor(Direction.N)), g.blastedCells().contains(c.neighbor(Direction.E)), g.blastedCells().contains(c.neighbor(Direction.S)), g.blastedCells().contains(c.neighbor(Direction.W))));
                 
-                else if (l.gameState().bombedCells().containsKey(c))
-                    temp.add(ExplosionPainter.byteForBomb(l.gameState().bombedCells().get(c)));
+                else if (g.bombedCells().containsKey(c))
+                    temp.add(ExplosionPainter.byteForBomb(g.bombedCells().get(c)));
                 
                 else temp.add(ExplosionPainter.BYTE_FOR_EMPTY);
             }
@@ -53,13 +58,13 @@ public final class GameStateSerializer {
         list.add((byte)RunLengthEncoder.encode(temp).size());
         list.addAll(RunLengthEncoder.encode(temp));
         
-        for (Player player : l.gameState().players()){
+        for (Player player : g.players()){
             list.add((byte) player.lives());
             list.add((byte) player.position().x());
             list.add((byte) player.position().y());
-            list.add(PlayerPainter.byteForPlayer(l.gameState().ticks(), player));
+            list.add(PlayerPainter.byteForPlayer(g.ticks(), player));
         }
-        list.add((byte) (2*Math.ceil(l.gameState().remainingTime()/4)));
+        list.add((byte) (2*Math.ceil(g.remainingTime()/4)));
         return list;
     }
 }

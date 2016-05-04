@@ -5,11 +5,16 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import javax.swing.JComponent;
 
 import ch.epfl.xblast.Cell;
 import ch.epfl.xblast.PlayerID;
+import ch.epfl.xblast.client.GameState.Player;
 
 public final class XBlastComponent extends JComponent{
     private GameState gameState = null;
@@ -34,6 +39,15 @@ public final class XBlastComponent extends JComponent{
             
             g.drawImage(gameState.imagesBoard().get(i), blockX, blockY, null);
             g.drawImage(gameState.imagesExplosion().get(i), blockX, blockY, null);          
+        }
+        
+        List<Player> players = new ArrayList<>(gameState.players());
+        Comparator<Player> yCoordinatesComparator = (p1, p2) -> Integer.compare(p1.position().y(), p2.position().y());
+        Comparator<Player> playerIDComparator;
+        Collections.sort(players, yCoordinatesComparator);
+        
+        for (Player player : players) {
+           g.drawImage(player.image(), 4*player.position().x()-24, 3*player.position().y()-52, null);
         }
         
         Font font = new Font("Arial", Font.BOLD, 25);
