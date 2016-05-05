@@ -91,29 +91,13 @@ public final class SubCell {
     public SubCell neighbor(Direction d){
         switch(d){
             case E:
-                //if(x==Cell.COLUMNS*SUBCELL_DIMENSION-1){
-                    //return new SubCell(x-(Cell.COLUMNS*SUBCELL_DIMENSION-1), y);
-                //}else{
                     return new SubCell(x+1, y);
-                //}
             case W:
-                //if(x==0){
-                    //return new SubCell(x+(Cell.COLUMNS*SUBCELL_DIMENSION-1),y);
-                //}else{
                     return new SubCell(x-1, y);
-                //}
             case N:
-                //if(y==0){
-                 //   return new SubCell(x, y+(Cell.ROWS*SUBCELL_DIMENSION-1));
-                //}else{
                     return new SubCell(x, y-1);
-                //}
             case S:
-                //if(y==Cell.ROWS*SUBCELL_DIMENSION-1){
-                 //   return new SubCell(x, y-(Cell.ROWS*SUBCELL_DIMENSION-1));
-                //}else{
                     return new SubCell(x, y+1);
-                //}
             default:
                 return null; 
         }
