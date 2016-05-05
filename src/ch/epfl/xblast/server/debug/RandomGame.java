@@ -1,6 +1,5 @@
 package ch.epfl.xblast.server.debug;
 
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -9,24 +8,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Consumer;
-
-import javax.swing.JFrame;
 
 import ch.epfl.xblast.Cell;
 import ch.epfl.xblast.Direction;
-import ch.epfl.xblast.PlayerAction;
 import ch.epfl.xblast.PlayerID;
-import ch.epfl.xblast.client.GameStateDeserializer;
-import ch.epfl.xblast.client.KeyboardEventHandler;
-import ch.epfl.xblast.client.XBlastComponent;
 import ch.epfl.xblast.server.Block;
 import ch.epfl.xblast.server.Board;
 import ch.epfl.xblast.server.GameState;
 import ch.epfl.xblast.server.Player;
-import ch.epfl.xblast.server.painter.BoardPainter;
-import ch.epfl.xblast.server.painter.GameStateSerializer;
-import ch.epfl.xblast.server.painter.Level;
 
 /**
  * A random game
@@ -67,7 +56,7 @@ public class RandomGame {
         
         //Version in terminal
         
-        /*GameStatePrinter.printGameState(g);
+        GameStatePrinter.printGameState(g);
 
         while(! g.isGameOver()){
             g=g.next(randomEvents.randomSpeedChangeEvents(), randomEvents.randomBombDropEvents());
@@ -75,28 +64,7 @@ public class RandomGame {
             Thread.sleep(50);
             //System.out.print("\u001b[2J");
             System.out.println();
-        }*/
-        
-        //Version in gui
-        BoardPainter boardPainter = Level.DEFAULT_LEVEL.boardPainter();
-
-        ch.epfl.xblast.client.GameState gClient = GameStateDeserializer.deserializeGameState(GameStateSerializer.serialize(boardPainter,g));
-        XBlastComponent component = new XBlastComponent();
-        component.setGameState(gClient, PlayerID.PLAYER_1);
-        
-        JFrame frame = new JFrame("XBlast 2016");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(component);
-        frame.setSize(960, 688);
-        frame.setVisible(true);
-        
-        while(! g.isGameOver()){
-            g=g.next(randomEvents.randomSpeedChangeEvents(), randomEvents.randomBombDropEvents());
-            
-            component.setGameState(GameStateDeserializer.deserializeGameState(GameStateSerializer.serialize(boardPainter,g)), PlayerID.PLAYER_1);
-            Thread.sleep(50);
-        }
-        
+        }     
     }
 
 }

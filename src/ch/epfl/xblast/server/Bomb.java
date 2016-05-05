@@ -135,7 +135,7 @@ public final class Bomb {
         
         Direction[] directions = Direction.values();
         //For every direction, we add the corresponding explosion arm
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < directions.length; i++) {
             explosion.add(explosionArmTowards(directions[i]));
         }
         return explosion;

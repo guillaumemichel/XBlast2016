@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Set;
 
 import ch.epfl.xblast.Cell;
-import ch.epfl.xblast.PlayerID;
 import ch.epfl.xblast.server.Block;
 import ch.epfl.xblast.server.Board;
 import ch.epfl.xblast.server.Bomb;

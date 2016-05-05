@@ -134,29 +134,29 @@ public final class Cell {
     public Cell neighbor(Direction dir){
         switch(dir){
             case E:
-                if(x==COLUMNS-1){
-                    return new Cell(x-(COLUMNS-1), y);
-                }else{
+               // if(x==COLUMNS-1){
+                //    return new Cell(x-(COLUMNS-1), y);
+               // }else{
                     return new Cell(x+1, y);
-                }
+               // }
             case W:
-                if(x==0){
-                    return new Cell(x+(COLUMNS-1),y);
-                }else{
+                //if(x==0){
+                //    return new Cell(x+(COLUMNS-1),y);
+                //}else{
                     return new Cell(x-1, y);
-                }
+               // }
             case N:
-                if(y==0){
-                    return new Cell(x, y+(ROWS-1));
-                }else{
+                //if(y==0){
+                //    return new Cell(x, y+(ROWS-1));
+                //}else{
                     return new Cell(x, y-1);
-                }
+                //}
             case S:
-                if(y==ROWS-1){
-                    return new Cell(x, y-(ROWS-1));
-                }else{
+               // if(y==ROWS-1){
+                //    return new Cell(x, y-(ROWS-1));
+               // }else{
                     return new Cell(x, y+1);
-                }
+                //}
             default:
                 return null; 
         }

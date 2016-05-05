@@ -10,6 +10,7 @@ package ch.epfl.xblast;
 public final class SubCell {
     private final int x, y;
     
+    private final static int SUBCELL_DIMENSION = 16;
     /**
      * Constructs a subcell with coordinates x and y
      * 
@@ -19,8 +20,8 @@ public final class SubCell {
      *      The y coordinate of the subcell
      */
     public SubCell(int x, int y){
-        this.x=Math.floorMod(x, Cell.COLUMNS*16);
-        this.y=Math.floorMod(y, Cell.ROWS*16);
+        this.x=Math.floorMod(x, Cell.COLUMNS*SUBCELL_DIMENSION);
+        this.y=Math.floorMod(y, Cell.ROWS*SUBCELL_DIMENSION);
     }
     
     /**
@@ -53,7 +54,7 @@ public final class SubCell {
      *      The central subcell of the cell
      */
     public static SubCell centralSubCellOf(Cell cell){
-        return new SubCell(cell.x()*16+8, cell.y()*16+8);
+        return new SubCell(cell.x()*SUBCELL_DIMENSION+SUBCELL_DIMENSION/2, cell.y()*SUBCELL_DIMENSION+SUBCELL_DIMENSION/2);
     }
     
     
@@ -90,29 +91,29 @@ public final class SubCell {
     public SubCell neighbor(Direction d){
         switch(d){
             case E:
-                if(x==Cell.COLUMNS*16-1){
-                    return new SubCell(x-(Cell.COLUMNS*16-1), y);
-                }else{
+                //if(x==Cell.COLUMNS*SUBCELL_DIMENSION-1){
+                    //return new SubCell(x-(Cell.COLUMNS*SUBCELL_DIMENSION-1), y);
+                //}else{
                     return new SubCell(x+1, y);
-                }
+                //}
             case W:
-                if(x==0){
-                    return new SubCell(x+(Cell.COLUMNS*16-1),y);
-                }else{
+                //if(x==0){
+                    //return new SubCell(x+(Cell.COLUMNS*SUBCELL_DIMENSION-1),y);
+                //}else{
                     return new SubCell(x-1, y);
-                }
+                //}
             case N:
-                if(y==0){
-                    return new SubCell(x, y+(Cell.ROWS*16-1));
-                }else{
+                //if(y==0){
+                 //   return new SubCell(x, y+(Cell.ROWS*SUBCELL_DIMENSION-1));
+                //}else{
                     return new SubCell(x, y-1);
-                }
+                //}
             case S:
-                if(y==Cell.ROWS*16-1){
-                    return new SubCell(x, y-(Cell.ROWS*16-1));
-                }else{
+                //if(y==Cell.ROWS*SUBCELL_DIMENSION-1){
+                 //   return new SubCell(x, y-(Cell.ROWS*SUBCELL_DIMENSION-1));
+                //}else{
                     return new SubCell(x, y+1);
-                }
+                //}
             default:
                 return null; 
         }
@@ -125,7 +126,7 @@ public final class SubCell {
      *      The cell in which this subcell is contained
      */
     public Cell containingCell(){
-        return new Cell(x/16, y/16);
+        return new Cell(x/SUBCELL_DIMENSION, y/SUBCELL_DIMENSION);
     }
     
     @Override
@@ -146,6 +147,6 @@ public final class SubCell {
     
     @Override
     public int hashCode(){
-        return 16*Cell.COLUMNS*y+x;
+        return SUBCELL_DIMENSION*Cell.COLUMNS*y+x;
     }
 }

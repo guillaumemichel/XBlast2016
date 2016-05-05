@@ -293,7 +293,7 @@ public final class GameState {
         for (Sq<Sq<Cell>> sq : explosions0) {
             blasts1.add(sq.head());
         }
-        return blasts1;
+        return Collections.unmodifiableList(blasts1);
     }
     
     private static Board nextBoard(Board board0, Set<Cell> consumedBonuses, Set<Cell> blastedCells1){

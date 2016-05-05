@@ -20,11 +20,10 @@ import javax.imageio.ImageIO;
  */
 public final class ImageCollection {
     private final String dirName;
-    
     private final Map<Byte, Image> imagesOfDir;
     
     /**
-     * Constructs an image collection of the given directory name that contains images
+     * Constructs an image collection of the given directory name that contains the images
      * 
      * @param dirName
      *      The name of the directory where the images are
