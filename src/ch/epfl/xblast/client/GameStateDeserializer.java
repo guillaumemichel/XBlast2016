@@ -42,17 +42,23 @@ public final class GameStateDeserializer {
         int bs = l.get(0); //board size
         int es = l.get(bs+1); //explosion size
         
-        if (l.size()!=bs+es+2+16+1) throw new IllegalArgumentException();
+        if (l.size()!=bs+es+2+ch.epfl.xblast.server.GameState.PLAYER_NUMBER*4+1) throw new IllegalArgumentException();
         
-        return new GameState(getPlayers(l.subList(bs+es+2, bs+es+18)),boardImage(RunLengthEncoder.decode(l.subList(1, bs+1))),explosionImage(RunLengthEncoder.decode(l.subList(bs+2, bs+es+2))),scoreboardImage(l.subList(bs+es+2, bs+es+18)),timeImage(l.get(l.size()-1)));
+        return new GameState(getPlayers(l.subList(bs+es+2, bs+es+2+4*ch.epfl.xblast.server.GameState.PLAYER_NUMBER*4)),
+                boardImage(RunLengthEncoder.decode(l.subList(1, bs+1))),
+                explosionImage(RunLengthEncoder.decode(l.subList(bs+2, bs+es+2))),
+                scoreboardImage(l.subList(bs+es+2, bs+es+2+ch.epfl.xblast.server.GameState.PLAYER_NUMBER*4)),
+                timeImage(l.get(l.size()-1)));
     }
     
     private static List<Player> getPlayers(List<Byte> l){
         List<Player> p=new ArrayList<>();
-        p.add(new GameState.Player(PlayerID.PLAYER_1, l.get(0), new SubCell(Byte.toUnsignedInt(l.get(1)),Byte.toUnsignedInt(l.get(2))), c4.imageOrNull(l.get(3))));
-        p.add(new GameState.Player(PlayerID.PLAYER_2, l.get(4), new SubCell(Byte.toUnsignedInt(l.get(5)),Byte.toUnsignedInt(l.get(6))), c4.imageOrNull(l.get(7))));
-        p.add(new GameState.Player(PlayerID.PLAYER_3, l.get(8), new SubCell(Byte.toUnsignedInt(l.get(9)),Byte.toUnsignedInt(l.get(10))), c4.imageOrNull(l.get(11))));
-        p.add(new GameState.Player(PlayerID.PLAYER_4, l.get(12), new SubCell(Byte.toUnsignedInt(l.get(13)),Byte.toUnsignedInt(l.get(14))), c4.imageOrNull(l.get(15))));
+        for (int i =0;i<ch.epfl.xblast.server.GameState.PLAYER_NUMBER;++i)
+            p.add(new GameState.Player(
+                    PlayerID.values()[i],
+                    l.get(4*i),
+                    new SubCell(Byte.toUnsignedInt(l.get(4*i+1)), Byte.toUnsignedInt(l.get(4*i+2))),
+                    c4.imageOrNull(l.get(4*i+3))));
         return p;
     }
     private static List<Image> boardImage(List<Byte> l){
