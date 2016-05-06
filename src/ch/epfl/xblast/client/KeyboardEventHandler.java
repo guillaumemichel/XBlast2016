@@ -37,8 +37,7 @@ public class KeyboardEventHandler extends KeyAdapter implements KeyListener{
     
     @Override
     public void keyPressed(KeyEvent k){
-        if (keymap.containsKey(k.getKeyCode())){
+        if (keymap.containsKey(k.getKeyCode()))
         	c.accept(keymap.get(k.getKeyCode()));
-        }
     }
 }

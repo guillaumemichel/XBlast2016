@@ -19,11 +19,11 @@ import ch.epfl.xblast.client.XBlastComponent;
 import ch.epfl.xblast.server.Block;
 import ch.epfl.xblast.server.Board;
 import ch.epfl.xblast.server.GameState;
+import ch.epfl.xblast.server.GameStateSerializer;
+import ch.epfl.xblast.server.Level;
 import ch.epfl.xblast.server.Player;
 import ch.epfl.xblast.server.debug.RandomEventGenerator;
 import ch.epfl.xblast.server.painter.BoardPainter;
-import ch.epfl.xblast.server.painter.GameStateSerializer;
-import ch.epfl.xblast.server.painter.Level;
 
 public class GUI {
 
@@ -91,7 +91,7 @@ public class GUI {
         Consumer<PlayerAction> c = System.out::println;
         component.addKeyListener(new KeyboardEventHandler(kb, c));
         component.requestFocusInWindow();
-               
+        
         while(! g.isGameOver()){
             g=g.next(randomEvents.randomSpeedChangeEvents(), randomEvents.randomBombDropEvents());
             

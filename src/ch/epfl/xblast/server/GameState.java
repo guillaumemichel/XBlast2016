@@ -31,6 +31,9 @@ import ch.epfl.xblast.server.Player.LifeState.State;
  *
  */
 public final class GameState {
+    
+    public static final int PLAYER_NUMBER=4;
+    
     private final int ticks;
     private final Board board;
     private final List<Player> players;
@@ -72,7 +75,7 @@ public final class GameState {
     public GameState(int ticks, Board board, List<Player> players, List<Bomb> bombs, List<Sq<Sq<Cell>>> explosions, List<Sq<Cell>> blasts) throws IllegalArgumentException, NullPointerException{
         this.ticks = ArgumentChecker.requireNonNegative(ticks);
         this.board = Objects.requireNonNull(board);
-        if(players.size()!=4) 
+        if(players.size()!=PLAYER_NUMBER) 
             throw new IllegalArgumentException();
         Collections.sort(players, (p1, p2) -> Integer.compare(p1.id().ordinal(), p2.id().ordinal()));
         this.players = Collections.unmodifiableList(new ArrayList<>(Objects.requireNonNull(players)));

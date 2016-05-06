@@ -1,4 +1,4 @@
-package ch.epfl.xblast.server.painter;
+package ch.epfl.xblast.server;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,10 +9,8 @@ import java.util.Objects;
 
 import ch.epfl.xblast.Cell;
 import ch.epfl.xblast.PlayerID;
-import ch.epfl.xblast.server.Block;
-import ch.epfl.xblast.server.Board;
-import ch.epfl.xblast.server.GameState;
-import ch.epfl.xblast.server.Player;
+import ch.epfl.xblast.server.painter.BlockImage;
+import ch.epfl.xblast.server.painter.BoardPainter;
 
 /**
  * A level

@@ -1,4 +1,4 @@
-package ch.epfl.xblast.server.painter;
+package ch.epfl.xblast.server;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,8 +6,9 @@ import java.util.List;
 import ch.epfl.xblast.Cell;
 import ch.epfl.xblast.Direction;
 import ch.epfl.xblast.RunLengthEncoder;
-import ch.epfl.xblast.server.GameState;
-import ch.epfl.xblast.server.Player;
+import ch.epfl.xblast.server.painter.BoardPainter;
+import ch.epfl.xblast.server.painter.ExplosionPainter;
+import ch.epfl.xblast.server.painter.PlayerPainter;
 
 /**
  * A GameState serializer
