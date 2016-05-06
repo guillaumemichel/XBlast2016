@@ -75,15 +75,6 @@ public final class XBlastComponent extends JComponent{
             g.drawImage(imagesScore.get(i), i*widthOfScore, blockY+heightOfBlock, null);
         }
         
-        //Time display
-        int widthOfTime = imagesTime.get(0).getWidth(null);
-        for (int i=0; i< imagesTime.size(); ++i) {
-            g.drawImage(imagesTime.get(i), i*widthOfTime, blockY+heightOfBlock+widthOfScore, null);
-        }
-        
-        
-        
-        
         Font font = new Font("Arial", Font.BOLD, 25);
         g.setColor(Color.WHITE);
         g.setFont(font);
@@ -92,6 +83,11 @@ public final class XBlastComponent extends JComponent{
         g.drawString(String.valueOf(gameState.players().get(2).lives()), 768, 659);
         g.drawString(String.valueOf(gameState.players().get(3).lives()), 912, 659);
         
+        //Time display
+        int widthOfTime = imagesTime.get(0).getWidth(null);
+        for (int i=0; i< imagesTime.size(); ++i) {
+            g.drawImage(imagesTime.get(i), i*widthOfTime, blockY+heightOfBlock+widthOfScore, null);
+        }
     }
     
     public void setGameState(GameState gameState, PlayerID id){

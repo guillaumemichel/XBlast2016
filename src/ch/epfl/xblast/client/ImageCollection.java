@@ -49,7 +49,7 @@ public final class ImageCollection {
         
         for (File file : dir.listFiles()) {
             try{
-                images.put((byte)Integer.parseInt(file.getName().substring(0, 3)), ImageIO.read(file));
+                images.put(Byte.parseByte(file.getName().substring(0, 3)), ImageIO.read(file));
             }catch(IOException e){
                 
             }catch(NumberFormatException e){

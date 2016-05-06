@@ -125,7 +125,6 @@ public final class GameState {
             this.id=Objects.requireNonNull(id);//WTF ?
             this.lives=ArgumentChecker.requireNonNegative(lives);
             this.position=Objects.requireNonNull(position);
-            //this.image=Objects.requireNonNull(image);
             this.image=image;
         }
         
