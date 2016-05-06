@@ -91,7 +91,7 @@ public class GUI {
         Consumer<PlayerAction> c = System.out::println;
         component.addKeyListener(new KeyboardEventHandler(kb, c));
         component.requestFocusInWindow();
-               
+        
         while(! g.isGameOver()){
             g=g.next(randomEvents.randomSpeedChangeEvents(), randomEvents.randomBombDropEvents());
             

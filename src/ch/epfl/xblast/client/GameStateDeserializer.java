@@ -44,7 +44,7 @@ public final class GameStateDeserializer {
         
         if (l.size()!=bs+es+2+ch.epfl.xblast.server.GameState.PLAYER_NUMBER*4+1) throw new IllegalArgumentException();
         
-        return new GameState(getPlayers(l.subList(bs+es+2, bs+es+2+4*ch.epfl.xblast.server.GameState.PLAYER_NUMBER*4)),
+        return new GameState(getPlayers(l.subList(bs+es+2, bs+es+2+4*ch.epfl.xblast.server.GameState.PLAYER_NUMBER)),
                 boardImage(RunLengthEncoder.decode(l.subList(1, bs+1))),
                 explosionImage(RunLengthEncoder.decode(l.subList(bs+2, bs+es+2))),
                 scoreboardImage(l.subList(bs+es+2, bs+es+2+ch.epfl.xblast.server.GameState.PLAYER_NUMBER*4)),
