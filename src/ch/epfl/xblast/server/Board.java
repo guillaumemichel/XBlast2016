@@ -82,9 +82,9 @@ public final class Board {
         
         /*We fill the list of sequence of blocks in row major order with sequences of constant block that 
         are given in parameter*/
-        for (int i = 0; i < rows.size(); ++i) {
-            for (int j = 0; j < rows.get(i).size(); ++j) {
-                sequence.add(Sq.constant(rows.get(i).get(j)));
+        for (List<Block> blocks : rows) {
+            for (Block block : blocks) {
+                sequence.add(Sq.constant(block));
             }
         }
         
@@ -148,6 +148,7 @@ public final class Board {
        for (int i = 0; i < quadrantNWBlocks.size(); ++i) {
             innerBoard.add(Lists.mirrored(quadrantNWBlocks.get(i)));
         }
+       
         innerBoard = Lists.mirrored(innerBoard);
         
         return ofInnerBlocksWalled(innerBoard);
