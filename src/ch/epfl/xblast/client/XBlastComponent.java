@@ -53,18 +53,23 @@ public final class XBlastComponent extends JComponent{
         }
         
         //Player display
+        System.out.println(players);
         Comparator<Player> yCoordinatesComparator = (p1, p2) -> Integer.compare(p1.position().y(), p2.position().y());
         Comparator<Player> playerIDComparator = (p1, p2) -> {
-            if(p1.position().y() == p2.position().y()){
-                if(p1.id()==this.id)
-                    return 1;
-            }else{
-                    return -1;
-            }
-            return 0;
+            int valueP1 = Math.floorMod(p1.id().ordinal()-this.id.ordinal()-1, 4);
+            int valueP2 = Math.floorMod(p2.id().ordinal()-this.id.ordinal()-1, 4);
+            return Integer.compare(valueP1, valueP2);
         };
+        for (Player player : players) {
+            System.out.println(player.id());
+        }
+
         Collections.sort(players, yCoordinatesComparator.thenComparing(playerIDComparator));
         
+        for (Player player : players) {
+            System.out.println(player.id());
+        }
+        System.out.println("---------");
         for (Player player : players) {
            g.drawImage(player.image(), 4*player.position().x()-24, 3*player.position().y()-52, null);
         }

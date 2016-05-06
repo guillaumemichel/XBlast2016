@@ -312,27 +312,9 @@ public final class GameState {
                 blocks.add(Sq.constant(Block.FREE));
             }else if(board0.blockAt(c).isBonus() && blastedCells1.contains(c)){/*if the current block is a bonus and there is
                 also a blast at this cell, then the bonus has to disappear after a certain amount of time*/
-                
-                alreadyDisappearing=false;
                 Sq<Block> boardBlocks=board0.blocksAt(c);
-                
-                //We check if the bonus block is already disappearing (we look in the sequence if it will become a free block)
-                for (int i = 0; i < Ticks.BONUS_DISAPPEARING_TICKS; ++i) {
-                    if(boardBlocks.head()==Block.FREE){
-                        alreadyDisappearing=true;
-                        break;
-                    }
-                    boardBlocks=boardBlocks.tail();
-                }
-                
-                //Only if the bonus block is not already disappearing, we add the bonus_disappearing time before it becomes a free block
-                if(!alreadyDisappearing){
-                    Sq<Block> bonusDisappearing=Sq.repeat(Ticks.BONUS_DISAPPEARING_TICKS, board0.blockAt(c));
-                    bonusDisappearing=bonusDisappearing.concat(Sq.constant(Block.FREE));
-                    blocks.add(bonusDisappearing);
-                }else{
-                    blocks.add(board0.blocksAt(c).tail());
-                }
+                boardBlocks=boardBlocks.tail().limit(Ticks.BONUS_DISAPPEARING_TICKS).concat(Sq.constant(Block.FREE));
+                blocks.add(boardBlocks);
             }else if(board0.blockAt(c)==Block.DESTRUCTIBLE_WALL && blastedCells1.contains(c)){/*if the current block is destructible
             and there is also a blast at this cell, then it has to crumble a while, and finally it has to change into another block*/
                 Sq<Block> destructibleWall=Sq.repeat(Ticks.WALL_CRUMBLING_TICKS, Block.CRUMBLING_WALL);
