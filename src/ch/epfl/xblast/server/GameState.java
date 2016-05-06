@@ -410,7 +410,7 @@ public final class GameState {
         Player player1;
         SubCell nextCentral;
         Optional<Direction> chosenDir;
-        DirectedPosition newDirectedPos;
+        DirectedPosition newDirectedPos, nextCentralDirectedPos;
         
         for (Player player : players0) {
             //First of all we compute the new sequence of directedPosition depending on the chosen direction:
@@ -427,14 +427,11 @@ public final class GameState {
                         nextDirectedPos=nextDirectedPos.concat(DirectedPosition.moving(new DirectedPosition(nextCentral, chosenDir.get())));
                     }
                 }else{//the player has chosen to stop (he first needs to reach the first central subCell in his path)
-                    Sq<DirectedPosition> sq = player.directedPositions();
-          
-                    for (int i = 0; i < SubCell.SUBCELL_DIMENSION-1; ++i)
-                        sq=sq.tail();
+                    nextCentralDirectedPos=player.directedPositions().findFirst(d -> d.position().isCentral());
                     
                     nextDirectedPos=player.directedPositions().takeWhile(s -> !s.position().isCentral());
                     nextDirectedPos=nextDirectedPos.concat(DirectedPosition.stopped(
-                            new DirectedPosition(player.directedPositions().findFirst(s -> s.position().isCentral()).position(),sq.head().direction())));
+                            new DirectedPosition(nextCentralDirectedPos.position(),nextCentralDirectedPos.direction())));
                 }
                 
             }else{//the player hasn't chosen anything, so he keeps going where he is going
