@@ -104,11 +104,7 @@ public final class Cell {
             	spiral.add( horizontal ? new Cell(c1,c2):new Cell(c2,c1));
             	//adding new Cell in the array according on the boolean horizontal
             }
-            l=i1.size();
-            for(int i=0;i<l;++i){
-            	i1.add(i1.get(l-1-i));
-            	i1.remove(l-1-i);
-            } //inversion of list i1
+            Collections.reverse(i1);
             horizontal = !horizontal;
         }
         return spiral;
