@@ -32,7 +32,7 @@ import ch.epfl.xblast.server.Player.LifeState.State;
  */
 public final class GameState {
     
-    public static final int PLAYER_NUMBER=4;
+    public static final int PLAYER_NUMBER = 4;
     
     private final int ticks;
     private final Board board;
@@ -263,7 +263,7 @@ public final class GameState {
         newBombs.addAll(newlyDroppedBombs(playersOrder,bombDropEvents,bombs));
         newBombs.addAll(bombs);
         for (Bomb b :newBombs){
-            if (b.fuseLength()==1 || blastedCells1.contains(b.position())){
+            if (b.fuseLengths().tail().isEmpty() || blastedCells1.contains(b.position())){
                 explosions1.addAll(b.explosion());
             }else {
                 newBombs1.add(new Bomb(b.ownerId(),b.position(),b.fuseLengths().tail(),b.range()));

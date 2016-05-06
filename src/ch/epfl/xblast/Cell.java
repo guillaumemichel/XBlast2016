@@ -87,7 +87,7 @@ public final class Cell {
         ArrayList<Cell> spiral = new ArrayList<Cell>();
         ArrayList<Integer> i1;
         ArrayList<Integer> i2;
-        int c1, c2, l;
+        int c1, c2;
         
         while(!ix.isEmpty()&&!iy.isEmpty()){
             if(horizontal){
