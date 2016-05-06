@@ -10,7 +10,7 @@ package ch.epfl.xblast;
 public final class SubCell {
     private final int x, y;
     
-    private final static int SUBCELL_DIMENSION = 16;
+    public final static int SUBCELL_DIMENSION = 16;
     /**
      * Constructs a subcell with coordinates x and y
      * 

@@ -4,6 +4,8 @@ Changement dans GameState:nextBasts() pas exactement comme dans la consigne
 
 Todo :
 
+
+Pour modifier le nombre de players : (BONUS ?)
 Dans PERMUTATIONS (de la classe GameState(server)), est-ce que cette liste est static ou est-ce qu'on la construit
 dans le constructeur à partir des players ?
 Dans XBlastComponent le drawing des scores des players est à revoir si on veut adapter le jeu pour plus de players

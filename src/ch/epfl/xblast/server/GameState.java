@@ -33,6 +33,7 @@ import ch.epfl.xblast.server.Player.LifeState.State;
 public final class GameState {
     
     public static final int PLAYER_NUMBER = 4;
+    private static final int DISTANCE_TO_BOMB = 6;
     
     private final int ticks;
     private final Board board;
@@ -401,7 +402,8 @@ public final class GameState {
         return bombs1;
     }
     
-    private static List<Player> nextPlayers(List<Player> players0, Map<PlayerID, Bonus> playerBonuses, Set<Cell> bombedCells1, Board board1, Set<Cell> blastedCells1, Map<PlayerID, Optional<Direction>> speedChangeEvents){
+    private static List<Player> nextPlayers(List<Player> players0, Map<PlayerID, Bonus> playerBonuses,
+            Set<Cell> bombedCells1, Board board1, Set<Cell> blastedCells1, Map<PlayerID, Optional<Direction>> speedChangeEvents){
         List<Player> players1=new ArrayList<>();
         Sq<DirectedPosition> nextDirectedPos;
         Sq<LifeState> nextLifeState;
@@ -417,7 +419,8 @@ public final class GameState {
                 nextCentral=(player.directedPositions().findFirst(d -> d.position().isCentral())).position();
                 chosenDir=speedChangeEvents.get(player.id());
                 if(chosenDir.isPresent()){//the player has chosen a direction
-                    if(chosenDir.get().isParallelTo(player.direction())){//if the direction chosen is parallel to the one he is already going, he can immediately move backwards or forwards 
+                    if(chosenDir.get().isParallelTo(player.direction())){/*if the direction chosen is parallel to the one
+                        he is already going, he can immediately move backwards or forwards*/
                         nextDirectedPos=DirectedPosition.moving(new DirectedPosition(player.position(), chosenDir.get()));
                     }else{//otherwise he first need to reach the first central subCell in his path, to finally turn where he wants to
                         nextDirectedPos=player.directedPositions().takeWhile(s -> !s.position().isCentral());
@@ -426,11 +429,12 @@ public final class GameState {
                 }else{//the player has chosen to stop (he first needs to reach the first central subCell in his path)
                     Sq<DirectedPosition> sq = player.directedPositions();
           
-                    for (int i = 0; i < 15; ++i)
+                    for (int i = 0; i < SubCell.SUBCELL_DIMENSION-1; ++i)
                         sq=sq.tail();
                     
                     nextDirectedPos=player.directedPositions().takeWhile(s -> !s.position().isCentral());
-                    nextDirectedPos=nextDirectedPos.concat(DirectedPosition.stopped(new DirectedPosition(player.directedPositions().findFirst(s -> s.position().isCentral()).position(),sq.head().direction())));
+                    nextDirectedPos=nextDirectedPos.concat(DirectedPosition.stopped(
+                            new DirectedPosition(player.directedPositions().findFirst(s -> s.position().isCentral()).position(),sq.head().direction())));
                 }
                 
             }else{//the player hasn't chosen anything, so he keeps going where he is going
@@ -441,9 +445,15 @@ public final class GameState {
             
             //Here, we determine if the player can move. If so, the sequence of directedPosition is consumed
             if(player.lifeState().canMove() &&
-                    (!player.position().isCentral() || (player.position().isCentral() && board1.blockAt(player.position().containingCell().neighbor(newDirectedPos.direction())).canHostPlayer())) &&
-                    ((player.position().distanceToCentral()!=6) || !(player.position().distanceToCentral()==6 && bombedCells1.contains(player.position().containingCell()) && newDirectedPos.position().neighbor(newDirectedPos.direction()).distanceToCentral()==5)))
-                        nextDirectedPos=nextDirectedPos.tail();
+                    
+                    (!player.position().isCentral() || (player.position().isCentral() && 
+                            board1.blockAt(player.position().containingCell().neighbor(newDirectedPos.direction())).canHostPlayer())) &&
+                    
+                    ((player.position().distanceToCentral()!=DISTANCE_TO_BOMB) || !(player.position().distanceToCentral()==DISTANCE_TO_BOMB && 
+                            bombedCells1.contains(player.position().containingCell()) && 
+                            newDirectedPos.position().neighbor(newDirectedPos.direction()).distanceToCentral()==DISTANCE_TO_BOMB-1)))
+                       
+                nextDirectedPos=nextDirectedPos.tail();
                     
             //We create the new lifeState sequence for the next state
             if(blastedCells1.contains(nextDirectedPos.head().position().containingCell()) && player.lifeState().state()==State.VULNERABLE){

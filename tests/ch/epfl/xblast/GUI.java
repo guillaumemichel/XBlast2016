@@ -73,13 +73,12 @@ public class GUI {
         
         ch.epfl.xblast.client.GameState gClient = GameStateDeserializer.deserializeGameState(GameStateSerializer.serialize(boardPainter, g));
         XBlastComponent component = new XBlastComponent();
-        component.setGameState(gClient, PlayerID.PLAYER_1);
         
         JFrame frame = new JFrame("XBlast 2016");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(component);
         frame.pack();
-        frame.setVisible(true);
+        
         
         Map<Integer, PlayerAction> kb = new HashMap<>();
         kb.put(KeyEvent.VK_UP, PlayerAction.MOVE_N);
@@ -91,6 +90,15 @@ public class GUI {
         Consumer<PlayerAction> c = System.out::println;
         component.addKeyListener(new KeyboardEventHandler(kb, c));
         component.requestFocusInWindow();
+        component.setGameState(gClient, PlayerID.PLAYER_1);
+        
+        frame.setVisible(true);
+        
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        }
         
         while(! g.isGameOver()){
             g=g.next(randomEvents.randomSpeedChangeEvents(), randomEvents.randomBombDropEvents());
