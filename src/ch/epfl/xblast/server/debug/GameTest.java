@@ -26,13 +26,13 @@ import ch.epfl.xblast.server.Player;
 public class GameTest {
 
     public static void main(String[] args) throws InterruptedException{
-        RandomEventGenerator randomEvents=new RandomEventGenerator(2016, 30, 100);
+        //RandomEventGenerator randomEvents=new RandomEventGenerator(2016, 30, 100);
         //java -classpath jar/sq.jar:bin ch.epfl.xblast.server.debug.RandomGame
         Block __ = Block.FREE;
-        Block XX = Block.INDESTRUCTIBLE_WALL;
+        //Block XX = Block.INDESTRUCTIBLE_WALL;
         Block xx = Block.DESTRUCTIBLE_WALL;
-        Block br = Block.BONUS_RANGE;
-        Block bb = Block.BONUS_BOMB;
+        //Block br = Block.BONUS_RANGE;
+        //Block bb = Block.BONUS_BOMB;
         Board board = Board.ofQuadrantNWBlocksWalled(
                 Arrays.asList(
                         Arrays.asList(__,xx,__,__,__,xx,xx),
