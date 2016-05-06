@@ -145,10 +145,10 @@ public final class Board {
         List<List<Block>> innerBoard=new ArrayList<List<Block>>();
         
         //We use the mirrored() method to create a list of inner blocks that is symmetrical
-        for (int i = 0; i < quadrantNWBlocks.size(); ++i) {
+       for (int i = 0; i < quadrantNWBlocks.size(); ++i) {
             innerBoard.add(Lists.mirrored(quadrantNWBlocks.get(i)));
         }
-        innerBoard = Lists.mirrored(quadrantNWBlocks);
+        innerBoard = Lists.mirrored(innerBoard);
         
         return ofInnerBlocksWalled(innerBoard);
     }
