@@ -146,8 +146,7 @@ public final class Board {
         
         //We use the mirrored() method to create a list of inner blocks that is symmetrical
         for (int i = 0; i < quadrantNWBlocks.size(); ++i) {
-            quadrantNWBlocks.set(i, Lists.mirrored(quadrantNWBlocks.get(i)));
-            innerBoard.add(quadrantNWBlocks.get(i));
+            innerBoard.add(Lists.mirrored(quadrantNWBlocks.get(i)));
         }
         innerBoard = Lists.mirrored(quadrantNWBlocks);
         
