@@ -53,11 +53,11 @@ public final class XBlastComponent extends JComponent{
         }
         
         //Player display
-        System.out.println(players);
         Comparator<Player> yCoordinatesComparator = (p1, p2) -> Integer.compare(p1.position().y(), p2.position().y());
         Comparator<Player> playerIDComparator = (p1, p2) -> {
             int valueP1 = Math.floorMod(p1.id().ordinal()-this.id.ordinal()-1, 4);
             int valueP2 = Math.floorMod(p2.id().ordinal()-this.id.ordinal()-1, 4);
+            System.out.println("CONFLIT!!!!!!!");
             return Integer.compare(valueP1, valueP2);
         };
         for (Player player : players) {
@@ -65,7 +65,7 @@ public final class XBlastComponent extends JComponent{
         }
 
         Collections.sort(players, yCoordinatesComparator.thenComparing(playerIDComparator));
-        
+        System.out.println("SORTED");
         for (Player player : players) {
             System.out.println(player.id());
         }

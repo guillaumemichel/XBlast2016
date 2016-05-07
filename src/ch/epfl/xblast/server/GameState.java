@@ -43,8 +43,8 @@ public final class GameState {
     private final List<Sq<Cell>> blasts;
     
     
-    private final static List<List<PlayerID>> PERMUTATIONS=Collections.unmodifiableList(Lists.permutations(Arrays.asList(PlayerID.values())));
-    private final static Random RANDOM=new Random(2016);
+    private final static List<List<PlayerID>> PERMUTATIONS = Collections.unmodifiableList(Lists.permutations(Arrays.asList(PlayerID.values())));
+    private final static Random RANDOM = new Random(2016);
     
     /**
      * Constructs a game state with the given attributes
@@ -76,7 +76,7 @@ public final class GameState {
     public GameState(int ticks, Board board, List<Player> players, List<Bomb> bombs, List<Sq<Sq<Cell>>> explosions, List<Sq<Cell>> blasts) throws IllegalArgumentException, NullPointerException{
         this.ticks = ArgumentChecker.requireNonNegative(ticks);
         this.board = Objects.requireNonNull(board);
-        if(players.size()!=PLAYER_NUMBER) 
+        if(players.size()!= PLAYER_NUMBER) 
             throw new IllegalArgumentException();
         Collections.sort(players, (p1, p2) -> Integer.compare(p1.id().ordinal(), p2.id().ordinal()));
         this.players = Collections.unmodifiableList(new ArrayList<>(Objects.requireNonNull(players)));
@@ -302,7 +302,6 @@ public final class GameState {
     
     private static Board nextBoard(Board board0, Set<Cell> consumedBonuses, Set<Cell> blastedCells1){
         List<Sq<Block>> blocks=new ArrayList<>();
-        boolean alreadyDisappearing;
         
         //We iterate over all cells
         for (Cell c : Cell.ROW_MAJOR_ORDER) {
