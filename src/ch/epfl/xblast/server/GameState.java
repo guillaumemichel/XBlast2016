@@ -215,7 +215,7 @@ public final class GameState {
      * 
      * @return
      *      The game state at the next tick, depending on the actual one and the given events
-     */    
+     */
     public GameState next(Map<PlayerID, Optional<Direction>> speedChangeEvents, Set<PlayerID> bombDropEvents){
         
         List<PlayerID> pid = new ArrayList<>(PERMUTATIONS.get(ticks%PERMUTATIONS.size()));
