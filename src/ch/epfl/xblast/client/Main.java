@@ -4,18 +4,61 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.net.StandardProtocolFamily;
+import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JFrame;
+
+import ch.epfl.xblast.PlayerAction;
+import ch.epfl.xblast.PlayerID;
 
 public final class Main {
 
     public static void main(String[] args) {
         try {
-            DatagramChannel channel =
-                    DatagramChannel.open(StandardProtocolFamily.INET);
+            DatagramChannel channel = DatagramChannel.open(StandardProtocolFamily.INET);
+            SocketAddress chaussette = new InetSocketAddress(args.length==0 ? "localhost": args[0],2016);
+            channel.bind(chaussette).configureBlocking(false);
+            List<Byte> firstState = new ArrayList<>();
+            
+            ByteBuffer b = joinGame(channel, chaussette);
+            PlayerID id = PlayerID.values()[b.get()];
+            
+            while(b.hasRemaining())
+                firstState.add(b.get());
+                        
+            System.out.println(firstState.size());
+            XBlastComponent component = new XBlastComponent();
+            component.setGameState(GameStateDeserializer.deserializeGameState(firstState), id);
+            
+            JFrame frame = new JFrame("XBlast 2016");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.add(component);
+            frame.pack();
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
-        SocketAddress chaussette = new InetSocketAddress(args.length==0 ? args[0]:"localhost",2016);
+        
+    }
+    
+    private static ByteBuffer joinGame(DatagramChannel channel,SocketAddress chaussette) {
+        ByteBuffer join = ByteBuffer.allocate(1);
+        ByteBuffer firstState = ByteBuffer.allocate(410);
+        SocketAddress serverAddress;
+        
+        join.put((byte)PlayerAction.JOIN_GAME.ordinal()).flip();
+        try {
+            do {
+                channel.send(join, chaussette);
+                serverAddress = channel.receive(firstState);
+            } while (serverAddress == null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return firstState;
     }
 
 }
