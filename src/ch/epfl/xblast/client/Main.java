@@ -47,17 +47,19 @@ public final class Main {
     private static ByteBuffer joinGame(DatagramChannel channel,SocketAddress chaussette) {
         ByteBuffer join = ByteBuffer.allocate(1);
         ByteBuffer firstState = ByteBuffer.allocate(410);
-        SocketAddress serverAddress;
-        
+        SocketAddress serverAddress=null;
+        int i=0;
         join.put((byte)PlayerAction.JOIN_GAME.ordinal()).flip();
         try {
             do {
                 channel.send(join, chaussette);
                 serverAddress = channel.receive(firstState);
-            } while (serverAddress == null);
+                ++i;
+            } while (!firstState.hasRemaining());
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println(i);
         return firstState;
     }
 
