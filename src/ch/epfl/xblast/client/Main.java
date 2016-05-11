@@ -38,6 +38,11 @@ public final class Main {
             frame.add(component);
             frame.pack();
             
+            channel.configureBlocking(true);
+            while (true){
+                
+            }
+            
         } catch (IOException e) {
             e.printStackTrace();
         }

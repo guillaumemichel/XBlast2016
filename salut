@@ -13,3 +13,9 @@ En fait tout le display ^^
 PlayerPainter à adapter (avec les images et tout, pour si on a plus de 4 players)
 (Level adapter la méthode defaultLevel())
 Adapter le GameStateDeserializer (pour la création d'image du scoreboard)
+
+BONUS :
+- Music oklm
+- Map Editor
+- Affichage du winner sur le client (proposer de rejouer)
+- Ajouter des bonus
