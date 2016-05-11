@@ -23,11 +23,11 @@ public final class Main {
             channel.bind(chaussette).configureBlocking(false);
             List<Byte> firstState = new ArrayList<>();
             
-            ByteBuffer b = joinGame(channel, chaussette);
-            PlayerID id = PlayerID.values()[b.get()];
+            ByteBuffer bjoin = joinGame(channel, chaussette);
+            PlayerID id = PlayerID.values()[bjoin.get()];
             
-            while(b.hasRemaining())
-                firstState.add(b.get());
+            while(bjoin.hasRemaining())
+                firstState.add(bjoin.get());
                         
             System.out.println(firstState.size());
             XBlastComponent component = new XBlastComponent();
@@ -55,7 +55,7 @@ public final class Main {
                 channel.send(join, chaussette);
                 serverAddress = channel.receive(firstState);
                 ++i;
-            } while (!firstState.hasRemaining());
+            } while (serverAddress==null);
         } catch (IOException e) {
             e.printStackTrace();
         }
