@@ -29,7 +29,7 @@ public final class Main {
             SocketAddress chaussette = new InetSocketAddress(args.length==0 ? "localhost": args[0],2016);
             SwingUtilities.invokeAndWait(() -> createUI(channel, chaussette));
 
-            channel.bind(chaussette).configureBlocking(false);
+            channel.configureBlocking(false);
             
             ByteBuffer bjoin = joinGame(channel, chaussette);
             PlayerID id = PlayerID.values()[bjoin.get()];
@@ -91,13 +91,12 @@ public final class Main {
     
     private static ByteBuffer joinGame(DatagramChannel channel,SocketAddress chaussette) {
         ByteBuffer join = ByteBuffer.allocate(1);
-        ByteBuffer firstState = null;
+        ByteBuffer firstState = ByteBuffer.allocate(410);
         join.put((byte)PlayerAction.JOIN_GAME.ordinal()).flip();
         try {
-            do {
+            do
                 channel.send(join, chaussette);
-                channel.receive(firstState);
-            } while (firstState==null);
+            while(channel.receive(firstState)==null);
         } catch (IOException e) {
             e.printStackTrace();
         }
