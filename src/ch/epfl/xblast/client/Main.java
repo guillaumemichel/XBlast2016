@@ -38,8 +38,10 @@ public final class Main {
             while(bjoin.hasRemaining())
                 firstState.add(bjoin.get());
             
-            System.out.println(firstState.toString());
+            /*System.out.println(firstState.toString());
             component.setGameState(GameStateDeserializer.deserializeGameState(firstState), id);
+            frame.setVisible(true);
+
             
 
             ByteBuffer currentState = ByteBuffer.allocate(409);
@@ -50,7 +52,7 @@ public final class Main {
                 while (currentState.hasRemaining())
                     list.add(currentState.get());
                 component.setGameState(GameStateDeserializer.deserializeGameState(list), id);
-            }
+            }*/
             
         } catch (IOException e) {
             e.printStackTrace();
@@ -85,14 +87,13 @@ public final class Main {
         };
         component.addKeyListener(new KeyboardEventHandler(kb, c));
         component.requestFocusInWindow();
-        
-        frame.setVisible(true);
     }
     
     private static ByteBuffer joinGame(DatagramChannel channel,SocketAddress chaussette) {
         ByteBuffer join = ByteBuffer.allocate(1);
         ByteBuffer firstState = ByteBuffer.allocate(410);
         join.put((byte)PlayerAction.JOIN_GAME.ordinal()).flip();
+        System.out.println("Connecting the server ...");
         try {
             do
                 channel.send(join, chaussette);
@@ -100,6 +101,7 @@ public final class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("Connected");
         return firstState;
     }
 
