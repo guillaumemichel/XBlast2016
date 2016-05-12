@@ -42,6 +42,8 @@ public final class GameStateDeserializer {
         int bs = l.get(0); //board size
         int es = l.get(bs+1); //explosion size
         
+        System.out.println("Expected size : "+(bs+es+19)+"\tReal size : "+l.size()+"\nBoard size : "+bs+"\tExplosion size : "+es);
+        
         if (l.size()!=bs+es+2+ch.epfl.xblast.server.GameState.PLAYER_NUMBER*4+1) throw new IllegalArgumentException();
         
         return new GameState(getPlayers(l.subList(bs+es+2, bs+es+2+4*ch.epfl.xblast.server.GameState.PLAYER_NUMBER)),

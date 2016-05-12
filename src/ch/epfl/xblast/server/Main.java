@@ -34,19 +34,26 @@ public final class Main {
             Map<SocketAddress, PlayerID> players = joiningGame(numberOfPlayers, receivingBuffer, channel);
             
             long startTime;
+            long remainingTime;
             GameState g = Level.DEFAULT_LEVEL.gameState();
             BoardPainter b = Level.DEFAULT_LEVEL.boardPainter();
             Map<PlayerID, Optional<Direction>> speedChangeEvents = new HashMap<>();
             Set<PlayerID> bombDropEvents = new HashSet<>();
             
             channel.configureBlocking(false);
-                        
+            int i=0;
+            
+            SocketAddress senderAdress;
+            ByteBuffer playerBuffer;
+            ByteBuffer sendingBuffer;
+            
             while(!g.isGameOver()){
+                System.out.println(++i);
                 startTime = System.nanoTime();
                 
                 List<Byte> serializedGameState = GameStateSerializer.serialize(b, g);
-                ByteBuffer sendingBuffer = ByteBuffer.allocate(serializedGameState.size()+1);
-                ByteBuffer playerBuffer;
+                //System.out.println(serializedGameState.size());
+                sendingBuffer = ByteBuffer.allocate(serializedGameState.size()+1);
                 
                 for(Byte bytes : serializedGameState)
                     sendingBuffer.put(bytes);
@@ -58,10 +65,10 @@ public final class Main {
                     playerBuffer.put(0, (byte) player.getValue().ordinal());
                     playerBuffer.flip();
                     channel.send(playerBuffer, player.getKey());
+                    playerBuffer.clear();
                 }
                 
-                SocketAddress senderAdress;
-                speedChangeEvents.clear();
+                /*speedChangeEvents.clear();
                 bombDropEvents.clear();
                 while((senderAdress = channel.receive(receivingBuffer)) != null){
                     if(receivingBuffer.get(0)==PlayerAction.DROP_BOMB.ordinal()){
@@ -72,9 +79,12 @@ public final class Main {
                         else
                             speedChangeEvents.put(players.get(senderAdress), Optional.of(Direction.values()[receivingBuffer.get(0)-1]));
                     }
-                }
-                Thread.sleep(0L, (int)(Ticks.TICK_NANOSECOND_DURATION-(System.nanoTime()-startTime)));
+                }*/
+                remainingTime = Ticks.TICK_NANOSECOND_DURATION-(System.nanoTime()-startTime);
+                if (remainingTime>0)
+                    Thread.sleep((long) (remainingTime/Math.pow(10, 6)), (int) (remainingTime%Math.pow(10, 6)));
                 g = g.next(speedChangeEvents, bombDropEvents);
+
             }
         } catch (IOException e) {
             e.printStackTrace();

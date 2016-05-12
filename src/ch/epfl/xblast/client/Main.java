@@ -34,20 +34,19 @@ public final class Main {
             ByteBuffer bjoin = joinGame(channel, chaussette);
             PlayerID id = PlayerID.values()[bjoin.get()];
             
+            System.out.println(id);
+            
             List<Byte> firstState = new ArrayList<>();
             while(bjoin.hasRemaining())
                 firstState.add(bjoin.get());
-            
-            /*System.out.println(firstState.toString());
+            System.out.println(firstState);
             component.setGameState(GameStateDeserializer.deserializeGameState(firstState), id);
-            frame.setVisible(true);
-
             
 
             ByteBuffer currentState = ByteBuffer.allocate(409);
             List<Byte> list = new ArrayList<>();
             channel.configureBlocking(true);
-            while (true){
+            /*while (true){
                 channel.receive(currentState);
                 while (currentState.hasRemaining())
                     list.add(currentState.get());
@@ -87,6 +86,7 @@ public final class Main {
         };
         component.addKeyListener(new KeyboardEventHandler(kb, c));
         component.requestFocusInWindow();
+        //frame.setVisible(true);
     }
     
     private static ByteBuffer joinGame(DatagramChannel channel,SocketAddress chaussette) {
