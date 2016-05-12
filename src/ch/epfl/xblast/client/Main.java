@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import ch.epfl.xblast.PlayerAction;
 import ch.epfl.xblast.PlayerID;
@@ -17,7 +18,10 @@ import ch.epfl.xblast.PlayerID;
 public final class Main {
 
     public static void main(String[] args) {
-        try {
+        SwingUtilities.invokeAndWait(() -> createUI());
+        XBlastComponent component = new XBlastComponent();
+        
+        try {            
             DatagramChannel channel = DatagramChannel.open(StandardProtocolFamily.INET);
             SocketAddress chaussette = new InetSocketAddress(args.length==0 ? "localhost": args[0],2016);
             channel.bind(chaussette).configureBlocking(false);
@@ -28,15 +32,10 @@ public final class Main {
             
             while(bjoin.hasRemaining())
                 firstState.add(bjoin.get());
-                        
-            System.out.println(firstState.size());
-            XBlastComponent component = new XBlastComponent();
+            
             component.setGameState(GameStateDeserializer.deserializeGameState(firstState), id);
             
-            JFrame frame = new JFrame("XBlast 2016");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.add(component);
-            frame.pack();
+
             
             channel.configureBlocking(true);
             while (true){
@@ -47,6 +46,14 @@ public final class Main {
             e.printStackTrace();
         }
         
+    }
+    
+    private static void createUI(){
+        JFrame frame = new JFrame("XBlast 2016");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.add(component);
+        frame.pack();
+        frame.setVisible(true);
     }
     
     private static ByteBuffer joinGame(DatagramChannel channel,SocketAddress chaussette) {
