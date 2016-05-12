@@ -41,10 +41,8 @@ public final class GameStateDeserializer {
     public static GameState deserializeGameState(List<Byte> l){
         int bs = l.get(0); //board size
         int es = l.get(bs+1); //explosion size
-        
-        System.out.println("Expected size : "+(bs+es+19)+"\tReal size : "+l.size()+"\nBoard size : "+bs+"\tExplosion size : "+es);
-        
-        if (l.size()!=bs+es+2+ch.epfl.xblast.server.GameState.PLAYER_NUMBER*4+1) throw new IllegalArgumentException();
+                
+        if (l.size()!=bs+es+2+ch.epfl.xblast.server.GameState.PLAYER_NUMBER*4+1) throw new IllegalArgumentException("Expected was "+(bs+es+19)+"\tReal was "+l.size());
         
         return new GameState(getPlayers(l.subList(bs+es+2, bs+es+2+4*ch.epfl.xblast.server.GameState.PLAYER_NUMBER)),
                 boardImage(RunLengthEncoder.decode(l.subList(1, bs+1))),

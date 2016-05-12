@@ -31,7 +31,9 @@ public final class Main {
             DatagramChannel channel = DatagramChannel.open(StandardProtocolFamily.INET);
             channel.bind(new InetSocketAddress(2016));
             
+            System.out.println("Finding peers ...");
             Map<SocketAddress, PlayerID> players = joiningGame(numberOfPlayers, receivingBuffer, channel);
+            System.out.println("Launching game ...");
             
             long startTime;
             long remainingTime;
@@ -41,20 +43,18 @@ public final class Main {
             Set<PlayerID> bombDropEvents = new HashSet<>();
             
             channel.configureBlocking(false);
-            int i=0;
             
             SocketAddress senderAdress;
             ByteBuffer playerBuffer;
             ByteBuffer sendingBuffer;
             
             while(!g.isGameOver()){
-                System.out.println(++i);
                 startTime = System.nanoTime();
                 
                 List<Byte> serializedGameState = GameStateSerializer.serialize(b, g);
-                //System.out.println(serializedGameState.size());
                 sendingBuffer = ByteBuffer.allocate(serializedGameState.size()+1);
                 
+                sendingBuffer.position(1);
                 for(Byte bytes : serializedGameState)
                     sendingBuffer.put(bytes);
                 

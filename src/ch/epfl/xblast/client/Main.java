@@ -21,37 +21,37 @@ import ch.epfl.xblast.PlayerAction;
 import ch.epfl.xblast.PlayerID;
 
 public final class Main {
-    private static XBlastComponent component = new XBlastComponent();
-
     public static void main(String[] args) {
         try {
             DatagramChannel channel = DatagramChannel.open(StandardProtocolFamily.INET);
             SocketAddress chaussette = new InetSocketAddress(args.length==0 ? "localhost": args[0],2016);
-            SwingUtilities.invokeAndWait(() -> createUI(channel, chaussette));
+            XBlastComponent component = new XBlastComponent();
+            SwingUtilities.invokeAndWait(() -> createUI(channel, chaussette,component));
 
             channel.configureBlocking(false);
             
             ByteBuffer bjoin = joinGame(channel, chaussette);
             PlayerID id = PlayerID.values()[bjoin.get()];
             
-            System.out.println(id);
+            //System.out.println(id);
             
             List<Byte> firstState = new ArrayList<>();
             while(bjoin.hasRemaining())
                 firstState.add(bjoin.get());
-            System.out.println(firstState);
             component.setGameState(GameStateDeserializer.deserializeGameState(firstState), id);
             
 
-            ByteBuffer currentState = ByteBuffer.allocate(409);
+            ByteBuffer currentState = ByteBuffer.allocate(410);
             List<Byte> list = new ArrayList<>();
             channel.configureBlocking(true);
-            /*while (true){
+            while (true){
                 channel.receive(currentState);
+                currentState.flip();
                 while (currentState.hasRemaining())
                     list.add(currentState.get());
-                component.setGameState(GameStateDeserializer.deserializeGameState(list), id);
-            }*/
+                component.setGameState(GameStateDeserializer.deserializeGameState(list.subList(1, list.size())), id);
+                list.clear();
+            }
             
         } catch (IOException e) {
             e.printStackTrace();
@@ -63,7 +63,7 @@ public final class Main {
         
     }
     
-    private static void createUI(DatagramChannel channel, SocketAddress chaussette){
+    private static void createUI(DatagramChannel channel, SocketAddress chaussette,XBlastComponent component){
         JFrame frame = new JFrame("XBlast 2016");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(component);
@@ -86,7 +86,7 @@ public final class Main {
         };
         component.addKeyListener(new KeyboardEventHandler(kb, c));
         component.requestFocusInWindow();
-        //frame.setVisible(true);
+        frame.setVisible(true);
     }
     
     private static ByteBuffer joinGame(DatagramChannel channel,SocketAddress chaussette) {
@@ -95,13 +95,14 @@ public final class Main {
         join.put((byte)PlayerAction.JOIN_GAME.ordinal()).flip();
         System.out.println("Connecting the server ...");
         try {
-            do
+            do {
                 channel.send(join, chaussette);
-            while(channel.receive(firstState)==null);
+            }while(channel.receive(firstState)==null);
         } catch (IOException e) {
             e.printStackTrace();
         }
         System.out.println("Connected");
+        firstState.flip();
         return firstState;
     }
 
