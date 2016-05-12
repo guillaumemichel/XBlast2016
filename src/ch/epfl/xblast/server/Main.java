@@ -40,7 +40,7 @@ public final class Main {
             Set<PlayerID> bombDropEvents = new HashSet<>();
             
             channel.configureBlocking(false);
-            
+                        
             while(!g.isGameOver()){
                 startTime = System.nanoTime();
                 
@@ -92,7 +92,7 @@ public final class Main {
         
         while(players.size()!= numberOfplayers){
             senderAddress = channel.receive(receivingBuffer);
-            if(receivingBuffer.get(0)== PlayerAction.JOIN_GAME.ordinal()){
+            if(!players.containsKey(senderAddress) && receivingBuffer.get(0)== PlayerAction.JOIN_GAME.ordinal()){
                 players.put(senderAddress, PlayerID.values()[currentPlayerID]);
                 receivingBuffer.clear();
                 ++currentPlayerID;
