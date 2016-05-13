@@ -87,8 +87,8 @@ public final class Main {
                 if (remainingTime>0)
                     Thread.sleep((long) (remainingTime*Time.MS_PER_S/Time.NS_PER_S), (int) (remainingTime%(Time.NS_PER_S/Time.MS_PER_S)));
                 g = g.next(speedChangeEvents, bombDropEvents);
-
             }
+            System.out.println(g.winner().get());
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e){
