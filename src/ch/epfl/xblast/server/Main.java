@@ -16,6 +16,7 @@ import java.util.Set;
 import ch.epfl.xblast.Direction;
 import ch.epfl.xblast.PlayerAction;
 import ch.epfl.xblast.PlayerID;
+import ch.epfl.xblast.Time;
 import ch.epfl.xblast.server.painter.BoardPainter;
 
 public final class Main {
@@ -68,7 +69,7 @@ public final class Main {
                     playerBuffer.clear();
                 }
                 
-                /*speedChangeEvents.clear();
+                speedChangeEvents.clear();
                 bombDropEvents.clear();
                 while((senderAdress = channel.receive(receivingBuffer)) != null){
                     if(receivingBuffer.get(0)==PlayerAction.DROP_BOMB.ordinal()){
@@ -77,12 +78,14 @@ public final class Main {
                         if(receivingBuffer.get(0)==PlayerAction.STOP.ordinal())
                             speedChangeEvents.put(players.get(senderAdress), Optional.empty());
                         else
+                            if(receivingBuffer.get(0) != 0)
                             speedChangeEvents.put(players.get(senderAdress), Optional.of(Direction.values()[receivingBuffer.get(0)-1]));
                     }
-                }*/
+                    receivingBuffer.clear();
+                }
                 remainingTime = Ticks.TICK_NANOSECOND_DURATION-(System.nanoTime()-startTime);
                 if (remainingTime>0)
-                    Thread.sleep((long) (remainingTime/Math.pow(10, 6)), (int) (remainingTime%Math.pow(10, 6)));
+                    Thread.sleep((long) (remainingTime*Time.MS_PER_S/Time.NS_PER_S), (int) (remainingTime%(Time.NS_PER_S/Time.MS_PER_S)));
                 g = g.next(speedChangeEvents, bombDropEvents);
 
             }

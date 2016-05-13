@@ -26,8 +26,7 @@ public final class Main {
             DatagramChannel channel = DatagramChannel.open(StandardProtocolFamily.INET);
             SocketAddress chaussette = new InetSocketAddress(args.length==0 ? "localhost": args[0],2016);
             XBlastComponent component = new XBlastComponent();
-            SwingUtilities.invokeAndWait(() -> createUI(channel, chaussette,component));
-
+            
             channel.configureBlocking(false);
             
             ByteBuffer bjoin = joinGame(channel, chaussette);
@@ -40,7 +39,8 @@ public final class Main {
                 firstState.add(bjoin.get());
             component.setGameState(GameStateDeserializer.deserializeGameState(firstState), id);
             
-
+            SwingUtilities.invokeAndWait(() -> createUI(channel, chaussette,component));
+            
             ByteBuffer currentState = ByteBuffer.allocate(410);
             List<Byte> list = new ArrayList<>();
             channel.configureBlocking(true);
@@ -50,6 +50,7 @@ public final class Main {
                 while (currentState.hasRemaining())
                     list.add(currentState.get());
                 component.setGameState(GameStateDeserializer.deserializeGameState(list.subList(1, list.size())), id);
+                currentState.clear();
                 list.clear();
             }
             
@@ -64,6 +65,7 @@ public final class Main {
     }
     
     private static void createUI(DatagramChannel channel, SocketAddress chaussette,XBlastComponent component){
+        System.out.println("Create UI");
         JFrame frame = new JFrame("XBlast 2016");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(component);
@@ -76,10 +78,12 @@ public final class Main {
         kb.put(KeyEvent.VK_RIGHT, PlayerAction.MOVE_E);
         kb.put(KeyEvent.VK_SPACE, PlayerAction.DROP_BOMB);
         kb.put(KeyEvent.VK_SHIFT, PlayerAction.STOP);
-        ByteBuffer send = ByteBuffer.allocate(1);
         Consumer<PlayerAction> c = x -> {    
             try {
-                channel.send(send.put((byte)x.ordinal()), chaussette);
+                ByteBuffer senderBuffer = ByteBuffer.allocate(1);
+                senderBuffer.put((byte)x.ordinal());
+                senderBuffer.flip();
+                channel.send(senderBuffer, chaussette);
             } catch (IOException e) {
                 e.printStackTrace();
             }
