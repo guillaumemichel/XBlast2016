@@ -101,8 +101,11 @@ public final class Main {
         try {
             do {
                 channel.send(join, chaussette);
+                Thread.sleep(1000);
             }while(channel.receive(firstState)==null);
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch(InterruptedException e){
             e.printStackTrace();
         }
         System.out.println("Connected");
