@@ -60,16 +60,17 @@ public final class XBlastComponent extends JComponent{
             //System.out.println("CONFLIT!!!!!!!");
             return Integer.compare(valueP1, valueP2);
         };
-        for (Player player : players) {
-            //System.out.println(player.id());
-        }
+        
+        /*for (Player player : players) {
+            System.out.println(player.id());
+        }*/
 
         Collections.sort(players, yCoordinatesComparator.thenComparing(playerIDComparator));
-        //System.out.println("SORTED");
+        /*System.out.println("SORTED");
         for (Player player : players) {
-            //System.out.println(player.id());
+            System.out.println(player.id());
         }
-        //System.out.println("---------");
+        System.out.println("---------");*/
         for (Player player : players) {
            g.drawImage(player.image(), 4*player.position().x()-24, 3*player.position().y()-52, null);
         }
