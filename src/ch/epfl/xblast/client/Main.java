@@ -24,22 +24,20 @@ public final class Main {
     public static void main(String[] args) {
         try {
             DatagramChannel channel = DatagramChannel.open(StandardProtocolFamily.INET);
-            SocketAddress chaussette = new InetSocketAddress(args.length==0 ? "localhost": args[0],2016);
+            SocketAddress address = new InetSocketAddress(args.length==0 ? "localhost": args[0],2016);
             XBlastComponent component = new XBlastComponent();
             
             channel.configureBlocking(false);
             
-            ByteBuffer bjoin = joinGame(channel, chaussette);
+            ByteBuffer bjoin = joinGame(channel, address);
             PlayerID id = PlayerID.values()[bjoin.get()];
-            
-            //System.out.println(id);
-            
+                        
             List<Byte> firstState = new ArrayList<>();
             while(bjoin.hasRemaining())
                 firstState.add(bjoin.get());
             component.setGameState(GameStateDeserializer.deserializeGameState(firstState), id);
             
-            SwingUtilities.invokeAndWait(() -> createUI(channel, chaussette,component));
+            SwingUtilities.invokeAndWait(() -> createUI(channel, address,component));
             
             ByteBuffer currentState = ByteBuffer.allocate(410);
             List<Byte> list = new ArrayList<>();
@@ -65,7 +63,6 @@ public final class Main {
     }
     
     private static void createUI(DatagramChannel channel, SocketAddress chaussette,XBlastComponent component){
-        System.out.println("Create UI");
         JFrame frame = new JFrame("XBlast 2016");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(component);
@@ -93,14 +90,14 @@ public final class Main {
         frame.setVisible(true);
     }
     
-    private static ByteBuffer joinGame(DatagramChannel channel,SocketAddress chaussette) {
+    private static ByteBuffer joinGame(DatagramChannel channel,SocketAddress address) {
         ByteBuffer join = ByteBuffer.allocate(1);
         ByteBuffer firstState = ByteBuffer.allocate(410);
         join.put((byte)PlayerAction.JOIN_GAME.ordinal()).flip();
         System.out.println("Connecting the server ...");
         try {
             do {
-                channel.send(join, chaussette);
+                channel.send(join, address);
                 Thread.sleep(1000);
             }while(channel.receive(firstState)==null);
         } catch (IOException e) {
