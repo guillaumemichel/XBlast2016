@@ -53,6 +53,9 @@ public class RandomGame {
         map.put(PlayerID.PLAYER_1, Optional.of(Direction.E));
 
         GameState g = new GameState(board, players);
+        
+        //Version in terminal
+        
         GameStatePrinter.printGameState(g);
 
         while(! g.isGameOver()){
@@ -61,8 +64,7 @@ public class RandomGame {
             Thread.sleep(50);
             //System.out.print("\u001b[2J");
             System.out.println();
-        }
-        
+        }     
     }
 
 }

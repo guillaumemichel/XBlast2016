@@ -54,13 +54,13 @@ public final class Cell {
     public int y(){
         return y;
     }
+    
     /**
      * Create and returns an array with all the cells in order by lines from right to left, top to bottom.
      * 
      * @return
      * 		An array with all the cells in Row Major Order
-     */
-    
+     */ 
     private static ArrayList<Cell> rowMajorOrder(){
         ArrayList<Cell> rowMajorOrder= new ArrayList<Cell>();
         for(int i=0;i<COUNT;++i){
@@ -74,8 +74,7 @@ public final class Cell {
      * @return
      * 		An array with all the cells in a Spiral Order
      */
-    
-    private static ArrayList<Cell> spiralOrder(){
+    private static ArrayList<Cell> spiralOrder(){//from the given algorithm
         ArrayList<Integer> ix = new ArrayList<Integer>();
         ArrayList<Integer> iy = new ArrayList<Integer>();
         for (int i=0;i<COLUMNS;++i){
@@ -88,7 +87,7 @@ public final class Cell {
         ArrayList<Cell> spiral = new ArrayList<Cell>();
         ArrayList<Integer> i1;
         ArrayList<Integer> i2;
-        int c1, c2, l;
+        int c1, c2;
         
         while(!ix.isEmpty()&&!iy.isEmpty()){
             if(horizontal){
@@ -105,11 +104,7 @@ public final class Cell {
             	spiral.add( horizontal ? new Cell(c1,c2):new Cell(c2,c1));
             	//adding new Cell in the array according on the boolean horizontal
             }
-            l=i1.size();
-            for(int i=0;i<l;++i){
-            	i1.add(i1.get(l-1-i));
-            	i1.remove(l-1-i);
-            } //inversion of list i1
+            Collections.reverse(i1);
             horizontal = !horizontal;
         }
         return spiral;
@@ -125,7 +120,7 @@ public final class Cell {
     }
     
     /**
-     * Determines the adjacent cell of this cell, according to the direction that is given
+     * Returns the adjacent cell of this cell, according to the direction that is given
      * @param d
      *      The direction in which we look for the adjacent cell
      *      
@@ -135,29 +130,13 @@ public final class Cell {
     public Cell neighbor(Direction dir){
         switch(dir){
             case E:
-                if(x==COLUMNS-1){
-                    return new Cell(x-(COLUMNS-1), y);
-                }else{
                     return new Cell(x+1, y);
-                }
             case W:
-                if(x==0){
-                    return new Cell(x+(COLUMNS-1),y);
-                }else{
                     return new Cell(x-1, y);
-                }
             case N:
-                if(y==0){
-                    return new Cell(x, y+(ROWS-1));
-                }else{
                     return new Cell(x, y-1);
-                }
             case S:
-                if(y==ROWS-1){
-                    return new Cell(x, y-(ROWS-1));
-                }else{
                     return new Cell(x, y+1);
-                }
             default:
                 return null; 
         }

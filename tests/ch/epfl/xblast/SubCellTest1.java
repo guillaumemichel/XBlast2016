@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-public class SubCellTest {
+public class SubCellTest1 {
     @Test
     public void centralSubCellOfKnowCellIsCorrect() {
         SubCell c = SubCell.centralSubCellOf(new Cell(2, 1));

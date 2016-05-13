@@ -48,7 +48,7 @@ public enum Direction {
      * Determines if this direction is parallel to another direction
      * 
      * @param that
-     *      The direction we test the parallelity with
+     *      The direction we test the parallelism with
      * 
      * @return
      *      <b>True</b> if the directions are parallel, <b>false</b> otherwise

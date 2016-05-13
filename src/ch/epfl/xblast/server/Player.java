@@ -82,7 +82,7 @@ public final class Player {
      */
     public Player(PlayerID id, int lives, Cell position, int maxBombs, int bombRange){
         this(id, 
-                createLifeStateSequence(lives),
+                createLifeStateSequence(ArgumentChecker.requireNonNegative(lives)),
                 DirectedPosition.stopped(new DirectedPosition(SubCell.centralSubCellOf(position),Direction.S)),
                 maxBombs,
                 bombRange);
@@ -128,11 +128,8 @@ public final class Player {
     }
     
     private static Sq<LifeState> createLifeStateSequence(int lives){
-        if(lives<=0){
-            return Sq.constant(new LifeState(0, State.DEAD));
-        }else{
-            return (Sq.repeat(Ticks.PLAYER_INVULNERABLE_TICKS, new LifeState(lives, State.INVULNERABLE))).concat(Sq.constant(new LifeState(lives, State.VULNERABLE)));
-        }
+            return lives<=0 ? Sq.constant(new LifeState(0, State.DEAD)) :
+                (Sq.repeat(Ticks.PLAYER_INVULNERABLE_TICKS, new LifeState(lives, State.INVULNERABLE))).concat(Sq.constant(new LifeState(lives, State.VULNERABLE)));
     }
     
     /**

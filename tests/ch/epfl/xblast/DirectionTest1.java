@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-public class DirectionTest {
+public class DirectionTest1 {
     @Test
     public void oppositeOfOppositeIsIdentity() {
         for (Direction d: Direction.values())

@@ -10,6 +10,7 @@ package ch.epfl.xblast;
 public final class SubCell {
     private final int x, y;
     
+    public final static int SUBCELL_DIMENSION = 16;
     /**
      * Constructs a subcell with coordinates x and y
      * 
@@ -19,8 +20,8 @@ public final class SubCell {
      *      The y coordinate of the subcell
      */
     public SubCell(int x, int y){
-        this.x=Math.floorMod(x, Cell.COLUMNS*16);
-        this.y=Math.floorMod(y, Cell.ROWS*16);
+        this.x=Math.floorMod(x, Cell.COLUMNS*SUBCELL_DIMENSION);
+        this.y=Math.floorMod(y, Cell.ROWS*SUBCELL_DIMENSION);
     }
     
     /**
@@ -44,7 +45,7 @@ public final class SubCell {
     }
     
     /**
-     * Given a cell, it determines its central subcell
+     * Returns the central subcell of the given cell
      * 
      * @param cell
      *      The cell where we look for the central subcell
@@ -53,12 +54,12 @@ public final class SubCell {
      *      The central subcell of the cell
      */
     public static SubCell centralSubCellOf(Cell cell){
-        return new SubCell(cell.x()*16+8, cell.y()*16+8);
+        return new SubCell(cell.x()*SUBCELL_DIMENSION+SUBCELL_DIMENSION/2, cell.y()*SUBCELL_DIMENSION+SUBCELL_DIMENSION/2);
     }
     
     
     /**
-     * Determines the Manhattan distance between this subcell and the nearest central subcell
+     * Returns the Manhattan distance between this subcell and the nearest central subcell
      * 
      * @return
      *      The Manhattan distance between this subcell and the nearest central subcell
@@ -75,11 +76,12 @@ public final class SubCell {
      *      <b>true</b> if it is a central subcell, <b>false</b> otherwise
      */
     public boolean isCentral(){
-        return (x%16==8 && y%16==8);
+        return distanceToCentral()==0;
     }
     
     /**
-     * Determines the adjacent subcell of this subcell, according to the direction that is given
+     * Returns the adjacent subcell of this subcell, according to the direction that is given
+     * 
      * @param d
      *      The direction in which we look for the adjacent subcell
      *      
@@ -89,29 +91,13 @@ public final class SubCell {
     public SubCell neighbor(Direction d){
         switch(d){
             case E:
-                if(x==Cell.COLUMNS*16-1){
-                    return new SubCell(x-(Cell.COLUMNS*16-1), y);
-                }else{
                     return new SubCell(x+1, y);
-                }
             case W:
-                if(x==0){
-                    return new SubCell(x+(Cell.COLUMNS*16-1),y);
-                }else{
                     return new SubCell(x-1, y);
-                }
             case N:
-                if(y==0){
-                    return new SubCell(x, y+(Cell.ROWS*16-1));
-                }else{
                     return new SubCell(x, y-1);
-                }
             case S:
-                if(y==Cell.ROWS*16-1){
-                    return new SubCell(x, y-(Cell.ROWS*16-1));
-                }else{
                     return new SubCell(x, y+1);
-                }
             default:
                 return null; 
         }
@@ -124,7 +110,7 @@ public final class SubCell {
      *      The cell in which this subcell is contained
      */
     public Cell containingCell(){
-        return new Cell(x/16, y/16);
+        return new Cell(x/SUBCELL_DIMENSION, y/SUBCELL_DIMENSION);
     }
     
     @Override
@@ -145,6 +131,6 @@ public final class SubCell {
     
     @Override
     public int hashCode(){
-        return 16*Cell.COLUMNS*y+x;
+        return SUBCELL_DIMENSION*Cell.COLUMNS*y+x;
     }
 }

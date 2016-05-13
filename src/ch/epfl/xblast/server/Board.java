@@ -29,11 +29,10 @@ public final class Board {
      *      If not all blocks are given
      */
     public Board(List<Sq<Block>> blocks) throws IllegalArgumentException{
-        if(blocks.size()!=Cell.COUNT){
+        if(blocks.size()!=Cell.COUNT)
             throw new IllegalArgumentException();
-        }else{
-            this.blocks=new ArrayList<>(blocks);
-        }
+        
+        this.blocks=Collections.unmodifiableList(new ArrayList<>(blocks));
     }
     
     /**
@@ -60,7 +59,7 @@ public final class Board {
         }
         for (List<Block> list : matrix) {
             if(list.size()!=columns){
-                throw new IllegalArgumentException("Dimensions are incorrect !");
+                throw new IllegalArgumentException("The dimensions of the matrix are incorrect !");
             }  
         }
     }
@@ -81,9 +80,11 @@ public final class Board {
         
         List<Sq<Block>> sequence= new ArrayList<Sq<Block>>();
         
-        for (int i = 0; i < rows.size(); ++i) {
-            for (int j = 0; j < rows.get(i).size(); ++j) {
-                sequence.add(Sq.constant(rows.get(i).get(j)));
+        /*We fill the list of sequence of blocks in row major order with sequences of constant block that 
+        are given in parameter*/
+        for (List<Block> blocks : rows) {
+            for (Block block : blocks) {
+                sequence.add(Sq.constant(block));
             }
         }
         
@@ -107,7 +108,11 @@ public final class Board {
         
         List<Sq<Block>> sequence= new ArrayList<Sq<Block>>();
         
+        //The first line of the board consists of indestructible walls
         sequence.addAll(Collections.nCopies(Cell.COLUMNS, Sq.constant(Block.INDESTRUCTIBLE_WALL)));
+        
+        /*for every line, we first put the indestructible block, and then the inner block given. And finally 
+        another indestructible block*/
         for(int i=0;i<innerBlocks.size();++i){
             sequence.add(Sq.constant(Block.INDESTRUCTIBLE_WALL));
             for(int j=0;j<innerBlocks.get(i).size();++j){
@@ -115,6 +120,8 @@ public final class Board {
             }
             sequence.add(Sq.constant(Block.INDESTRUCTIBLE_WALL));
         }
+        
+        //The line line of the board consists of indestructible walls
         sequence.addAll(Collections.nCopies(Cell.COLUMNS, Sq.constant(Block.INDESTRUCTIBLE_WALL)));
 
         return new Board(sequence);
@@ -137,14 +144,14 @@ public final class Board {
         
         List<List<Block>> innerBoard=new ArrayList<List<Block>>();
         
-        for (int i = 0; i < quadrantNWBlocks.size(); ++i) {
-            quadrantNWBlocks.set(i, Lists.mirrored(quadrantNWBlocks.get(i)));
-            innerBoard.add(quadrantNWBlocks.get(i));
+        //We use the mirrored() method to create a list of inner blocks that is symmetrical
+       for (int i = 0; i < quadrantNWBlocks.size(); ++i) {
+            innerBoard.add(Lists.mirrored(quadrantNWBlocks.get(i)));
         }
-        innerBoard = Lists.mirrored(quadrantNWBlocks);
+       
+        innerBoard = Lists.mirrored(innerBoard);
         
         return ofInnerBlocksWalled(innerBoard);
-        
     }
     
     /**
