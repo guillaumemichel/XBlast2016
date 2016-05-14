@@ -22,11 +22,6 @@ import ch.epfl.xblast.client.GameState.Player;
 
 public final class GameStateDeserializer {
     
-    private final static ImageCollection c1 = new ImageCollection("block");
-    private final static ImageCollection c2 = new ImageCollection("explosion");
-    private final static ImageCollection c3 = new ImageCollection("score");
-    private final static ImageCollection c4 = new ImageCollection("player");
-    
     private GameStateDeserializer(){};
     
     /**
@@ -58,14 +53,14 @@ public final class GameStateDeserializer {
                     PlayerID.values()[i],
                     l.get(4*i),
                     new SubCell(Byte.toUnsignedInt(l.get(4*i+1)), Byte.toUnsignedInt(l.get(4*i+2))),
-                    c4.imageOrNull(l.get(4*i+3))));
+                    ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(l.get(4*i+3))));
         return p;
     }
     private static List<Image> boardImage(List<Byte> l){
         List<Image> boardImage = new ArrayList<>();
         Map<Cell,Image> map = new HashMap<>();
         for (int i=0;i<l.size();++i)
-            map.put(Cell.SPIRAL_ORDER.get(i), c1.image(l.get(i)));
+            map.put(Cell.SPIRAL_ORDER.get(i), ImageCollection.IMAGE_COLLECTION_BLOCK.image(l.get(i)));
         for (Map.Entry<Cell, Image> b : map.entrySet())
             boardImage.add(b.getValue());
         return boardImage;
@@ -74,7 +69,7 @@ public final class GameStateDeserializer {
     private static List<Image> explosionImage(List<Byte> l){
         List<Image> explosionImage=new ArrayList<>();
         for (Byte b : l){
-                explosionImage.add(c2.imageOrNull(b));
+                explosionImage.add(ImageCollection.IMAGE_COLLECTION_EXPLOSION.imageOrNull(b));
         }
         return explosionImage;
     }
@@ -83,7 +78,7 @@ public final class GameStateDeserializer {
         List<Image> scoreboard=new ArrayList<>();
         scoreboard.addAll(buildScoreboardForPlayer(1,l.get(0)>0));
         scoreboard.addAll(buildScoreboardForPlayer(2,l.get(4)>0));
-        scoreboard.addAll(Collections.nCopies(8, c3.image(12)));
+        scoreboard.addAll(Collections.nCopies(8, ImageCollection.IMAGE_COLLECTION_SCORE.image(12)));
         scoreboard.addAll(buildScoreboardForPlayer(3,l.get(8)>0));
         scoreboard.addAll(buildScoreboardForPlayer(4,l.get(12)>0));
         return scoreboard;
@@ -91,16 +86,16 @@ public final class GameStateDeserializer {
     
     private static List<Image> buildScoreboardForPlayer(int n, boolean alive){
         List<Image> l=new ArrayList<>();
-        l.add(c3.image(2*n-2+(alive ? 0:1)));
-        l.add(c3.image(10));
-        l.add(c3.image(11));
+        l.add(ImageCollection.IMAGE_COLLECTION_SCORE.image(2*n-2+(alive ? 0:1)));
+        l.add(ImageCollection.IMAGE_COLLECTION_SCORE.image(10));
+        l.add(ImageCollection.IMAGE_COLLECTION_SCORE.image(11));
         return l;
     }
     
     private static List<Image> timeImage(int n){
         List<Image> l=new ArrayList<>();
-        l.addAll(Collections.nCopies(n, c3.image(21)));
-        l.addAll(Collections.nCopies(60-n, c3.image(20)));
+        l.addAll(Collections.nCopies(n, ImageCollection.IMAGE_COLLECTION_SCORE.image(21)));
+        l.addAll(Collections.nCopies(60-n, ImageCollection.IMAGE_COLLECTION_SCORE.image(20)));
         return l;
     }
 }
