@@ -116,7 +116,7 @@ public final class Main {
                 ++currentPlayerID;
             }
         }
-        return players;        
+        return players;
     }
 
 }

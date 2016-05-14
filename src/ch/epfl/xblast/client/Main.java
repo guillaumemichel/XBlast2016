@@ -21,11 +21,11 @@ import ch.epfl.xblast.PlayerAction;
 import ch.epfl.xblast.PlayerID;
 
 public final class Main {
+    private static XBlastComponent component = new XBlastComponent();
     public static void main(String[] args) {
         try {
             DatagramChannel channel = DatagramChannel.open(StandardProtocolFamily.INET);
             SocketAddress address = new InetSocketAddress(args.length==0 ? "localhost": args[0],2016);
-            XBlastComponent component = new XBlastComponent();
             
             channel.configureBlocking(false);
             
@@ -36,8 +36,8 @@ public final class Main {
             while(bjoin.hasRemaining())
                 firstState.add(bjoin.get());
             component.setGameState(GameStateDeserializer.deserializeGameState(firstState), id);
-            
-            SwingUtilities.invokeAndWait(() -> createUI(channel, address,component));
+            SwingUtilities.invokeAndWait(() -> createUI(channel, address));
+            PlaySound.playSound1();
             
             ByteBuffer currentState = ByteBuffer.allocate(410);
             List<Byte> list = new ArrayList<>();
@@ -62,7 +62,16 @@ public final class Main {
         
     }
     
-    private static void createUI(DatagramChannel channel, SocketAddress chaussette,XBlastComponent component){
+    /**
+     * Create an User Interface
+     * 
+     * @param channel
+     *      The channel of communication with the server
+     *              
+     * @param address
+     *      The SocketAddress of the server
+     */
+    private static void createUI(DatagramChannel channel, SocketAddress address){
         JFrame frame = new JFrame("XBlast 2016");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(component);
@@ -80,7 +89,7 @@ public final class Main {
                 ByteBuffer senderBuffer = ByteBuffer.allocate(1);
                 senderBuffer.put((byte)x.ordinal());
                 senderBuffer.flip();
-                channel.send(senderBuffer, chaussette);
+                channel.send(senderBuffer, address);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -90,6 +99,18 @@ public final class Main {
         frame.setVisible(true);
     }
     
+    /**
+     * Send to the server the intention to join the game, get and return the first state from the server
+     * 
+     * @param channel
+     *      The channel of communication with the server
+     *              
+     * @param address
+     *      The SocketAddress of the server
+     *      
+     * @return
+     *      The Buffer containing the first state of the game
+     */
     private static ByteBuffer joinGame(DatagramChannel channel,SocketAddress address) {
         ByteBuffer join = ByteBuffer.allocate(1);
         ByteBuffer firstState = ByteBuffer.allocate(410);
