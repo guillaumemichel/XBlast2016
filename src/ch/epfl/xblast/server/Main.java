@@ -48,19 +48,18 @@ public final class Main {
             SocketAddress senderAdress;
             ByteBuffer playerBuffer;
             ByteBuffer sendingBuffer;
+            List<Byte> serializedGameState;
             
             while(!g.isGameOver()){
                 startTime = System.nanoTime();
                 
-                List<Byte> serializedGameState = GameStateSerializer.serialize(b, g);
+                serializedGameState = GameStateSerializer.serialize(b, g);
                 sendingBuffer = ByteBuffer.allocate(serializedGameState.size()+1);
                 
                 sendingBuffer.position(1);
                 for(Byte bytes : serializedGameState)
                     sendingBuffer.put(bytes);
-                
-                //sendingBuffer.flip();
-                  
+                                  
                 for(Map.Entry<SocketAddress, PlayerID> player : players.entrySet()){
                     playerBuffer = sendingBuffer.duplicate();
                     playerBuffer.put(0, (byte) player.getValue().ordinal());
@@ -83,6 +82,7 @@ public final class Main {
                     }
                     receivingBuffer.clear();
                 }
+                
                 remainingTime = Ticks.TICK_NANOSECOND_DURATION-(System.nanoTime()-startTime);
                 if (remainingTime>0)
                     Thread.sleep((long) (remainingTime*Time.MS_PER_S/Time.NS_PER_S), (int) (remainingTime%(Time.NS_PER_S/Time.MS_PER_S)));
