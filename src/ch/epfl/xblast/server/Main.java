@@ -20,8 +20,10 @@ import ch.epfl.xblast.Time;
 import ch.epfl.xblast.server.painter.BoardPainter;
 
 public final class Main {
-
+    
     public static void main(String[] args) {
+        //GameState g = new GameState(board, Level.DEFAULT_LEVEL.gameState().players());
+        
         int numberOfPlayers = GameState.PLAYER_NUMBER;
                     
         if(args.length==1)
@@ -90,7 +92,7 @@ public final class Main {
             }
             
             if(g.winner().isPresent())
-                System.out.println(g.winner());
+                System.out.println(g.winner().get());
             else
                 System.out.println("No winner !");
             
