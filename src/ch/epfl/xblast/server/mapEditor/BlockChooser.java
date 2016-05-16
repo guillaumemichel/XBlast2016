@@ -21,15 +21,17 @@ public final class BlockChooser extends JPanel{
     public BlockChooser(){
         this.setLayout(new FlowLayout());
         for (int i = 0; i < Block.values().length; ++i) {
-            BlockButton block = new BlockButton(Block.values()[i]);
-            block.addMouseListener(new MouseAdapter(){
-                @Override
-                public void mouseClicked(MouseEvent e){
-                    BlockButton.currentBlock = block.block();
-                    currentBlock.setIcon(new ImageIcon(ImageCollection.IMAGE_COLLECTION_BLOCK.imageOrNull(Level.DEFAULT_LEVEL.boardPainter().correspondingBlockImageOf(BlockButton.currentBlock))));
-                }
-            });
-            this.add(block);
+            if(i != Block.CRUMBLING_WALL.ordinal()){
+                BlockButton block = new BlockButton(Block.values()[i]);
+                block.addMouseListener(new MouseAdapter(){
+                    @Override
+                    public void mouseClicked(MouseEvent e){
+                        BlockButton.currentBlock = block.block();
+                        currentBlock.setIcon(new ImageIcon(ImageCollection.IMAGE_COLLECTION_BLOCK.imageOrNull(Level.DEFAULT_LEVEL.boardPainter().correspondingBlockImageOf(BlockButton.currentBlock))));
+                    }
+                });
+                this.add(block);
+            }
         }
         this.add(new JLabel("Current block: "));
         currentBlock.setBorder(new LineBorder(Color.BLACK, 3));

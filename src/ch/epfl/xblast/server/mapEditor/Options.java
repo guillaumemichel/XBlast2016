@@ -22,8 +22,6 @@ public final class Options extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println(Options.this.associatedGrid.toListOfIntegers());
-                MapEditor parent =(MapEditor) SwingUtilities.getWindowAncestor(Options.this);
-                parent.setBoard(Options.this.associatedGrid.toBoard());
                 SwingUtilities.windowForComponent(Options.this).dispose();
             }
         });
