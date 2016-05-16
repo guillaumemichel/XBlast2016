@@ -43,7 +43,7 @@ public final class GameStateDeserializer {
                 boardImage(RunLengthEncoder.decode(l.subList(1, bs+1))),
                 explosionImage(RunLengthEncoder.decode(l.subList(bs+2, bs+es+2))),
                 scoreboardImage(l.subList(bs+es+2, bs+es+2+ch.epfl.xblast.server.GameState.PLAYER_NUMBER*4)),
-                timeImage(l.get(l.size()-1)));
+                timeImage(Byte.toUnsignedInt(l.get(l.size()-1))));
     }
     
     private static List<Player> getPlayers(List<Byte> l){

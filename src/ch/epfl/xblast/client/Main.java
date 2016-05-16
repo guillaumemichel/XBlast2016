@@ -37,7 +37,7 @@ public final class Main {
                 firstState.add(bjoin.get());
             component.setGameState(GameStateDeserializer.deserializeGameState(firstState), id);
             SwingUtilities.invokeAndWait(() -> createUI(channel, address));
-            PlaySound.playSound1();
+            PlaySound.repeat(3);
             
             ByteBuffer currentState = ByteBuffer.allocate(410);
             List<Byte> list = new ArrayList<>();

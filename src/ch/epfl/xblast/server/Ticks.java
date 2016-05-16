@@ -53,5 +53,5 @@ public interface Ticks {
     /**
      * The total number of ticks of a game, which lasts 2 minutes
      */
-    public final static int TOTAL_TICKS = 2 * Time.S_PER_MIN * TICKS_PER_SECOND; 
+    public final static int TOTAL_TICKS = Time.GAME_DURATION * Time.S_PER_MIN * TICKS_PER_SECOND; 
 }
