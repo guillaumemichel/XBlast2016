@@ -122,7 +122,7 @@ public final class GameState {
          *      The image that represent the player
          */
         public Player(PlayerID id, int lives, SubCell position, Image image){
-            this.id=Objects.requireNonNull(id);//WTF ?
+            this.id=Objects.requireNonNull(id);
             this.lives=ArgumentChecker.requireNonNegative(lives);
             this.position=Objects.requireNonNull(position);
             this.image=image;
