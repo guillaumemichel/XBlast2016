@@ -18,6 +18,10 @@ import ch.epfl.xblast.server.painter.PlayerPainter;
  *
  */
 public final class GameStateSerializer {
+    /**
+     * Number of seconds per unit of time on the scoreboard
+     */
+    public final static int SECOND_PER_TIME_UNIT = 2;
     
     private GameStateSerializer(){};
     
@@ -65,7 +69,7 @@ public final class GameStateSerializer {
             list.add((byte) player.position().y());
             list.add(PlayerPainter.byteForPlayer(g.ticks(), player));
         }
-        list.add((byte) Math.ceil(g.remainingTime()/2));
+        list.add((byte) Math.ceil(g.remainingTime()/SECOND_PER_TIME_UNIT));
         return list;
     }
 }
