@@ -52,7 +52,9 @@ public final class Main {
             ByteBuffer sendingBuffer;
             List<Byte> serializedGameState;
             
-            while(!g.isGameOver()){
+            boolean bool = true;
+            
+            while(bool){
                 startTime = System.nanoTime();
                 
                 serializedGameState = GameStateSerializer.serialize(b, g);
@@ -88,6 +90,7 @@ public final class Main {
                 remainingTime = Ticks.TICK_NANOSECOND_DURATION-(System.nanoTime()-startTime);
                 if (remainingTime>0)
                     Thread.sleep((long) (remainingTime*Time.MS_PER_S/Time.NS_PER_S), (int) (remainingTime%(Time.NS_PER_S/Time.MS_PER_S)));
+                if (g.isGameOver()) bool = false;
                 g = g.next(speedChangeEvents, bombDropEvents);
             }
             
