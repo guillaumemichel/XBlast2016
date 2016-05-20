@@ -27,6 +27,8 @@ public final class ImageCollection {
     public final static ImageCollection IMAGE_COLLECTION_SCORE = new ImageCollection("score");
     public final static ImageCollection IMAGE_COLLECTION_PLAYER = new ImageCollection("player");
     
+    private final static int SIZE_OF_NUMBER_IMAGE = 3;
+    
     /**
      * Constructs an image collection of the given directory name that contains the images
      * 
@@ -54,7 +56,7 @@ public final class ImageCollection {
         
         for (File file : dir.listFiles()) {
             try{
-                images.put(Byte.parseByte(file.getName().substring(0, 3)), ImageIO.read(file));
+                images.put(Byte.parseByte(file.getName().substring(0, SIZE_OF_NUMBER_IMAGE)), ImageIO.read(file));
             }catch(IOException e){
                 
             }catch(NumberFormatException e){
