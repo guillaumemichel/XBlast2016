@@ -23,10 +23,19 @@ public final class Level {
     private final BoardPainter boardPainter;
     private final GameState gamestate;
     
+    private final static int NUMBER_OF_LIVES = 3;
+    private final static int MAX_BOMBS = 2;
+    private final static int BOMB_RANGE = 3;
+    private final static Cell POSITION_PLAYER_1 = new Cell(1, 1);
+    private final static Cell POSITION_PLAYER_2 = new Cell(13, 1);
+    private final static Cell POSITION_PLAYER_3 = new Cell(13, 11);
+    private final static Cell POSITION_PLAYER_4 = new Cell(1, 11);
+
+    
     /**
      * Variable that contains a "default level"
      */
-    public static final Level DEFAULT_LEVEL=defaultLevel();
+    public static final Level DEFAULT_LEVEL = defaultLevel();
     
     /**
      * Constructs a level with the given parameters
@@ -74,6 +83,7 @@ public final class Level {
         Block __ = Block.FREE;
         Block XX = Block.INDESTRUCTIBLE_WALL;
         Block xx = Block.DESTRUCTIBLE_WALL;
+        
         Board board = Board.ofQuadrantNWBlocksWalled(
           Arrays.asList(
             Arrays.asList(__, __, __, __, __, xx, __),
@@ -84,10 +94,10 @@ public final class Level {
             Arrays.asList(xx, XX, xx, XX, xx, XX, __)));
         
         List<Player> players = new ArrayList<>();
-        players.add(new Player(PlayerID.PLAYER_1,3, new Cell(1, 1), 2, 3));
-        players.add(new Player(PlayerID.PLAYER_2, 3, new Cell(13, 1), 2, 3));
-        players.add(new Player(PlayerID.PLAYER_3, 3, new Cell(13, 11), 2, 3));
-        players.add(new Player(PlayerID.PLAYER_4, 3, new Cell(1, 11), 2, 3));
+        players.add(new Player(PlayerID.PLAYER_1,NUMBER_OF_LIVES, POSITION_PLAYER_1, MAX_BOMBS, BOMB_RANGE));
+        players.add(new Player(PlayerID.PLAYER_2, NUMBER_OF_LIVES, POSITION_PLAYER_2, MAX_BOMBS, BOMB_RANGE));
+        players.add(new Player(PlayerID.PLAYER_3, NUMBER_OF_LIVES, POSITION_PLAYER_3, MAX_BOMBS, BOMB_RANGE));
+        players.add(new Player(PlayerID.PLAYER_4, NUMBER_OF_LIVES, POSITION_PLAYER_4, MAX_BOMBS, BOMB_RANGE));
         
         return new Level(new BoardPainter(defaultPalette, BlockImage.IRON_FLOOR_S), new GameState(board, players));
     }

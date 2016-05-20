@@ -25,16 +25,23 @@ import ch.epfl.xblast.client.GameState.Player;
  */
 @SuppressWarnings("serial")
 public final class XBlastComponent extends JComponent{
-    private final static int XB_WIDTH = 960;
-    private final static int XB_HEIGHT = 688;
+    private final static int XB_COMPONENT_WIDTH = 960;
+    private final static int XB_COMPONENT_HEIGHT = 688;
+    
+    private final static int DISPLAY_LIVES_PLAYER1_X = 96;
+    private final static int DISPLAY_LIVES_PLAYER2_X = 240;
+    private final static int DISPLAY_LIVES_PLAYER3_X = 768;
+    private final static int DISPLAY_LIVES_PLAYER4_X = 912;
     private final static int DISPLAY_LIVES_Y = 659;
+    
+    private final static int SCORE_FONT_SIZE = 25;
     
     private GameState gameState = null;
     private PlayerID id = null;
     
     @Override
     public Dimension getPreferredSize(){
-        return new Dimension(XB_WIDTH, XB_HEIGHT);
+        return new Dimension(XB_COMPONENT_WIDTH, XB_COMPONENT_HEIGHT);
     }
     
     @Override
@@ -62,6 +69,27 @@ public final class XBlastComponent extends JComponent{
             g.drawImage(imagesExplosion.get(i), blockX, blockY, null);          
         }
         
+      //Score display
+        int widthOfScore = imagesScore.get(0).getWidth(null);
+        for (int i=0; i< imagesScore.size(); ++i) {
+            g.drawImage(imagesScore.get(i), i*widthOfScore, blockY+heightOfBlock, null);
+        }
+        
+        //Display of number of lives
+        Font font = new Font("Arial", Font.BOLD, SCORE_FONT_SIZE);
+        g.setColor(Color.WHITE);
+        g.setFont(font);
+        g.drawString(String.valueOf(gameState.players().get(0).lives()), DISPLAY_LIVES_PLAYER1_X, DISPLAY_LIVES_Y);
+        g.drawString(String.valueOf(gameState.players().get(1).lives()), DISPLAY_LIVES_PLAYER2_X, DISPLAY_LIVES_Y);
+        g.drawString(String.valueOf(gameState.players().get(2).lives()), DISPLAY_LIVES_PLAYER3_X, DISPLAY_LIVES_Y);
+        g.drawString(String.valueOf(gameState.players().get(3).lives()), DISPLAY_LIVES_PLAYER4_X, DISPLAY_LIVES_Y);
+        
+        //Time display
+        int widthOfTime = imagesTime.get(0).getWidth(null);
+        for (int i=0; i< imagesTime.size(); ++i) {
+            g.drawImage(imagesTime.get(i), i*widthOfTime, blockY+heightOfBlock+widthOfScore, null);
+        }
+        
         //Player display
         
         //we first create the two comparators, so that we can sort the player in the right way before displaying them
@@ -76,27 +104,6 @@ public final class XBlastComponent extends JComponent{
 
         for (Player player : players) {
            g.drawImage(player.image(), 4*player.position().x()-24, 3*player.position().y()-52, null);
-        }
-        
-        //Score display
-        int widthOfScore = imagesScore.get(0).getWidth(null);
-        for (int i=0; i< imagesScore.size(); ++i) {
-            g.drawImage(imagesScore.get(i), i*widthOfScore, blockY+heightOfBlock, null);
-        }
-        
-        //Display of number of lives
-        Font font = new Font("Arial", Font.BOLD, 25);
-        g.setColor(Color.WHITE);
-        g.setFont(font);
-        g.drawString(String.valueOf(gameState.players().get(0).lives()), 96, DISPLAY_LIVES_Y);
-        g.drawString(String.valueOf(gameState.players().get(1).lives()), 240, DISPLAY_LIVES_Y);
-        g.drawString(String.valueOf(gameState.players().get(2).lives()), 768, DISPLAY_LIVES_Y);
-        g.drawString(String.valueOf(gameState.players().get(3).lives()), 912, DISPLAY_LIVES_Y);
-        
-        //Time display
-        int widthOfTime = imagesTime.get(0).getWidth(null);
-        for (int i=0; i< imagesTime.size(); ++i) {
-            g.drawImage(imagesTime.get(i), i*widthOfTime, blockY+heightOfBlock+widthOfScore, null);
         }
     }
     

@@ -19,25 +19,25 @@ import ch.epfl.xblast.PlayerAction;
  */
 public class KeyboardEventHandler extends KeyAdapter implements KeyListener{
     
-    private final Map<Integer,PlayerAction> keymap;
+    private final Map<Integer,PlayerAction> keyMap;
     private final Consumer<PlayerAction> c;
     
     /**
-     * Build a keyboard event handler from a map and a consumer
+     * Constructs a keyboard event handler from a key map and a consumer
      * 
      * @param map
      * 			The map that contains the meaning of each key/command on the keyboard
      * @param cons
      * 			The consumer
      */
-    public KeyboardEventHandler(Map<Integer,PlayerAction> map, Consumer<PlayerAction> cons){
-        this.keymap = Collections.unmodifiableMap(new HashMap<>(map));
-        this.c=cons;
+    public KeyboardEventHandler(Map<Integer,PlayerAction> keyMap, Consumer<PlayerAction> c){
+        this.keyMap = Collections.unmodifiableMap(new HashMap<>(keyMap));
+        this.c=c;
     }
     
     @Override
     public void keyPressed(KeyEvent k){
-        if (keymap.containsKey(k.getKeyCode()))
-        	c.accept(keymap.get(k.getKeyCode()));
+        if (keyMap.containsKey(k.getKeyCode()))
+        	c.accept(keyMap.get(k.getKeyCode()));
     }
 }
