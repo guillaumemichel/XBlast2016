@@ -21,9 +21,7 @@ import ch.epfl.xblast.server.painter.BoardPainter;
 
 public final class Main {
     
-    public static void main(String[] args) {
-        //GameState g = new GameState(board, Level.DEFAULT_LEVEL.gameState().players());
-        
+    public static void main(String[] args) {        
         int numberOfPlayers = GameState.PLAYER_NUMBER;
                     
         if(args.length==1)
@@ -34,6 +32,7 @@ public final class Main {
             DatagramChannel channel = DatagramChannel.open(StandardProtocolFamily.INET);
             channel.bind(new InetSocketAddress(ch.epfl.xblast.client.Main.DEFAULT_PORT));
             
+            //We fill a map of players with the players that are trying to joine the game
             System.out.println("Finding peers ...");
             Map<SocketAddress, PlayerID> players = joiningGame(numberOfPlayers, receivingBuffer, channel);
             System.out.println("Launching game ...");
@@ -57,13 +56,15 @@ public final class Main {
             while(bool){
                 startTime = System.nanoTime();
                 
+                //We serialize the current game state
                 serializedGameState = GameStateSerializer.serialize(b, g);
                 sendingBuffer = ByteBuffer.allocate(serializedGameState.size()+1);
                 
                 sendingBuffer.position(1);
                 for(Byte bytes : serializedGameState)
                     sendingBuffer.put(bytes);
-                                  
+                       
+                //We send the game state to each player
                 for(Map.Entry<SocketAddress, PlayerID> player : players.entrySet()){
                     playerBuffer = sendingBuffer.duplicate();
                     playerBuffer.put(0, (byte) player.getValue().ordinal());
@@ -72,6 +73,7 @@ public final class Main {
                     playerBuffer.clear();
                 }
                 
+                //We receive the action made b the players (move or bomb drop)
                 speedChangeEvents.clear();
                 bombDropEvents.clear();
                 while((senderAdress = channel.receive(receivingBuffer)) != null){
@@ -81,17 +83,22 @@ public final class Main {
                         if(receivingBuffer.get(0)==PlayerAction.STOP.ordinal())
                             speedChangeEvents.put(players.get(senderAdress), Optional.empty());
                         else
-                            if(receivingBuffer.get(0) != 0)
+                            if(receivingBuffer.get(0) != PlayerAction.JOIN_GAME.ordinal())
                             speedChangeEvents.put(players.get(senderAdress), Optional.of(Direction.values()[receivingBuffer.get(0)-1]));
                     }
                     receivingBuffer.clear();
                 }
                 
+                //If there is some remaining time before the "tick nanosecond duration" ends, we "sleep"
                 remainingTime = Ticks.TICK_NANOSECOND_DURATION-(System.nanoTime()-startTime);
                 if (remainingTime>0)
                     Thread.sleep((long) (remainingTime*Time.MS_PER_S/Time.NS_PER_S), (int) (remainingTime%(Time.NS_PER_S/Time.MS_PER_S)));
-                if (g.isGameOver()) bool = false;
+                
+                //We compute the next game state by giving the actions of the players
                 g = g.next(speedChangeEvents, bombDropEvents);
+                
+                if (g.isGameOver()) 
+                    bool = false;
             }
             
             if(g.winner().isPresent())

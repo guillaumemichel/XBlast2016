@@ -22,13 +22,13 @@ import ch.epfl.xblast.PlayerID;
 
 public final class Main {
     private static XBlastComponent component = new XBlastComponent();
-    public final static int MAX_BUFFER_SIZE=410;
-    public final static int DEFAULT_PORT=2016;
+    public final static int MAX_BUFFER_SIZE = 410;
+    public final static int DEFAULT_PORT = 2016;
 
     public static void main(String[] args) {
         try {
             DatagramChannel channel = DatagramChannel.open(StandardProtocolFamily.INET);
-            SocketAddress address = new InetSocketAddress(args.length==0 ? "localhost": args[0],DEFAULT_PORT);
+            SocketAddress address = new InetSocketAddress(args.length==0 ? "localhost": args[0], DEFAULT_PORT);
             
             channel.configureBlocking(false);
             
