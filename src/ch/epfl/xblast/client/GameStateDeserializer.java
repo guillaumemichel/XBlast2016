@@ -21,6 +21,7 @@ import ch.epfl.xblast.client.GameState.Player;
  */
 
 public final class GameStateDeserializer {
+    public final static int TIME_UNIT_NUMBER=60;
     
     private GameStateDeserializer(){};
     
@@ -38,7 +39,7 @@ public final class GameStateDeserializer {
         int es = l.get(bs+1); //explosion size
                 
         if (l.size()!=bs+es+2+ch.epfl.xblast.server.GameState.PLAYER_NUMBER*4+1) throw new IllegalArgumentException("Expected was "+(bs+es+19)+"\tReal was "+l.size());
-        
+        //not magic numbers /!\
         return new GameState(getPlayers(l.subList(bs+es+2, bs+es+2+4*ch.epfl.xblast.server.GameState.PLAYER_NUMBER)),
                 boardImage(RunLengthEncoder.decode(l.subList(1, bs+1))),
                 explosionImage(RunLengthEncoder.decode(l.subList(bs+2, bs+es+2))),

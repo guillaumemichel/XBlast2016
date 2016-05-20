@@ -51,7 +51,7 @@ public interface Ticks {
     public final static int TICK_NANOSECOND_DURATION = Time.NS_PER_S/TICKS_PER_SECOND;
     
     /**
-     * The total number of ticks of a game, which lasts 2 minutes
+     * The total number of ticks of a game, which lasts 2 minutes by default
      */
     public final static int TOTAL_TICKS = Time.GAME_DURATION * Time.S_PER_MIN * TICKS_PER_SECOND; 
 }
