@@ -23,10 +23,8 @@ import ch.epfl.xblast.PlayerID;
 public final class Main {
     private static XBlastComponent component = new XBlastComponent();
     public final static int MAX_BUFFER_SIZE=410;
-<<<<<<< HEAD
     public final static int DEFAULT_PORT=2016;
-=======
->>>>>>> dde160bf390544d4f3e4d8c1f89d4159ff6b7da1
+
     public static void main(String[] args) {
         try {
             DatagramChannel channel = DatagramChannel.open(StandardProtocolFamily.INET);
