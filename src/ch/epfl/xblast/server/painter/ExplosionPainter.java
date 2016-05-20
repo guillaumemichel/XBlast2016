@@ -10,7 +10,9 @@ import ch.epfl.xblast.server.Bomb;
  *
  */
 public final class ExplosionPainter {
-    
+    /**
+     * Byte that represent the empty value
+     */
     public static final byte BYTE_FOR_EMPTY = 16;
     
     private ExplosionPainter(){}
