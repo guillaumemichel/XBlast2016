@@ -81,7 +81,7 @@ public final class PlayerPainter {
                     break;
             default:
                 n=BYTE_FOR_EMPTY_PLAYER;
-        }
+        }//IT IS NO MAGIC NUMBERS IT IS ONLY IMAGE LOCATIONS
         return n;
     }
 }
