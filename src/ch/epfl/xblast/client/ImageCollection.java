@@ -19,13 +19,13 @@ import javax.imageio.ImageIO;
  *
  */
 public final class ImageCollection {
+    private final String dirName;
+    private final Map<Byte, Image> imagesOfDir;
+    
     public final static ImageCollection IMAGE_COLLECTION_BLOCK = new ImageCollection("block");
     public final static ImageCollection IMAGE_COLLECTION_EXPLOSION = new ImageCollection("explosion");
     public final static ImageCollection IMAGE_COLLECTION_SCORE = new ImageCollection("score");
     public final static ImageCollection IMAGE_COLLECTION_PLAYER = new ImageCollection("player");
-    
-    private final String dirName;
-    private final Map<Byte, Image> imagesOfDir;
     
     /**
      * Constructs an image collection of the given directory name that contains the images
