@@ -6,6 +6,8 @@ import java.util.List;
 import ch.epfl.xblast.Cell;
 import ch.epfl.xblast.Direction;
 import ch.epfl.xblast.RunLengthEncoder;
+import ch.epfl.xblast.Time;
+import ch.epfl.xblast.client.GameStateDeserializer;
 import ch.epfl.xblast.server.painter.BoardPainter;
 import ch.epfl.xblast.server.painter.ExplosionPainter;
 import ch.epfl.xblast.server.painter.PlayerPainter;
@@ -21,7 +23,7 @@ public final class GameStateSerializer {
     /**
      * Number of seconds per unit of time on the scoreboard
      */
-    public final static int SECOND_PER_TIME_UNIT = 2;
+    public final static int SECOND_PER_TIME_UNIT = Time.GAME_DURATION*Time.S_PER_MIN/GameStateDeserializer.TIME_UNIT_NUMBER;
     
     private GameStateSerializer(){};
     
