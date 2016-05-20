@@ -22,10 +22,12 @@ import ch.epfl.xblast.PlayerID;
 
 public final class Main {
     private static XBlastComponent component = new XBlastComponent();
+    public final static int MAX_BUFFER_SIZE=410;
+    public final static int DEFAULT_PORT=2016;
     public static void main(String[] args) {
         try {
             DatagramChannel channel = DatagramChannel.open(StandardProtocolFamily.INET);
-            SocketAddress address = new InetSocketAddress(args.length==0 ? "localhost": args[0],2016);
+            SocketAddress address = new InetSocketAddress(args.length==0 ? "localhost": args[0],DEFAULT_PORT);
             
             channel.configureBlocking(false);
             
@@ -37,9 +39,8 @@ public final class Main {
                 firstState.add(bjoin.get());
             component.setGameState(GameStateDeserializer.deserializeGameState(firstState), id);
             SwingUtilities.invokeAndWait(() -> createUI(channel, address));
-            PlaySound.repeat(3);
             
-            ByteBuffer currentState = ByteBuffer.allocate(410);
+            ByteBuffer currentState = ByteBuffer.allocate(MAX_BUFFER_SIZE);
             List<Byte> list = new ArrayList<>();
             channel.configureBlocking(true);
             while (true){
@@ -113,7 +114,7 @@ public final class Main {
      */
     private static ByteBuffer joinGame(DatagramChannel channel,SocketAddress address) {
         ByteBuffer join = ByteBuffer.allocate(1);
-        ByteBuffer firstState = ByteBuffer.allocate(410);
+        ByteBuffer firstState = ByteBuffer.allocate(MAX_BUFFER_SIZE);
         join.put((byte)PlayerAction.JOIN_GAME.ordinal()).flip();
         System.out.println("Connecting the server ...");
         try {

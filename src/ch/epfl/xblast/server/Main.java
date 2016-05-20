@@ -32,7 +32,7 @@ public final class Main {
         try {
             ByteBuffer receivingBuffer = ByteBuffer.allocate(1);
             DatagramChannel channel = DatagramChannel.open(StandardProtocolFamily.INET);
-            channel.bind(new InetSocketAddress(2016));
+            channel.bind(new InetSocketAddress(ch.epfl.xblast.client.Main.DEFAULT_PORT));
             
             System.out.println("Finding peers ...");
             Map<SocketAddress, PlayerID> players = joiningGame(numberOfPlayers, receivingBuffer, channel);
