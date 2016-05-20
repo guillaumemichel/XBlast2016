@@ -20,3 +20,4 @@ BONUS :
 - Affichage du winner sur le client (proposer de rejouer)
 - Ajouter des bonus
 - Changer le temps de la partie
+- Le dernier joueur mort disparait et son nombre de vies passe à 0
