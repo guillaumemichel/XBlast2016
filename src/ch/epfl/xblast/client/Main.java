@@ -20,6 +20,13 @@ import javax.swing.SwingUtilities;
 import ch.epfl.xblast.PlayerAction;
 import ch.epfl.xblast.PlayerID;
 
+/**
+ * The main class for the client
+ * 
+ * @author Guillaume Michel (258066)
+ * @author Adrien Vandenbroucque (258715)
+ *
+ */
 public final class Main {
     private static XBlastComponent component = new XBlastComponent();
     public final static int MAX_BUFFER_SIZE = 410;

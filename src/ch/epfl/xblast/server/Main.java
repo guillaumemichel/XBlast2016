@@ -19,6 +19,13 @@ import ch.epfl.xblast.PlayerID;
 import ch.epfl.xblast.Time;
 import ch.epfl.xblast.server.painter.BoardPainter;
 
+/**
+ * The main for the server
+ * 
+ * @author Guillaume Michel (258066)
+ * @author Adrien Vandenbroucque (258715)
+ *
+ */
 public final class Main {
     
     public static void main(String[] args) {        
