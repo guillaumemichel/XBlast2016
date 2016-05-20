@@ -42,6 +42,8 @@ public final class RunLengthEncoder {
                 nextByte=-1;
             }
             
+            /*if there are 128 times the same byte, then we have to stop the encoding of 
+            this symbol and begin again (because 128 is the max representable in the type byte)*/
             if(count>=130){
                 encodedSequence.add((byte)(-count+2));
                 encodedSequence.add(b);
