@@ -21,9 +21,13 @@ import ch.epfl.xblast.server.painter.PlayerPainter;
  */
 public final class GameStateSerializer {
     /**
+     * number of rectangles of time in the scoreboard
+     */
+    public  final static int TIME_UNIT_NUMBER=60;
+    /**
      * Number of seconds per unit of time on the scoreboard
      */
-    public final static int SECOND_PER_TIME_UNIT = Time.GAME_DURATION*Time.S_PER_MIN/GameStateDeserializer.TIME_UNIT_NUMBER;
+    private final static int SECOND_PER_TIME_UNIT = Time.GAME_DURATION*Time.S_PER_MIN/TIME_UNIT_NUMBER;
     
     private GameStateSerializer(){};
     

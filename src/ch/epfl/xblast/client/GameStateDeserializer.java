@@ -12,6 +12,7 @@ import ch.epfl.xblast.PlayerID;
 import ch.epfl.xblast.RunLengthEncoder;
 import ch.epfl.xblast.SubCell;
 import ch.epfl.xblast.client.GameState.Player;
+import ch.epfl.xblast.server.GameStateSerializer;
 
 /**
  * A GameState deserializer
@@ -21,7 +22,6 @@ import ch.epfl.xblast.client.GameState.Player;
  */
 
 public final class GameStateDeserializer {
-    public final static int TIME_UNIT_NUMBER=60;
     
     private GameStateDeserializer(){};
     
@@ -96,7 +96,7 @@ public final class GameStateDeserializer {
     private static List<Image> timeImage(int n){
         List<Image> l=new ArrayList<>();
         l.addAll(Collections.nCopies(n, ImageCollection.IMAGE_COLLECTION_SCORE.image(21)));
-        l.addAll(Collections.nCopies(60-n, ImageCollection.IMAGE_COLLECTION_SCORE.image(20)));
+        l.addAll(Collections.nCopies(GameStateSerializer.TIME_UNIT_NUMBER-n, ImageCollection.IMAGE_COLLECTION_SCORE.image(20)));
         return l;
     }
 }

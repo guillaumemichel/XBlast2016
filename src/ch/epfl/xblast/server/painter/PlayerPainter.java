@@ -10,6 +10,8 @@ import ch.epfl.xblast.server.Player;
  *
  */
 public final class PlayerPainter {
+    
+    private static byte BYTE_FOR_EMPTY_PLAYER=15;
 
     private PlayerPainter() {}
     
@@ -41,7 +43,7 @@ public final class PlayerPainter {
                 n=60;
                 break;
             default:
-                return 15;
+                return BYTE_FOR_EMPTY_PLAYER;
         }
         
         switch (p.lifeState().state()){
@@ -77,7 +79,7 @@ public final class PlayerPainter {
                     n+=13;
                     break;
             default:
-                n=15;
+                n=BYTE_FOR_EMPTY_PLAYER;
         }
         return n;
     }
