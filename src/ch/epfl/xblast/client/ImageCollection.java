@@ -22,9 +22,24 @@ public final class ImageCollection {
     private final String dirName;
     private final Map<Byte, Image> imagesOfDir;
     
+    /**
+     * An image collection that represents the blocks
+     */
     public final static ImageCollection IMAGE_COLLECTION_BLOCK = new ImageCollection("block");
+    
+    /**
+     * An image collection that represents the explosions
+     */
     public final static ImageCollection IMAGE_COLLECTION_EXPLOSION = new ImageCollection("explosion");
+    
+    /**
+     * An image collection that represents the scores
+     */
     public final static ImageCollection IMAGE_COLLECTION_SCORE = new ImageCollection("score");
+    
+    /**
+     * An image collection that represents the players
+     */
     public final static ImageCollection IMAGE_COLLECTION_PLAYER = new ImageCollection("player");
     
     private final static int SIZE_OF_NUMBER_IMAGE = 3;
