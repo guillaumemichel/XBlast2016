@@ -22,7 +22,9 @@ import ch.epfl.xblast.server.GameStateSerializer;
  */
 
 public final class GameStateDeserializer {
-    
+    private final static int BYTE_PER_PLAYER=4;
+    private final static int SIZES=2;//the number of bytes taken by the size of the board and the explosion
+    private final static int IMAGE_PER_PLAYER_SCOREBOARD=2;//the number of images per player on the scoreboard
     private GameStateDeserializer(){};
     
     /**
@@ -38,12 +40,13 @@ public final class GameStateDeserializer {
         int bs = l.get(0); //board size
         int es = l.get(bs+1); //explosion size
                 
-        if (l.size()!=bs+es+2+ch.epfl.xblast.server.GameState.PLAYER_NUMBER*4+1) throw new IllegalArgumentException("Expected was "+(bs+es+19)+"\tReal was "+l.size());
-        //not magic numbers /!\
-        return new GameState(getPlayers(l.subList(bs+es+2, bs+es+2+4*ch.epfl.xblast.server.GameState.PLAYER_NUMBER)),
+        if (l.size()!=bs+es+SIZES+ch.epfl.xblast.server.GameState.PLAYER_NUMBER*BYTE_PER_PLAYER+1)
+            throw new IllegalArgumentException();
+        //not magic numbers /!\ please
+        return new GameState(getPlayers(l.subList(bs+es+SIZES, bs+es+SIZES+BYTE_PER_PLAYER*ch.epfl.xblast.server.GameState.PLAYER_NUMBER)),
                 boardImage(RunLengthEncoder.decode(l.subList(1, bs+1))),
-                explosionImage(RunLengthEncoder.decode(l.subList(bs+2, bs+es+2))),
-                scoreboardImage(l.subList(bs+es+2, bs+es+2+ch.epfl.xblast.server.GameState.PLAYER_NUMBER*4)),
+                explosionImage(RunLengthEncoder.decode(l.subList(bs+SIZES, bs+es+SIZES))),
+                scoreboardImage(l.subList(bs+es+SIZES, bs+es+SIZES+ch.epfl.xblast.server.GameState.PLAYER_NUMBER*BYTE_PER_PLAYER)),
                 timeImage(Byte.toUnsignedInt(l.get(l.size()-1))));
     }
     
@@ -52,9 +55,9 @@ public final class GameStateDeserializer {
         for (int i =0;i<ch.epfl.xblast.server.GameState.PLAYER_NUMBER;++i)
             p.add(new GameState.Player(
                     PlayerID.values()[i],
-                    l.get(4*i),
-                    new SubCell(Byte.toUnsignedInt(l.get(4*i+1)), Byte.toUnsignedInt(l.get(4*i+2))),
-                    ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(l.get(4*i+3))));
+                    l.get(BYTE_PER_PLAYER*i),
+                    new SubCell(Byte.toUnsignedInt(l.get(BYTE_PER_PLAYER*i+1)), Byte.toUnsignedInt(l.get(BYTE_PER_PLAYER*i+SIZES))),
+                    ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(l.get(BYTE_PER_PLAYER*i+3))));
         return p;
     }
     private static List<Image> boardImage(List<Byte> l){
@@ -77,19 +80,21 @@ public final class GameStateDeserializer {
     
     private static List<Image> scoreboardImage(List<Byte> l){
         List<Image> scoreboard=new ArrayList<>();
-        scoreboard.addAll(buildScoreboardForPlayer(1,l.get(0)>0));
-        scoreboard.addAll(buildScoreboardForPlayer(2,l.get(4)>0));
+        int i=0;
+        for (int j=0;j<2;++j)
+            scoreboard.addAll(buildScoreboardForPlayer(++i,l.get((i-1)*BYTE_PER_PLAYER)>0));
         scoreboard.addAll(Collections.nCopies(8, ImageCollection.IMAGE_COLLECTION_SCORE.image(12)));
-        scoreboard.addAll(buildScoreboardForPlayer(3,l.get(8)>0));
-        scoreboard.addAll(buildScoreboardForPlayer(4,l.get(12)>0));
+        for (int j=0;j<2;++j)
+            scoreboard.addAll(buildScoreboardForPlayer(++i,l.get((i-1)*BYTE_PER_PLAYER)>0));
         return scoreboard;
     }
     
     private static List<Image> buildScoreboardForPlayer(int n, boolean alive){
         List<Image> l=new ArrayList<>();
-        l.add(ImageCollection.IMAGE_COLLECTION_SCORE.image(2*n-2+(alive ? 0:1)));
+        l.add(ImageCollection.IMAGE_COLLECTION_SCORE.image(IMAGE_PER_PLAYER_SCOREBOARD*n-2+(alive ? 0:1)));
         l.add(ImageCollection.IMAGE_COLLECTION_SCORE.image(10));
         l.add(ImageCollection.IMAGE_COLLECTION_SCORE.image(11));
+        //the "magic numbers" are the numbers of the images please don't hurt
         return l;
     }
     

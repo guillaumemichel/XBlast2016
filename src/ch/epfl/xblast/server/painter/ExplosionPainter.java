@@ -53,7 +53,7 @@ public final class ExplosionPainter {
         if (N) n+=8;
         if (E) n+=4;
         if (S) n+=2;
-        if (W) n+=1;
+        if (W) n+=1;//it is no magic numbers it is the reference to the images
         return n;
     }
 }

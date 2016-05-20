@@ -11,7 +11,8 @@ import ch.epfl.xblast.server.Player;
  */
 public final class PlayerPainter {
     
-    private static byte BYTE_FOR_EMPTY_PLAYER=15;
+    private final static byte BYTE_FOR_EMPTY_PLAYER=15;
+    private final static int PLAYER_POSITIONS_NUMBER=4;//player position according to x or y
 
     private PlayerPainter() {}
     
@@ -61,14 +62,14 @@ public final class PlayerPainter {
                     case N:
                 }
                 if (p.direction().isHorizontal()){
-                    if (p.position().x()%4==1)
+                    if (p.position().x()%PLAYER_POSITIONS_NUMBER==1)
                         n+=1;
-                    if (p.position().x()%4==3)
+                    if (p.position().x()%PLAYER_POSITIONS_NUMBER==3)
                         n+=2;
                 } else{
-                    if (p.position().y()%4==1)
+                    if (p.position().y()%PLAYER_POSITIONS_NUMBER==1)
                         n+=1;
-                    if (p.position().y()%4==3)
+                    if (p.position().y()%PLAYER_POSITIONS_NUMBER==3)
                         n+=2;
                 }
                 break;
