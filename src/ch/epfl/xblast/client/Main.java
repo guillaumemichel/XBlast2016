@@ -43,20 +43,21 @@ public final class Main {
             PlayerID id = PlayerID.values()[bjoin.get()];
                         
             List<Byte> firstState = new ArrayList<>();
-            while(bjoin.hasRemaining())
+            while(bjoin.hasRemaining())//transfer the buffer to a list
                 firstState.add(bjoin.get());
             component.setGameState(GameStateDeserializer.deserializeGameState(firstState), id);
-            SwingUtilities.invokeAndWait(() -> createUI(channel, address));
+            SwingUtilities.invokeAndWait(() -> createUI(channel, address));//create ui
             
             ByteBuffer currentState = ByteBuffer.allocate(MAX_BUFFER_SIZE);
             List<Byte> list = new ArrayList<>();
             channel.configureBlocking(true);
             while (true){
                 channel.receive(currentState);
-                currentState.flip();
+                currentState.flip();//receive the gamestate
                 while (currentState.hasRemaining())
-                    list.add(currentState.get());
+                    list.add(currentState.get());//transfert into a list
                 component.setGameState(GameStateDeserializer.deserializeGameState(list.subList(1, list.size())), id);
+                //display the deserialized gamestate to screen
                 currentState.clear();
                 list.clear();
             }
@@ -94,7 +95,7 @@ public final class Main {
         kb.put(KeyEvent.VK_SPACE, PlayerAction.DROP_BOMB);
         kb.put(KeyEvent.VK_SHIFT, PlayerAction.STOP);
         Consumer<PlayerAction> c = x -> {    
-            try {
+            try {//if a key in the map is pressed send the keyevent to the server
                 ByteBuffer senderBuffer = ByteBuffer.allocate(1);
                 senderBuffer.put((byte)x.ordinal());
                 senderBuffer.flip();
@@ -126,7 +127,7 @@ public final class Main {
         join.put((byte)PlayerAction.JOIN_GAME.ordinal()).flip();
         System.out.println("Connecting the server ...");
         try {
-            do {
+            do {//send the request to join the game until the server send a buffer in return
                 channel.send(join, address);
                 Thread.sleep(1000);
             }while(channel.receive(firstState)==null);
