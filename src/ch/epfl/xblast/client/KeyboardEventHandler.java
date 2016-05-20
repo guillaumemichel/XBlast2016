@@ -25,9 +25,9 @@ public class KeyboardEventHandler extends KeyAdapter implements KeyListener{
     /**
      * Constructs a keyboard event handler from a key map and a consumer
      * 
-     * @param map
+     * @param keyMap
      * 			The map that contains the meaning of each key/command on the keyboard
-     * @param cons
+     * @param c
      * 			The consumer
      */
     public KeyboardEventHandler(Map<Integer,PlayerAction> keyMap, Consumer<PlayerAction> c){
