@@ -22,7 +22,7 @@ BONUS :
 - Changer le temps de la partie
 - Le dernier joueur mort disparait et son nombre de vies passe à 0
 
-Méthode dans BoardPainter pour mapEditor:
+Méthode dans BoardPainter pour mapEditor: (attention à changer en Byte pour réutiliser le runlengthencoder)
 
     /**
      * Returns the corresponding block image's ordinal of a given block
