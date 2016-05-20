@@ -95,7 +95,7 @@ public final class Main {
         kb.put(KeyEvent.VK_SPACE, PlayerAction.DROP_BOMB);
         kb.put(KeyEvent.VK_SHIFT, PlayerAction.STOP);
         Consumer<PlayerAction> c = x -> {    
-            try {//if a key in the map is pressed send the keyevent to the server
+            try {//if a key in the map is pressed send the key event to the server
                 ByteBuffer senderBuffer = ByteBuffer.allocate(1);
                 senderBuffer.put((byte)x.ordinal());
                 senderBuffer.flip();
