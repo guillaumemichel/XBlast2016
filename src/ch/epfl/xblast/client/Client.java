@@ -27,7 +27,7 @@ import ch.epfl.xblast.PlayerID;
  * @author Adrien Vandenbroucque (258715)
  *
  */
-public final class Main {
+public final class Client {
     private static XBlastComponent component = new XBlastComponent();
     public final static int MAX_BUFFER_SIZE = 410;
     public final static int DEFAULT_PORT = 2016;

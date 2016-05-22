@@ -26,7 +26,7 @@ import ch.epfl.xblast.server.painter.BoardPainter;
  * @author Adrien Vandenbroucque (258715)
  *
  */
-public final class Main {
+public final class Server {
     
     public static void main(String[] args) {        
         int numberOfPlayers = GameState.PLAYER_NUMBER;
@@ -37,7 +37,7 @@ public final class Main {
         try {
             ByteBuffer receivingBuffer = ByteBuffer.allocate(1);
             DatagramChannel channel = DatagramChannel.open(StandardProtocolFamily.INET);
-            channel.bind(new InetSocketAddress(ch.epfl.xblast.client.Main.DEFAULT_PORT));
+            channel.bind(new InetSocketAddress(ch.epfl.xblast.client.Client.DEFAULT_PORT));
             
             //We fill a map of players with the players that are trying to joine the game
             System.out.println("Finding peers ...");
