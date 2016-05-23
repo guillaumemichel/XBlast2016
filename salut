@@ -14,6 +14,8 @@ PlayerPainter à adapter (avec les images et tout, pour si on a plus de 4 player
 (Level adapter la méthode defaultLevel())
 Adapter le GameStateDeserializer (pour la création d'image du scoreboard)
 
+CHANGER LE WHILE(TRUE) DU CLIENT !!!!!!!!!
+
 BONUS :
 - Music oklm
 - Map Editor
@@ -21,6 +23,7 @@ BONUS :
 - Ajouter des bonus
 - Changer le temps de la partie
 - Le dernier joueur mort disparait et son nombre de vies passe à 0
+- Bonus INVULNERABLE
 
 Méthode dans BoardPainter pour mapEditor: (attention à changer en Byte pour réutiliser le runlengthencoder)
 

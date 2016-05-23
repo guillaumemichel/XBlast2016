@@ -71,7 +71,7 @@ public final class Client {
                 list.clear();
             }
             
-        } catch (IOException | InvocationTargetException | InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         

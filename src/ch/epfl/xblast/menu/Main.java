@@ -24,7 +24,7 @@ public final class Main {
     public static void main(String[] args) {
         try {
             SwingUtilities.invokeAndWait(() -> createUI());
-        } catch (InvocationTargetException | InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -57,7 +57,10 @@ public final class Main {
         btnc.setFont(new Font("Arial",Font.PLAIN,36));
         btnc.setMaximumSize(new Dimension(450,100));
         btnc.setAlignmentX(Component.CENTER_ALIGNMENT);
-        //btnc.addActionListener(e->Server.main(new String[0]));
+        btnc.addActionListener(e->{
+            Client.main();
+            removeUI(frame);
+        });
         /*btn.addActionListener(e -> {
             Client.main(new String[0]);
             String[] str = {"1"};
@@ -69,7 +72,10 @@ public final class Main {
         btnj.setFont(new Font("Arial",Font.PLAIN,36));
         btnj.setMaximumSize(new Dimension(450,100));
         btnj.setAlignmentX(Component.CENTER_ALIGNMENT);
-        btnj.addActionListener(e->Join.joinMenu(frame));
+        btnj.addActionListener(e->{
+            Join.joinMenu(frame);
+            removeUI(frame);
+        });
         
         JCheckBox sound = new JCheckBox("Sound");
         sound.setBounds(400, 400, 50, 50);
@@ -91,10 +97,8 @@ public final class Main {
         frame.setVisible(true);
     }
     
-    public static JFrame removeUI(JFrame frame){
-        frame.remove(frame.getComponent(0));
-        return frame;
-        
+    public static void removeUI(JFrame frame){
+        frame.setVisible(false);
     }
 
 }
