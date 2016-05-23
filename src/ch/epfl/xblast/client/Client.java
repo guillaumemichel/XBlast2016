@@ -32,14 +32,18 @@ public final class Client {
     public final static int MAX_BUFFER_SIZE = 410;
     public final static int DEFAULT_PORT = 2016;
 
-    /*public static void main(){
+    public static void main(){
         main("localhost");
-    }*/
+    }
     
-    public static void main(String[] addr) {
+    public static void main(String[] args){
+        main(args[0]);
+    }
+    
+    public static void main(String addr) {
         try {
             DatagramChannel channel = DatagramChannel.open(StandardProtocolFamily.INET);
-            SocketAddress address = new InetSocketAddress(addr[0], DEFAULT_PORT);
+            SocketAddress address = new InetSocketAddress(addr, DEFAULT_PORT);
             
             channel.configureBlocking(false);
             
@@ -50,7 +54,7 @@ public final class Client {
             while(bjoin.hasRemaining())//transfer the buffer to a list
                 firstState.add(bjoin.get());
             component.setGameState(GameStateDeserializer.deserializeGameState(firstState), id);
-            SwingUtilities.invokeLater(() -> createUI(channel, address));//create ui
+            SwingUtilities.invokeAndWait(() -> createUI(channel, address));//create ui
             PlaySound.play();
             
             ByteBuffer currentState = ByteBuffer.allocate(MAX_BUFFER_SIZE);
@@ -67,7 +71,7 @@ public final class Client {
                 list.clear();
             }
             
-        } catch (IOException e) {
+        } catch (IOException | InvocationTargetException | InterruptedException e) {
             e.printStackTrace();
         }
         
@@ -95,7 +99,7 @@ public final class Client {
         kb.put(KeyEvent.VK_RIGHT, PlayerAction.MOVE_E);
         kb.put(KeyEvent.VK_SPACE, PlayerAction.DROP_BOMB);
         kb.put(KeyEvent.VK_SHIFT, PlayerAction.STOP);
-        Consumer<PlayerAction> c = x -> {    
+        Consumer<PlayerAction> c = x -> {
             try {//if a key in the map is pressed send the key event to the server
                 ByteBuffer senderBuffer = ByteBuffer.allocate(1);
                 senderBuffer.put((byte)x.ordinal());

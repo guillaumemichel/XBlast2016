@@ -25,7 +25,6 @@ public final class Main {
         try {
             SwingUtilities.invokeAndWait(() -> createUI());
         } catch (InvocationTargetException | InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -53,17 +52,24 @@ public final class Main {
         names.setMaximumSize(new Dimension(450,40));
         names.setAlignmentX(Component.CENTER_ALIGNMENT);
         
-        JButton btn = new JButton("Create Game");
-        btn.setBackground(Color.RED);
-        btn.setFont(new Font("Arial",Font.PLAIN,36));
-        btn.setMaximumSize(new Dimension(450,100));
-        btn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        btn.addActionListener(e->Client.main());
+        JButton btnc = new JButton("Create Game");
+        btnc.setBackground(Color.RED);
+        btnc.setFont(new Font("Arial",Font.PLAIN,36));
+        btnc.setMaximumSize(new Dimension(450,100));
+        btnc.setAlignmentX(Component.CENTER_ALIGNMENT);
+        //btnc.addActionListener(e->Server.main(new String[0]));
         /*btn.addActionListener(e -> {
             Client.main(new String[0]);
             String[] str = {"1"};
             Server.main(new String[0]);
         });*/
+        
+        JButton btnj = new JButton("Join Game");
+        btnj.setBackground(Color.RED);
+        btnj.setFont(new Font("Arial",Font.PLAIN,36));
+        btnj.setMaximumSize(new Dimension(450,100));
+        btnj.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btnj.addActionListener(e->Join.joinMenu(frame));
         
         JCheckBox sound = new JCheckBox("Sound");
         sound.setBounds(400, 400, 50, 50);
@@ -73,7 +79,9 @@ public final class Main {
         panel.add(Box.createRigidArea(new Dimension(0,10)));
         panel.add(names);
         panel.add(Box.createRigidArea(new Dimension(0,50)));
-        panel.add(btn);
+        panel.add(btnc);
+        panel.add(Box.createRigidArea(new Dimension(0,20)));
+        panel.add(btnj);
         panel.add(sound);
         
         //panel.setBackground(new Color(0x00FF00));//il faudra choisir un background
@@ -81,6 +89,12 @@ public final class Main {
         
         frame.pack();
         frame.setVisible(true);
+    }
+    
+    public static JFrame removeUI(JFrame frame){
+        frame.remove(frame.getComponent(0));
+        return frame;
+        
     }
 
 }

@@ -101,11 +101,10 @@ public final class Server {
                 if (remainingTime>0)
                     Thread.sleep((long) (remainingTime*Time.MS_PER_S/Time.NS_PER_S), (int) (remainingTime%(Time.NS_PER_S/Time.MS_PER_S)));
                 
-                //We compute the next game state by giving the actions of the players
-                g = g.next(speedChangeEvents, bombDropEvents);
-                
                 if (g.isGameOver()) 
                     bool = false;
+                //We compute the next game state by giving the actions of the players
+                g = g.next(speedChangeEvents, bombDropEvents);
             }
             
             if(g.winner().isPresent())
