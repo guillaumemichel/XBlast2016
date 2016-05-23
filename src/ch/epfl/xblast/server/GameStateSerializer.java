@@ -7,7 +7,6 @@ import ch.epfl.xblast.Cell;
 import ch.epfl.xblast.Direction;
 import ch.epfl.xblast.RunLengthEncoder;
 import ch.epfl.xblast.Time;
-import ch.epfl.xblast.client.GameStateDeserializer;
 import ch.epfl.xblast.server.painter.BoardPainter;
 import ch.epfl.xblast.server.painter.ExplosionPainter;
 import ch.epfl.xblast.server.painter.PlayerPainter;
