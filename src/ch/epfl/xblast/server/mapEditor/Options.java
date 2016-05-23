@@ -21,7 +21,7 @@ public final class Options extends JPanel{
             
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println(Options.this.associatedGrid.toListOfIntegers());
+                System.out.println(Options.this.associatedGrid.toListOfBytes());
                 SwingUtilities.windowForComponent(Options.this).dispose();
             }
         });

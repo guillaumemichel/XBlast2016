@@ -25,8 +25,8 @@ public final class GridOfBlocks extends JPanel{
         }
     }
     
-    public List<Integer> toListOfIntegers(){
-        return blocks.stream().map(BlockButton::block).map(Block::ordinal).collect(Collectors.toList());
+    public List<Byte> toListOfBytes(){
+        return blocks.stream().map(BlockButton::block).map(b -> (byte)b.ordinal()).collect(Collectors.toList());
     }
     
     public Board toBoard(){
