@@ -54,16 +54,16 @@ public final class Main {
         names.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         JButton btn = new JButton("Create Game");
+        btn.setBackground(Color.RED);
         btn.setFont(new Font("Arial",Font.PLAIN,36));
         btn.setMaximumSize(new Dimension(450,100));
         btn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        String[] ip = {"127.192.0.0"};
-        btn.addActionListener(e->Client.main(ip));
-        btn.addActionListener(e -> {
+        btn.addActionListener(e->Client.main());
+        /*btn.addActionListener(e -> {
             Client.main(new String[0]);
-            //String[] str = {"1"};
+            String[] str = {"1"};
             Server.main(new String[0]);
-        });
+        });*/
         
         JCheckBox sound = new JCheckBox("Sound");
         sound.setBounds(400, 400, 50, 50);
