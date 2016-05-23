@@ -32,14 +32,14 @@ public final class Client {
     public final static int MAX_BUFFER_SIZE = 410;
     public final static int DEFAULT_PORT = 2016;
 
-    public static void main(){
+    /*public static void main(){
         main("localhost");
-    }
+    }*/
     
-    public static void main(String addr) {
+    public static void main(String[] addr) {
         try {
             DatagramChannel channel = DatagramChannel.open(StandardProtocolFamily.INET);
-            SocketAddress address = new InetSocketAddress(addr, DEFAULT_PORT);
+            SocketAddress address = new InetSocketAddress(addr[0], DEFAULT_PORT);
             
             channel.configureBlocking(false);
             
@@ -50,7 +50,8 @@ public final class Client {
             while(bjoin.hasRemaining())//transfer the buffer to a list
                 firstState.add(bjoin.get());
             component.setGameState(GameStateDeserializer.deserializeGameState(firstState), id);
-            SwingUtilities.invokeAndWait(() -> createUI(channel, address));//create ui
+            SwingUtilities.invokeLater(() -> createUI(channel, address));//create ui
+            PlaySound.play();
             
             ByteBuffer currentState = ByteBuffer.allocate(MAX_BUFFER_SIZE);
             List<Byte> list = new ArrayList<>();
@@ -68,10 +69,6 @@ public final class Client {
             
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (InvocationTargetException e1) {
-            e1.printStackTrace();
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
         }
         
     }
