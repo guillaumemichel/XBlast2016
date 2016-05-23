@@ -51,9 +51,9 @@ public final class ViewMenu {
         btnc.setFont(new Font("Arial",Font.PLAIN,36));
         btnc.setMaximumSize(new Dimension(450,100));
         btnc.setAlignmentX(Component.CENTER_ALIGNMENT);
-        btnc.addActionListener(e->{
-            Client.main();
-        });
+        //btnc.addActionListener(e->{
+            //Client.main();
+        //});
         buttonList.add(btnc);
         /*btn.addActionListener(e -> {
             Client.main(new String[0]);
@@ -95,7 +95,7 @@ public final class ViewMenu {
     }
     
     public JButton getButton(int i){
-        if (i<buttonList.size()) throw new IllegalArgumentException();
+        if (i>=buttonList.size()) throw new IllegalArgumentException();
         return buttonList.get(i);
     }
 }

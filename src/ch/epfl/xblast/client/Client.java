@@ -1,5 +1,6 @@
 package ch.epfl.xblast.client;
 
+import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -33,14 +34,26 @@ public final class Client {
     public final static int DEFAULT_PORT = 2016;
 
     public static void main(){
-        main("localhost");
+        addFrame("localhost");
+    }
+   
+    public static void main(JFrame frame){
+        main("localhost",frame);
     }
     
     public static void main(String[] args){
-        main(args[0]);
+        addFrame(args[0]);
     }
     
-    public static void main(String addr) {
+    private static void addFrame(String str){
+        JFrame frame = new JFrame("XBlast 2016");
+        frame.setPreferredSize(new Dimension(XBlastComponent.XB_COMPONENT_WIDTH,XBlastComponent.XB_COMPONENT_HEIGHT));
+        frame.pack();
+        frame.setVisible(true);
+        main(str,frame);
+    }
+    
+    public static void main(String addr,JFrame frame) {
         try {
             DatagramChannel channel = DatagramChannel.open(StandardProtocolFamily.INET);
             SocketAddress address = new InetSocketAddress(addr, DEFAULT_PORT);
@@ -54,7 +67,7 @@ public final class Client {
             while(bjoin.hasRemaining())//transfer the buffer to a list
                 firstState.add(bjoin.get());
             component.setGameState(GameStateDeserializer.deserializeGameState(firstState), id);
-            SwingUtilities.invokeAndWait(() -> createUI(channel, address));//create ui
+            //createUI(channel, address,frame);//create ui
             PlaySound.play();
             
             ByteBuffer currentState = ByteBuffer.allocate(MAX_BUFFER_SIZE);
@@ -86,7 +99,8 @@ public final class Client {
      * @param address
      *      The SocketAddress of the server
      */
-    private static void createUI(DatagramChannel channel, SocketAddress address){
+    public static void createUI(DatagramChannel channel, SocketAddress address,JFrame frame0){
+        frame0.setVisible(false);
         JFrame frame = new JFrame("XBlast 2016");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(component);

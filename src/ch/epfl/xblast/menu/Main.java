@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.Box;
@@ -27,6 +28,16 @@ public final class Main {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        /*ActionListener l = (e->{
+           Client.createUI(channel, address, frame0);
+           Client.main(); 
+        });
+        SwingUtilities.invokeLater(() ->{
+            ModelMenu model = new ModelMenu();
+            ViewMenu view = new ViewMenu();
+            ControllerMenu controller = new ControllerMenu(model,view);
+            controller.control(l, 0);
+        });*/
 
     }
     

@@ -11,7 +11,8 @@ public final class ControllerMenu {
         this.view=view;
     }
     
-    public void control(ActionListener al, int id){
-        
+    public void control(ActionListener l, int id){
+        if (id<view.buttonsNumber())
+            view.getButton(id).addActionListener(l);
     }
 }

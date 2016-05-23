@@ -25,8 +25,8 @@ import ch.epfl.xblast.client.GameState.Player;
  */
 @SuppressWarnings("serial")
 public final class XBlastComponent extends JComponent{
-    private final static int XB_COMPONENT_WIDTH = 960;
-    private final static int XB_COMPONENT_HEIGHT = 688;
+    public final static int XB_COMPONENT_WIDTH = 960;
+    public final static int XB_COMPONENT_HEIGHT = 688;
     
     private final static int DISPLAY_LIVES_PLAYER1_X = 96;
     private final static int DISPLAY_LIVES_PLAYER2_X = 240;
