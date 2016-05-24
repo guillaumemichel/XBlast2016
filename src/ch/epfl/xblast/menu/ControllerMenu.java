@@ -1,18 +1,34 @@
 package ch.epfl.xblast.menu;
 
-import java.awt.event.ActionListener;
-
 public final class ControllerMenu {
-    private ModelMenu model;
     private ViewMenu view;
+    private ModelMenu model;
     
-    public ControllerMenu(ModelMenu model, ViewMenu view){
-        this.model=model;
+    public ControllerMenu(ViewMenu view,ModelMenu model){
         this.view=view;
+        this.model=model;
+        setMainMenu(view);
+        view.frame.setVisible(true);
     }
     
-    public void control(ActionListener l, int id){
-        if (id<view.buttonsNumber())
-            view.getButton(id).addActionListener(l);
+    public void addActionListener(ViewMenu view){
+        model.join.addActionListener(e->setJoin(view));
     }
+    
+    public void setMainMenu(ViewMenu view){
+        view.frame.getContentPane().removeAll();
+        view.frame.add(view.createMenuView(model));
+        model.join.addActionListener(e -> setJoin(view));
+        view.frame.validate();
+        view.frame.repaint();
+    }
+    
+    public void setJoin(ViewMenu view){
+        view.frame.getContentPane().removeAll();
+        view.frame.add(view.createJoinMenu(model));
+        model.backJoin.addActionListener(e -> setMainMenu(view));
+        view.frame.validate();
+        view.frame.repaint();
+    }
+    
 }
