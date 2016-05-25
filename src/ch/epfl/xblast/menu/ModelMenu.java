@@ -8,6 +8,7 @@ import java.text.NumberFormat;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 public final class ModelMenu {
@@ -17,8 +18,8 @@ public final class ModelMenu {
     JButton join;
     JLabel ipText;
     JButton backJoin;
-    JFormattedTextField ipField;
-    NumberFormat format;
+    JTextField ipField;
+    NumberFormat amountFormat;
 
     
     public ModelMenu(){
@@ -73,7 +74,9 @@ public final class ModelMenu {
     }
     
     private void setIpField(){
-        ipField = new JFormattedTextField(format);
+        ipField = new JTextField();
+        ipField.setColumns(15);
+        amountFormat = NumberFormat.getIntegerInstance();
         ipField.setMaximumSize(new Dimension(200,50));
     }
 }
