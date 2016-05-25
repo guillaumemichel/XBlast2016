@@ -1,34 +1,37 @@
 package ch.epfl.xblast.menu;
 
+import javax.swing.JFrame;
+
 public final class ControllerMenu {
     private ViewMenu view;
     private ModelMenu model;
+    private JFrame frame;
     
     public ControllerMenu(ViewMenu view,ModelMenu model){
         this.view=view;
         this.model=model;
-        setMainMenu(view);
-        view.frame.setVisible(true);
+        frame = view.getFrame();
+        setView("Main");
+        view.getFrame().setVisible(true);
     }
     
-    public void addActionListener(ViewMenu view){
-        model.join.addActionListener(e->setJoin(view));
+    public void setView(String s){
+        frame.getContentPane().removeAll();
+        switch (s){
+            case "Main":
+                frame.add(view.createMenuView());
+                break;
+            case "Join":
+                frame.add(view.createJoinMenu());
+                break;
+            case "WaitC":
+                frame.add(view.createWaitingClient());
+                break;
+            case "Game":
+                frame.add(view.getComponent());
+            default : frame.add(view.createMenuView());
+        }
+        frame.validate();
+        frame.repaint();
     }
-    
-    public void setMainMenu(ViewMenu view){
-        view.frame.getContentPane().removeAll();
-        view.frame.add(view.createMenuView(model));
-        model.join.addActionListener(e -> setJoin(view));
-        view.frame.validate();
-        view.frame.repaint();
-    }
-    
-    public void setJoin(ViewMenu view){
-        view.frame.getContentPane().removeAll();
-        view.frame.add(view.createJoinMenu(model));
-        model.backJoin.addActionListener(e -> setMainMenu(view));
-        view.frame.validate();
-        view.frame.repaint();
-    }
-    
 }
