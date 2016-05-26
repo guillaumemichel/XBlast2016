@@ -16,13 +16,13 @@ import ch.epfl.xblast.server.Level;
 
 @SuppressWarnings("serial")
 public final class BlockChooser extends JPanel{
-    private BlockButton currentBlock = new BlockButton(BlockButton.currentBlock);
+    private BlockButton currentBlock = new BlockButton(BlockButton.currentBlock, true);
 
     public BlockChooser(){
         this.setLayout(new FlowLayout());
         for (int i = 0; i < Block.values().length; ++i) {
             if(i != Block.CRUMBLING_WALL.ordinal()){
-                BlockButton block = new BlockButton(Block.values()[i]);
+                BlockButton block = new BlockButton(Block.values()[i], true);
                 block.addMouseListener(new MouseAdapter(){
                     @Override
                     public void mouseClicked(MouseEvent e){

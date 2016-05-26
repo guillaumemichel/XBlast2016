@@ -19,37 +19,35 @@ public final class BlockButton extends JButton{
     
     private Block block;
     
-    public BlockButton(){
-        block=Block.FREE;
-        this.setIcon(new ImageIcon(ImageCollection.IMAGE_COLLECTION_BLOCK.imageOrNull(0)));
-        this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                if((e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) != 0)
+    public BlockButton(Block b, boolean chooser){
+        block=b;
+        this.setIcon(new ImageIcon(ImageCollection.IMAGE_COLLECTION_BLOCK.imageOrNull(Level.DEFAULT_LEVEL.boardPainter().correspondingBlockImageOf(block))));
+        if(!chooser){
+            this.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    if((e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) != 0)
+                        setBlock(currentBlock);
+                }
+                
+                @Override
+                public void mousePressed(MouseEvent e) {
                     setBlock(currentBlock);
-            }
-            
-            @Override
-            public void mousePressed(MouseEvent e) {
-                setBlock(currentBlock);
-            }
-        });
+                }
+            });
+        }
         this.setPreferredSize(new Dimension(BLOCK_IMAGE_WIDTH, BLOCK_IMAGE_HEIGHT));
         this.setBorderPainted(false);
         this.setFocusPainted(false);
         this.setContentAreaFilled(false);
     }
     
-    public BlockButton(Block b){
-        block = b;
-        this.setIcon(new ImageIcon(ImageCollection.IMAGE_COLLECTION_BLOCK.imageOrNull(Level.DEFAULT_LEVEL.boardPainter().correspondingBlockImageOf(block))));
-        this.setPreferredSize(new Dimension(BLOCK_IMAGE_WIDTH, BLOCK_IMAGE_HEIGHT));
-        this.setFocusPainted(false);
-        this.setContentAreaFilled(false);
-    }
-    
     public void setBlock(Block b){
         block = b;
+        this.setButtonImage(b);
+    }
+    
+    public void setButtonImage(Block b){
         this.setIcon(new ImageIcon(ImageCollection.IMAGE_COLLECTION_BLOCK.imageOrNull(Level.DEFAULT_LEVEL.boardPainter().correspondingBlockImageOf(block))));
     }
     
