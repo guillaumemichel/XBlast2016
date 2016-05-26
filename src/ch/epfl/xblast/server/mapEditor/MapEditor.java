@@ -8,7 +8,7 @@ import javax.swing.SwingUtilities;
 @SuppressWarnings("serial")
 public final class MapEditor extends JFrame{
     private GridOfBlocks grid = new GridOfBlocks();
-    private BlockChooser blockChooser = new BlockChooser();
+    private BlockChooser blockChooser = new BlockChooser(grid);
     private Options options = new Options(grid);
     
     public MapEditor(){
