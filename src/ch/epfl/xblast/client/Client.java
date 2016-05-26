@@ -32,31 +32,11 @@ public final class Client {
     private static XBlastComponent component = new XBlastComponent();
     public final static int MAX_BUFFER_SIZE = 410;
     public final static int DEFAULT_PORT = 2016;
-
-    public static void main(){
-        addFrame("localhost");
-    }
-   
-    public static void main(JFrame frame){
-        main("localhost",frame);
-    }
     
-    public static void main(String[] args){
-        addFrame(args[0]);
-    }
-    
-    private static void addFrame(String str){
-        JFrame frame = new JFrame("XBlast 2016");
-        frame.setPreferredSize(new Dimension(XBlastComponent.XB_COMPONENT_WIDTH,XBlastComponent.XB_COMPONENT_HEIGHT));
-        frame.pack();
-        frame.setVisible(true);
-        main(str,frame);
-    }
-    
-    public static void main(String addr,JFrame frame) {
+    public static void main(String[] args) {
         try {
             DatagramChannel channel = DatagramChannel.open(StandardProtocolFamily.INET);
-            SocketAddress address = new InetSocketAddress(addr, DEFAULT_PORT);
+            SocketAddress address = new InetSocketAddress(args.length==0 ? "localhost" : args[0], DEFAULT_PORT);
             
             channel.configureBlocking(false);
             
@@ -67,7 +47,7 @@ public final class Client {
             while(bjoin.hasRemaining())//transfer the buffer to a list
                 firstState.add(bjoin.get());
             component.setGameState(GameStateDeserializer.deserializeGameState(firstState), id);
-            //createUI(channel, address,frame);//create ui
+            SwingUtilities.invokeAndWait(()-> createUI(channel, address));//create ui
             PlaySound.play();
             
             ByteBuffer currentState = ByteBuffer.allocate(MAX_BUFFER_SIZE);
@@ -99,8 +79,7 @@ public final class Client {
      * @param address
      *      The SocketAddress of the server
      */
-    public static void createUI(DatagramChannel channel, SocketAddress address,JFrame frame0){
-        frame0.setVisible(false);
+    public static void createUI(DatagramChannel channel, SocketAddress address){
         JFrame frame = new JFrame("XBlast 2016");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(component);
