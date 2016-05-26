@@ -8,29 +8,45 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Collections;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 
 import ch.epfl.xblast.Cell;
-import ch.epfl.xblast.client.ImageCollection;
 import ch.epfl.xblast.server.Block;
-import ch.epfl.xblast.server.Level;
 
+/**
+ * A custom JPanel representing a block chooser
+ * 
+ * @author Guillaume Michel (258066)
+ * @author Adrien Vandenbrouque (258715)
+ *
+ */
 @SuppressWarnings("serial")
 public final class BlockChooser extends JPanel{
-    private BlockButton currentBlock = new BlockButton(BlockButton.currentBlock, true);
-    private final GridOfBlocks associatedGrid;
+    private BlockButton currentBlock = new BlockButton(Block.FREE, true);
 
-    public BlockChooser(GridOfBlocks associatedGrid){
-        this.associatedGrid = associatedGrid;
+    /**
+     * Constructs a block chooser
+     */
+    public BlockChooser(){
         this.setLayout(new FlowLayout());
         addBlockSelectors();
         addCurrentBlock();
         this.add(new JLabel(new String(new char[20]).replace("\0", " ")));
         addClearButton();
+    }
+    
+    /**
+     * Returns the current chosen block
+     * 
+     * @return
+     *      The current chosen block
+     */
+    public BlockButton currentBlock(){
+        return currentBlock;
     }
     
     private void addClearButton(){
@@ -39,7 +55,8 @@ public final class BlockChooser extends JPanel{
             
             @Override
             public void actionPerformed(ActionEvent e) {
-                BlockChooser.this.associatedGrid.loadGridfromListOfBytes(Collections.nCopies(Cell.COUNT, (byte)0));
+                GridOfBlocks parentGrid = ((MapEditor) SwingUtilities.windowForComponent(BlockChooser.this)).grid();
+                parentGrid.loadGridfromListOfBytes(Collections.nCopies(Cell.COUNT, (byte)0));
             }
         });
         this.add(clear);
@@ -52,8 +69,8 @@ public final class BlockChooser extends JPanel{
                 block.addMouseListener(new MouseAdapter(){
                     @Override
                     public void mouseClicked(MouseEvent e){
-                        BlockButton.currentBlock = block.block();
-                        currentBlock.setIcon(new ImageIcon(ImageCollection.IMAGE_COLLECTION_BLOCK.imageOrNull(Level.DEFAULT_LEVEL.boardPainter().correspondingBlockImageOf(BlockButton.currentBlock))));
+                        Block blockOfparentBlockButton = ((BlockButton)e.getSource()).block();
+                        currentBlock.setBlock(blockOfparentBlockButton);
                     }
                 });
                 this.add(block);

@@ -23,12 +23,20 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import ch.epfl.xblast.Cell;
 import ch.epfl.xblast.server.Block;
 
+/**
+ * A custom JPanel representing an option panel
+ * 
+ * @author Guillaume Michel (258066)
+ * @author Adrien Vandenbroucque (258715)
+ *
+ */
 @SuppressWarnings("serial")
 public final class Options extends JPanel{
-    private final GridOfBlocks associatedGrid;
 
-    public Options(GridOfBlocks associatedGrid){
-        this.associatedGrid = associatedGrid;
+    /**
+     * Constructs the options panel
+     */
+    public Options(){
         this.setLayout(new FlowLayout());
         
         addButtonLoadFile();
@@ -60,10 +68,12 @@ public final class Options extends JPanel{
                             l.add((byte)realValue);
                         }
                           
-                        if(l.size() != Cell.COUNT)
+                        if(l.size() != Cell.COUNT){
                             throw new IllegalArgumentException("The size of the file must be of 195 bytes!");
-                        else
-                            Options.this.associatedGrid.loadGridfromListOfBytes(l);
+                        }else{
+                            GridOfBlocks parentGrid = ((MapEditor) SwingUtilities.windowForComponent(Options.this)).grid();
+                            parentGrid.loadGridfromListOfBytes(l);
+                        }
                         
                     }catch(FileNotFoundException exception){
                         
@@ -90,7 +100,9 @@ public final class Options extends JPanel{
                     File toSave = new File(saveChooser.getSelectedFile()+".txt");
 
                     try(FileWriter out = new FileWriter(toSave)){
-                        List<Byte> mapIntegers = Options.this.associatedGrid.toListOfBytes();
+                        GridOfBlocks parentGrid = ((MapEditor) SwingUtilities.windowForComponent(Options.this)).grid();
+
+                        List<Byte> mapIntegers = parentGrid.toListOfBytes();
                         for(byte b : mapIntegers)
                             out.write(b+"");
                         out.flush();
@@ -110,7 +122,7 @@ public final class Options extends JPanel{
             
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println(Options.this.associatedGrid.toListOfBytes());
+                //System.out.println(Options.this.associatedGrid.toListOfBytes());
                 SwingUtilities.windowForComponent(Options.this).dispose();
             }
         });
