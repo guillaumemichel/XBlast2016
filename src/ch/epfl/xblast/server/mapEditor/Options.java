@@ -51,7 +51,7 @@ public final class Options extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
-                fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Text Files", "txt"));
+                fileChooser.setFileFilter(new FileNameExtensionFilter("Text Files", "txt"));
                 
                 if(fileChooser.showOpenDialog(getParent())== JFileChooser.APPROVE_OPTION){
                     File toLoad = fileChooser.getSelectedFile();
