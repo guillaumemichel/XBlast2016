@@ -12,10 +12,13 @@ import ch.epfl.cs108.Sq;
 import ch.epfl.xblast.Cell;
 import ch.epfl.xblast.server.Block;
 import ch.epfl.xblast.server.Board;
+import ch.epfl.xblast.server.Level;
+import ch.epfl.xblast.server.Player;
 
 @SuppressWarnings("serial")
 public final class GridOfBlocks extends JPanel{
     private List<BlockButton> blocks = new ArrayList<>();
+    private List<Player> players = Level.DEFAULT_LEVEL.gameState().players();
 
     public GridOfBlocks(){
         this.setLayout(new GridLayout(Cell.ROWS, Cell.COLUMNS));

@@ -35,9 +35,9 @@ public final class BlockButton extends JButton{
                     setBlock(currentBlock);
                 }
             });
+            this.setBorderPainted(false);
         }
         this.setPreferredSize(new Dimension(BLOCK_IMAGE_WIDTH, BLOCK_IMAGE_HEIGHT));
-        this.setBorderPainted(false);
         this.setFocusPainted(false);
         this.setContentAreaFilled(false);
     }
