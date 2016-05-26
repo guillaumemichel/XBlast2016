@@ -35,7 +35,7 @@ public final class GridOfBlocks extends JPanel{
         return new Board(blocks);
     }
     
-    public void loadGridfromListOfBytes(List<Integer> l){
+    public void loadGridfromListOfBytes(List<Byte> l){
         List<Block> blocks = l.stream().map(b -> Block.values()[b]).collect(Collectors.toList());
        
         Iterator<BlockButton> it = this.blocks.iterator();

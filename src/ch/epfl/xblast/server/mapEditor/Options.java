@@ -4,6 +4,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -55,7 +56,7 @@ public final class Options extends JPanel{
                 if(fileChooser.showOpenDialog(getParent())== JFileChooser.APPROVE_OPTION)
                     map = fileChooser.getSelectedFile();
 
-                List<Integer> l = new ArrayList<>();
+                List<Byte> l = new ArrayList<>();
                 try(InputStream s =new BufferedInputStream(new FileInputStream(map))){
                     int b;
                     while((b = s.read()) != -1){
@@ -63,7 +64,7 @@ public final class Options extends JPanel{
                         if(realValue == 3 || realValue > 5)
                             throw new IllegalArgumentException("One value in the file is invalid !");
                             
-                        l.add(realValue);
+                        l.add((byte)realValue);
                     }
                       
                     if(l.size() != 195)
@@ -93,14 +94,11 @@ public final class Options extends JPanel{
                 if(saveChooser.showSaveDialog(getParent()) == JFileChooser.APPROVE_OPTION){
                     File toSave = saveChooser.getSelectedFile();
 
-                    try(FileOutputStream out = new FileOutputStream(toSave)){
-                        Byte[] bByte = new Byte[Options.this.associatedGrid.toListOfBytes().size()];
-                        Options.this.associatedGrid.toListOfBytes().toArray(bByte);
-                        byte[] bbyte = new byte[bByte.length];
-                        int j = 0;
-                        for(Byte b : bByte)
-                            bbyte[j++] = b;
-                        out.write(bbyte);
+                    try(DataOutputStream out = new DataOutputStream(new FileOutputStream(toSave))){
+                        List<Byte> mapIntegers = Options.this.associatedGrid.toListOfBytes();
+                        for(int i : mapIntegers)
+                            out.writeByte(i);
+                        out.flush();
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
