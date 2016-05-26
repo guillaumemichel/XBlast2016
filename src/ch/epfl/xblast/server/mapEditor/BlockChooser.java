@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Collections;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -16,6 +17,7 @@ import javax.swing.border.LineBorder;
 
 import ch.epfl.xblast.Cell;
 import ch.epfl.xblast.server.Block;
+import ch.epfl.xblast.server.Board;
 
 /**
  * A custom JPanel representing a block chooser
@@ -35,8 +37,9 @@ public final class BlockChooser extends JPanel{
         this.setLayout(new FlowLayout());
         addBlockSelectors();
         addCurrentBlock();
-        this.add(new JLabel(new String(new char[20]).replace("\0", " ")));
+        this.add(new JLabel(new String(new char[10]).replace("\0", " ")));
         addClearButton();
+        addWalledBoardButton();
     }
     
     /**
@@ -50,7 +53,7 @@ public final class BlockChooser extends JPanel{
     }
     
     private void addClearButton(){
-        JButton clear = new JButton("Clear board");
+        JButton clear = new JButton("Cleared board");
         clear.addActionListener(new ActionListener() {
             
             @Override
@@ -60,6 +63,21 @@ public final class BlockChooser extends JPanel{
             }
         });
         this.add(clear);
+    }
+    
+    private void addWalledBoardButton(){
+        JButton walledBoard = new JButton("Cleared walled board");
+        walledBoard.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GridOfBlocks parentGrid = ((MapEditor) SwingUtilities.windowForComponent(BlockChooser.this)).grid();
+                Board b = Board.ofInnerBlocksWalled(Collections.nCopies(Cell.ROWS-2, Collections.nCopies(Cell.COLUMNS-2, Block.FREE)));
+                List<Byte> l = b.toListOfBytes();
+                parentGrid.loadGridfromListOfBytes(l);
+            }
+        });
+        this.add(walledBoard);
     }
     
     private void addBlockSelectors(){
