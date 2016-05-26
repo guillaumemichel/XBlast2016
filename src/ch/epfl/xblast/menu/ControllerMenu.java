@@ -29,6 +29,7 @@ public final class ControllerMenu {
                 break;
             case "Game":
                 frame.add(view.getComponent());
+                break;
             default : frame.add(view.createMenuView());
         }
         frame.validate();

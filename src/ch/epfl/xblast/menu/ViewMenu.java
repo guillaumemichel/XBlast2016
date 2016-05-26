@@ -8,21 +8,24 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import ch.epfl.xblast.client.ClientBis;
+import ch.epfl.xblast.client.KeyboardEventHandler;
 import ch.epfl.xblast.client.XBlastComponent;
 
 public final class ViewMenu {
     private JFrame frame = new JFrame("XBlast 2016");
     private ModelMenu model;
-    private XBlastComponent component=new XBlastComponent();
+    private XBlastComponent component;
     
     public ViewMenu(ModelMenu model){
         this.model=model;
+        component=new XBlastComponent();
         setFrame();
     }
     
     private final void setFrame(){
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(XBlastComponent.XB_COMPONENT_WIDTH,XBlastComponent.XB_COMPONENT_HEIGHT));
+        frame.setPreferredSize(component.getPreferredSize());
         frame.pack();
     }
     

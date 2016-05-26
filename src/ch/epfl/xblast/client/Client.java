@@ -1,9 +1,7 @@
 package ch.epfl.xblast.client;
 
-import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.net.StandardProtocolFamily;

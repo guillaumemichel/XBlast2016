@@ -7,21 +7,27 @@ import java.net.SocketAddress;
 import java.net.StandardProtocolFamily;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
 import ch.epfl.xblast.PlayerAction;
+import ch.epfl.xblast.PlayerID;
 import ch.epfl.xblast.menu.ModelMenu;
 
 public class ClientBis {
-    private static XBlastComponent component = new XBlastComponent();
     private DatagramChannel channel;
     private SocketAddress chaussette;
     private ByteBuffer firstState;
     private ByteBuffer join;
+    ByteBuffer currentState = ByteBuffer.allocate(MAX_BUFFER_SIZE);
     private ModelMenu model;
     private Consumer<PlayerAction> c;
+    PlayerID id;
+    List<Byte> list=new ArrayList<>();
+    XBlastComponent component;
 
     public final static int MAX_BUFFER_SIZE = 410;
     public final static int DEFAULT_PORT = 2016;
@@ -36,8 +42,34 @@ public class ClientBis {
         }
     }
     
+    public final void start(XBlastComponent component) {
+        this.component = component;
+        id = PlayerID.values()[firstState.get()];
+        while(firstState.hasRemaining())//transfer the buffer to a list
+            list.add(firstState.get());
+        component.setGameState(GameStateDeserializer.deserializeGameState(list), id);
+        PlaySound.play();
+        list.clear();
+        try {
+            channel.configureBlocking(true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
     public final void play(){
-        
+        try {
+            channel.receive(currentState);
+            currentState.flip();//receive the gamestate
+            while (currentState.hasRemaining())
+                list.add(currentState.get());//transfert into a list
+            component.setGameState(GameStateDeserializer.deserializeGameState(list.subList(1, list.size())), id);
+            //display the deserialized gamestate to screen
+            currentState.clear();
+            list.clear();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
     public final void connect(){
