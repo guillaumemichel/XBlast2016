@@ -2,6 +2,9 @@ package ch.epfl.xblast.menu;
 
 import javax.swing.JFrame;
 
+import ch.epfl.xblast.client.ClientBis;
+import ch.epfl.xblast.client.KeyboardEventHandler;
+
 public final class ControllerMenu {
     private ViewMenu view;
     private ModelMenu model;
@@ -29,6 +32,8 @@ public final class ControllerMenu {
                 break;
             case "Game":
                 frame.add(view.getComponent());
+                view.getComponent().addKeyListener(new KeyboardEventHandler(ClientBis.getMap(), ClientBis.getConsumer()));
+                view.getComponent().requestFocusInWindow();
                 break;
             default : frame.add(view.createMenuView());
         }

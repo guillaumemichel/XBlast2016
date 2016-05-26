@@ -15,41 +15,29 @@ import java.util.function.Consumer;
 
 import ch.epfl.xblast.PlayerAction;
 import ch.epfl.xblast.PlayerID;
-import ch.epfl.xblast.menu.ModelMenu;
 
 public class ClientBis {
-    private DatagramChannel channel;
-    private SocketAddress chaussette;
-    private ByteBuffer firstState;
-    private ByteBuffer join;
-    ByteBuffer currentState = ByteBuffer.allocate(MAX_BUFFER_SIZE);
-    private ModelMenu model;
-    private Consumer<PlayerAction> c;
-    PlayerID id;
-    List<Byte> list=new ArrayList<>();
-    XBlastComponent component;
-
     public final static int MAX_BUFFER_SIZE = 410;
     public final static int DEFAULT_PORT = 2016;
     
-    public ClientBis(ModelMenu model){
-        this.model=model;
-        try {
-            channel = DatagramChannel.open(StandardProtocolFamily.INET);
-            channel.configureBlocking(false);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    private static DatagramChannel channel;
+    private static SocketAddress chaussette;
+    private static ByteBuffer firstState;
+    private static ByteBuffer join;
+    private static ByteBuffer currentState = ByteBuffer.allocate(MAX_BUFFER_SIZE);
+    private static PlayerID id;
+    private static List<Byte> list=new ArrayList<>();
+    private static XBlastComponent component;
     
-    public final void start(XBlastComponent component) {
-        this.component = component;
+    public final static void start(XBlastComponent component0) {
+        component = component0;
         id = PlayerID.values()[firstState.get()];
         while(firstState.hasRemaining())//transfer the buffer to a list
             list.add(firstState.get());
         component.setGameState(GameStateDeserializer.deserializeGameState(list), id);
         PlaySound.play();
         list.clear();
+        firstState.clear();
         try {
             channel.configureBlocking(true);
         } catch (IOException e) {
@@ -57,12 +45,17 @@ public class ClientBis {
         }
     }
     
-    public final void play(){
+    public final static boolean play(){
         try {
             channel.receive(currentState);
             currentState.flip();//receive the gamestate
             while (currentState.hasRemaining())
                 list.add(currentState.get());//transfert into a list
+            if (list.size()==1){
+                list.clear();
+                channel.close();
+                return true;
+            }
             component.setGameState(GameStateDeserializer.deserializeGameState(list.subList(1, list.size())), id);
             //display the deserialized gamestate to screen
             currentState.clear();
@@ -70,32 +63,36 @@ public class ClientBis {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return false;
     }
     
-    public final void connect(){
+    public final static void connect(){
         connect("localhost");
     }
     
-    public final void connect(String s){
-        chaussette = new InetSocketAddress(s, DEFAULT_PORT);
-        model.getWaiting(2);
-        join = ByteBuffer.allocate(1);
-        firstState = ByteBuffer.allocate(MAX_BUFFER_SIZE);
-        join.put((byte)PlayerAction.JOIN_GAME.ordinal()).flip();
-        System.out.println("Connecting the server ...");
+    public final static void connect(String s){
         try {
+            channel = DatagramChannel.open(StandardProtocolFamily.INET);
+            channel.configureBlocking(false);
+            chaussette = new InetSocketAddress(s, DEFAULT_PORT);
+            join = ByteBuffer.allocate(1);
+            firstState = ByteBuffer.allocate(MAX_BUFFER_SIZE);
+            join.put((byte)PlayerAction.JOIN_GAME.ordinal()).flip();
+            
+            System.out.println("Connecting the server ...");
             do {//send the request to join the game until the server send a buffer in return
                 channel.send(join, chaussette);
                 Thread.sleep(1000);
-            }while(channel.receive(firstState)==null);
-        } catch (Exception e) {
-            e.printStackTrace();
+            } while(channel.receive(firstState)==null);
+            
+            System.out.println("Connected");
+            firstState.flip();
+        } catch (IOException | InterruptedException e1) {
+            e1.printStackTrace();
         }
-        System.out.println("Connected");
-        firstState.flip();
     }
     
-    public final Map<Integer, PlayerAction> getMap(){
+    public final static Map<Integer, PlayerAction> getMap(){
         Map<Integer, PlayerAction> kb = new HashMap<>();
         kb.put(KeyEvent.VK_UP, PlayerAction.MOVE_N);
         kb.put(KeyEvent.VK_DOWN, PlayerAction.MOVE_S);
@@ -106,7 +103,7 @@ public class ClientBis {
         return kb;
     }
     
-    public final Consumer<PlayerAction> getConsumer(){
+    public final static Consumer<PlayerAction> getConsumer(){
         Consumer<PlayerAction> c = x -> {
             try {//if a key in the map is pressed send the key event to the server
                 ByteBuffer senderBuffer = ByteBuffer.allocate(1);

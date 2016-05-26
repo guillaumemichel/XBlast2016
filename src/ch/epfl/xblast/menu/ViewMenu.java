@@ -15,17 +15,17 @@ import ch.epfl.xblast.client.XBlastComponent;
 public final class ViewMenu {
     private JFrame frame = new JFrame("XBlast 2016");
     private ModelMenu model;
-    private XBlastComponent component;
+    private XBlastComponent component=new XBlastComponent();
     
     public ViewMenu(ModelMenu model){
         this.model=model;
-        component=new XBlastComponent();
         setFrame();
     }
     
     private final void setFrame(){
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setPreferredSize(component.getPreferredSize());
+        frame.setResizable(false);
+        frame.setPreferredSize(new Dimension(960,708));
         frame.pack();
     }
     

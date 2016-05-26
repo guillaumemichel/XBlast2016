@@ -112,6 +112,16 @@ public final class Server {
             else
                 System.out.println("No winner !");
             
+            ByteBuffer end = ByteBuffer.allocate(1);
+            for(Map.Entry<SocketAddress, PlayerID> player : players.entrySet()){
+                if (g.winner().isPresent())
+                    end.put((byte) g.winner().get().ordinal());
+                else end.put((byte) 5);
+                end.flip();
+                channel.send(end, player.getKey());
+                end.clear();
+            }
+            
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e){

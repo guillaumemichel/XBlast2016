@@ -31,6 +31,6 @@ public interface Time {
     /**
      * Duration of the game in minutes
      */
-    public final static int GAME_DURATION = 2;
+    public final static int GAME_DURATION = 1;
     
 }
