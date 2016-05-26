@@ -4,6 +4,7 @@ package ch.epfl.xblast.server;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import ch.epfl.cs108.Sq;
 import ch.epfl.xblast.Cell;
@@ -178,5 +179,15 @@ public final class Board {
      */
     public Block blockAt(Cell c){
         return blocksAt(c).head();
+    }
+    
+    /**
+     * Returns a representation of this board in the form of a list of bytes, where a byte is the ordinal of a block
+     * 
+     * @return
+     *      A representation of this board in the form of a list of bytes
+     */
+    public List<Byte> toListOfBytes(){
+        return blocks.stream().map(s -> s.head()).map(block -> (byte)block.ordinal()).collect(Collectors.toList());
     }
 }

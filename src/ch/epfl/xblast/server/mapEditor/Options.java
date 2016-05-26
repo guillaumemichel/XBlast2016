@@ -44,28 +44,28 @@ public final class Options extends JPanel{
         addButtonUse();
     }
 
-    private void addButtonLoadFile(){
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Text Files", "txt"));
-        
+    private void addButtonLoadFile(){       
         JButton loadFile = new JButton("Load");
         loadFile.addActionListener(new ActionListener() {
             
             @Override
             public void actionPerformed(ActionEvent e) {
-                File file = null;
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setFileFilter(new FileNameExtensionFilter("Text Files", "txt"));
+                
                 if(fileChooser.showOpenDialog(getParent())== JFileChooser.APPROVE_OPTION){
-                    file = fileChooser.getSelectedFile();
+                    File toLoad = fileChooser.getSelectedFile();
 
-                    List<Byte> l = new ArrayList<>();
-                    try(InputStream s =new BufferedInputStream(new FileInputStream(file))){
+                    try(InputStream in = new BufferedInputStream(new FileInputStream(toLoad))){
+                        List<Byte> l = new ArrayList<>();
+
                         int b;
-                        while((b = s.read()) != -1){
-                            int realValue = Character.getNumericValue(b);
-                            if(realValue == Block.CRUMBLING_WALL.ordinal() || realValue > Block.BONUS_RANGE.ordinal())
-                                throw new IllegalArgumentException("One value in the file is invalid !");
+                        while((b = in.read()) != -1){
+                            int numericValueOfInteger = Character.getNumericValue(b);
+                            if(numericValueOfInteger == Block.CRUMBLING_WALL.ordinal() || numericValueOfInteger > Block.BONUS_RANGE.ordinal())
+                                throw new IllegalArgumentException("Some values in the file are invalid !");
                                 
-                            l.add((byte)realValue);
+                            l.add((byte)numericValueOfInteger);
                         }
                           
                         if(l.size() != Cell.COUNT){
@@ -90,12 +90,13 @@ public final class Options extends JPanel{
     
     private void addButtonSaveGrid(){
         JButton saveGrid = new JButton("Save");
-        JFileChooser saveChooser = new JFileChooser();
         
         saveGrid.addActionListener(new ActionListener(){
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                JFileChooser saveChooser = new JFileChooser();
+
                 if(saveChooser.showSaveDialog(getParent()) == JFileChooser.APPROVE_OPTION){
                     File toSave = new File(saveChooser.getSelectedFile()+".txt");
 
