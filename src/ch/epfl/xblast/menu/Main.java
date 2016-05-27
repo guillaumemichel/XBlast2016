@@ -23,7 +23,6 @@ public final class Main {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (ClientBis.play()){
-                    System.out.println("fin du game");
                     ((Timer)e.getSource()).stop();
                     PlaySound.stop();
                     setView("Main");
@@ -41,6 +40,7 @@ public final class Main {
                 c.setView("Game");
                 timer.start();
             });
+            model.getCreate().addActionListener(e -> c.setView("Server"));
             model.getQuit().addActionListener(e -> System.exit(0));
         });
 

@@ -69,6 +69,16 @@ public final class ViewMenu {
         return panel;
     }
     
+    
+    public final JPanel createCreateMenu(){
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel,1));
+        
+        panel.add(model.getSelectBoard());
+        
+        return panel;
+    }
+    
     public final JPanel createWaitingClient(){
         JPanel panel = new JPanel();
         

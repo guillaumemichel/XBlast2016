@@ -53,7 +53,8 @@ public class ClientBis {
                 list.add(currentState.get());//transfert into a list
             if (list.size()==1){
                 list.clear();
-                channel.close();
+                currentState.clear();
+                //channel.close();
                 return true;
             }
             component.setGameState(GameStateDeserializer.deserializeGameState(list.subList(1, list.size())), id);

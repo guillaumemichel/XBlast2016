@@ -21,6 +21,7 @@ public final class ControllerMenu {
     public void setView(String s){
         frame.getContentPane().removeAll();
         switch (s){
+            default :
             case "Main":
                 frame.add(view.createMenuView());
                 break;
@@ -35,7 +36,9 @@ public final class ControllerMenu {
                 view.getComponent().addKeyListener(new KeyboardEventHandler(ClientBis.getMap(), ClientBis.getConsumer()));
                 view.getComponent().requestFocusInWindow();
                 break;
-            default : frame.add(view.createMenuView());
+            case "Server":
+                frame.add(view.createCreateMenu());
+                break;
         }
         frame.validate();
         frame.repaint();

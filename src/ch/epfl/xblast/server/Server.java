@@ -116,7 +116,7 @@ public final class Server {
             for(Map.Entry<SocketAddress, PlayerID> player : players.entrySet()){
                 if (g.winner().isPresent())
                     end.put((byte) g.winner().get().ordinal());
-                else end.put((byte) 5);
+                else end.put((byte) 4);
                 end.flip();
                 channel.send(end, player.getKey());
                 end.clear();

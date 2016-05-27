@@ -27,6 +27,7 @@ public final class ModelMenu {
     private JButton quit;
     private Font bigButtonFont;
     private JLabel waiting;
+    private JLabel selectBoard;
     
     public ModelMenu(){
         setFonts();
@@ -41,6 +42,7 @@ public final class ModelMenu {
         setJoinTitle();
         setQuit();
         setWaiting();
+        setSelectBoard();
     }
     
     private void setFonts(){
@@ -94,7 +96,7 @@ public final class ModelMenu {
     public JButton getBackJoin(){ return backJoin;}
     
     private void setIpField(){
-        ipField = new JTextField(15);
+        ipField = new JTextField();
         ((AbstractDocument)ipField.getDocument()).setDocumentFilter(new IpFilter());
         ipField.setFont(new Font("Arial",Font.PLAIN,20));
         ipField.setMaximumSize(new Dimension(200,50));
@@ -135,6 +137,13 @@ public final class ModelMenu {
         
         return waiting;
     }
+    
+    private void setSelectBoard(){
+        selectBoard = new JLabel("Select board");
+        selectBoard.setFont(new Font("Arial",Font.PLAIN,20));
+        selectBoard.setHorizontalAlignment(SwingConstants.RIGHT);
+    }
+    public JLabel getSelectBoard(){ return selectBoard;}
 }
 
 class IpFilter extends DocumentFilter { 
