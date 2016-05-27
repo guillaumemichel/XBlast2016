@@ -12,11 +12,21 @@ import javax.swing.JPanel;
 
 import ch.epfl.xblast.PlayerID;
 
+/**
+ * A custom JPanel representing a player chooser
+ * 
+ * @author Guillaume Michel (258066)
+ * @author Adrien Vandenbroucque (258715)
+ *
+ */
 @SuppressWarnings("serial")
 public final class PlayerChooser  extends JPanel{
     private PlayerButton currentPlayer = new PlayerButton(1);
     private JCheckBox playerSelection = new JCheckBox("<html>Player<br>selection</html>");
     
+    /**
+     * Constructs a player chooser
+     */
     public PlayerChooser(){
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         this.add(playerSelection);
@@ -25,10 +35,22 @@ public final class PlayerChooser  extends JPanel{
         addCurrentPlayer();
     }
     
+    /**
+     * Returns the check box indicating if we use the player chooser
+     * 
+     * @return
+     *      The check box indicating if we use the player chooser
+     */
     public JCheckBox playerSelection(){
         return playerSelection;
     }
     
+    /**
+     * Return the current chosen player
+     * 
+     * @return
+     *      The current chosen player
+     */
     public PlayerButton currentPlayer(){
         return currentPlayer;
     }

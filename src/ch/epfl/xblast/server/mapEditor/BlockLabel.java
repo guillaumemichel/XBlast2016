@@ -23,6 +23,12 @@ public final class BlockLabel extends JLabel{
     private Block block;
     private PlayerID hostedPlayer = null;
     
+    /**
+     * Constructs a block label with the given block
+     * 
+     * @param b
+     *      The block
+     */
     public BlockLabel(Block b){
         setBlock(b);
 
@@ -68,15 +74,21 @@ public final class BlockLabel extends JLabel{
     }
     
     /**
-     * Returns the block of this block button
+     * Returns the block of this block label
      * 
      * @return
-     *      The block of this block button
+     *      The block of this block label
      */
     public Block block(){
         return block;
     }
     
+    /**
+     * Returns the hosted player of this block label if there is one
+     * 
+     * @return
+     *      The hosted player of this block label
+     */
     public PlayerID hostedPlayer(){
         return hostedPlayer;
     }
@@ -86,7 +98,7 @@ public final class BlockLabel extends JLabel{
         this.setBorder(new LineBorder(new PlayerButton(p.ordinal()+1).color(), 3));
     }
     /**
-     * Sets the block of this block button and update the image of this block button
+     * Sets the block of this block label and update its image
      * 
      * @param b
      *      The new value of the field "block"

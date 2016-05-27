@@ -38,6 +38,7 @@ public final class GridOfBlocks extends JPanel{
             BlockLabel b =new BlockLabel(Block.FREE);
             blocks.add(b);
             
+            //Put the spawns of each player to an initial position
             if(i == Level.POSITION_PLAYER_1.rowMajorIndex())
                 b.setHostedPlayer(PlayerID.PLAYER_1);
             else if(i == Level.POSITION_PLAYER_2.rowMajorIndex())
@@ -51,6 +52,12 @@ public final class GridOfBlocks extends JPanel{
         }
     }
     
+    /**
+     * Returns the list of block labels representing the grid
+     * 
+     * @return
+     *      The list of block labels representing the grid
+     */
     public List<BlockLabel> blocks(){
         return blocks;
     }
@@ -67,14 +74,22 @@ public final class GridOfBlocks extends JPanel{
     
     /**
      * Returns the corresponding board of this grid of blocks
+     * 
      * @return
+     *      The corresponding board of this grid of blocks
      */
     private Board toBoard(){
         List<Sq<Block>> blocks = this.blocks.stream().map(BlockLabel::block).map(Sq::constant).collect(Collectors.toList());;
         return new Board(blocks);
     }
     
-    public List<Player> createPlayers(){
+    /**
+     * Returns the corresponding list of players of this grid of blocks
+     * 
+     * @return
+     *      The corresponding list of players of this grid of blocks
+     */
+    private List<Player> createPlayers(){
         List<Player> players = new ArrayList<>();
         
         for(BlockLabel b : blocks){
@@ -86,6 +101,12 @@ public final class GridOfBlocks extends JPanel{
         return players;
     }
     
+    /**
+     * Returns the corresponding game state of this grid of blocks
+     * 
+     * @return
+     *      The corresponding game state of this grid of blocks
+     */
     public GameState toGameState(){
         return new GameState(toBoard(), createPlayers());
     }

@@ -123,9 +123,8 @@ public final class Options extends JPanel{
             
             @Override
             public void actionPerformed(ActionEvent e) {
-                //System.out.println(Options.this.associatedGrid.toListOfBytes());
                 GridOfBlocks parentGrid = ((MapEditor) SwingUtilities.windowForComponent(Options.this)).grid();
-                parentGrid.createPlayers();
+                //parentGrid.createPlayers();
                 SwingUtilities.windowForComponent(Options.this).dispose();
             }
         });

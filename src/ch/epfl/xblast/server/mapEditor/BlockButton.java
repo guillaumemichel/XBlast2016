@@ -40,7 +40,7 @@ public final class BlockButton extends JButton{
     }
     
     /**
-     * Sets the block of this block button and update the image of this block button
+     * Sets the block of this block button and update its image
      * 
      * @param b
      *      The new value of the field "block"
