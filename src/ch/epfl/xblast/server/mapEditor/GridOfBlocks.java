@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 
 import ch.epfl.cs108.Sq;
 import ch.epfl.xblast.Cell;
+import ch.epfl.xblast.SubCell;
 import ch.epfl.xblast.server.Block;
 import ch.epfl.xblast.server.Board;
 import ch.epfl.xblast.server.Level;
@@ -25,7 +26,8 @@ import ch.epfl.xblast.server.Player;
 @SuppressWarnings("serial")
 public final class GridOfBlocks extends JPanel{
     private List<BlockButton> blocks = new ArrayList<>();
-    private List<Player> players = Level.DEFAULT_LEVEL.gameState().players();
+    
+    private List<SubCell> playersPosition = new ArrayList<>();
 
     /**
      * Constructs a grid of blocks
@@ -37,6 +39,9 @@ public final class GridOfBlocks extends JPanel{
             blocks.add(new BlockButton(Block.FREE, false));
             this.add(blocks.get(blocks.size()-1));
         }
+        
+        for(Player p : Level.DEFAULT_LEVEL.gameState().players())
+            playersPosition.add(p.position());
     }
     
     /**
