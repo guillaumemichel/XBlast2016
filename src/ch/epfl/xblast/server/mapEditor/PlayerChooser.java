@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -14,11 +15,22 @@ import ch.epfl.xblast.PlayerID;
 @SuppressWarnings("serial")
 public final class PlayerChooser  extends JPanel{
     private PlayerButton currentPlayer = new PlayerButton(1);
+    private JCheckBox playerSelection = new JCheckBox("<html>Player<br>selection</html>");
     
     public PlayerChooser(){
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        this.add(playerSelection);
+        this.add(Box.createRigidArea(new Dimension(0,30)));
         addPlayerSelectors();
         addCurrentPlayer();
+    }
+    
+    public JCheckBox playerSelection(){
+        return playerSelection;
+    }
+    
+    public PlayerButton currentPlayer(){
+        return currentPlayer;
     }
     
     private void addPlayerSelectors(){
@@ -32,9 +44,9 @@ public final class PlayerChooser  extends JPanel{
                 }
             });
             this.add(player);
-            this.add(Box.createRigidArea(new Dimension(0,30)));
+            this.add(Box.createRigidArea(new Dimension(0,25)));
             if(i == PlayerID.values().length)
-                this.add(Box.createRigidArea(new Dimension(0,30)));
+                this.add(Box.createRigidArea(new Dimension(0,40)));
         }
     }
     

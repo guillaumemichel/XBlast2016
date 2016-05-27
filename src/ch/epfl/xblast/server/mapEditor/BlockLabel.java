@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
+import javax.swing.border.LineBorder;
 
 import ch.epfl.xblast.client.ImageCollection;
 import ch.epfl.xblast.server.Block;
@@ -27,14 +28,28 @@ public final class BlockLabel extends JLabel{
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                if((e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) != 0){
-                    setBlock(((MapEditor)SwingUtilities.windowForComponent(BlockLabel.this)).blockChooser().currentBlock().block());
+                BlockChooser parentBlockChooser =((MapEditor)SwingUtilities.windowForComponent(BlockLabel.this)).blockChooser();
+                PlayerChooser parentPlayerChooser =((MapEditor)SwingUtilities.windowForComponent(BlockLabel.this)).playerChooser();
+                
+                if(((e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) != 0) && !parentPlayerChooser.playerSelection().isSelected() && parentBlockChooser.currentBlock().block().canHostPlayer()){
+                    setBlock(parentBlockChooser.currentBlock().block());
+                }else if(((e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) != 0) && parentPlayerChooser.playerSelection().isSelected() && BlockLabel.this.block().canHostPlayer()){
+                    BlockLabel.this.hostedPlayer = parentPlayerChooser.currentPlayer().player();
+                    BlockLabel.this.setBorder(new LineBorder(parentPlayerChooser.currentPlayer().color(), 3));
                 }
             }
             
             @Override
             public void mousePressed(MouseEvent e) {
-                setBlock(((MapEditor)SwingUtilities.windowForComponent(BlockLabel.this)).blockChooser().currentBlock().block());
+                BlockChooser parentBlockChooser =((MapEditor)SwingUtilities.windowForComponent(BlockLabel.this)).blockChooser();
+                PlayerChooser parentPlayerChooser =((MapEditor)SwingUtilities.windowForComponent(BlockLabel.this)).playerChooser();
+                
+                if(!parentPlayerChooser.playerSelection().isSelected() && parentBlockChooser.currentBlock().block().canHostPlayer()){
+                    setBlock(parentBlockChooser.currentBlock().block());
+                }else if(parentPlayerChooser.playerSelection().isSelected() && BlockLabel.this.block().canHostPlayer()){
+                    BlockLabel.this.setBorder(new LineBorder(parentPlayerChooser.currentPlayer().color(), 3));
+                }
+                    
             }
         });
         this.setPreferredSize(new Dimension(BLOCK_IMAGE_WIDTH, BLOCK_IMAGE_HEIGHT));

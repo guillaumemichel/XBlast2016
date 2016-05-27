@@ -54,6 +54,10 @@ public final class MapEditor extends JFrame{
         return blockChooser;
     }
     
+    public PlayerChooser playerChooser(){
+        return playerChooser;
+    }
+    
     public static void main(String[] args){
         SwingUtilities.invokeLater(() -> new MapEditor());
     }

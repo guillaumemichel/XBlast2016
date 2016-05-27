@@ -23,7 +23,6 @@ public final class PlayerButton extends JButton{
     public PlayerButton(int id){
         setPlayer(id);
         this.setPreferredSize(new Dimension(PLAYER_IMAGE_WIDTH, PLAYER_IMAGE_HEIGHT));
-        this.setFocusPainted(false);
         this.setContentAreaFilled(false);
     }
     
