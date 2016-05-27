@@ -28,6 +28,7 @@ public class ClientBis {
     private static PlayerID id;
     private static List<Byte> list=new ArrayList<>();
     private static XBlastComponent component;
+    private static byte returnValue;
     
     public final static void start(XBlastComponent component0) {
         component = component0;
@@ -45,17 +46,19 @@ public class ClientBis {
         }
     }
     
-    public final static boolean play(){
+    public final static byte play(){
         try {
             channel.receive(currentState);
             currentState.flip();//receive the gamestate
             while (currentState.hasRemaining())
                 list.add(currentState.get());//transfert into a list
             if (list.size()==1){
+                returnValue=list.get(0);
                 list.clear();
+                System.out.println("fini");
                 currentState.clear();
                 channel.close();
-                return true;
+                return returnValue;
             }
             component.setGameState(GameStateDeserializer.deserializeGameState(list.subList(1, list.size())), id);
             //display the deserialized gamestate to screen
@@ -64,7 +67,7 @@ public class ClientBis {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return false;
+        return 0xF;
     }
     
     public final static void connect(){

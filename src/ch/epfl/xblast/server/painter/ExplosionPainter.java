@@ -50,10 +50,10 @@ public final class ExplosionPainter {
      */
     public static byte byteForBlast(boolean N, boolean E, boolean S, boolean W){
         byte n=0;
-        if (N) n+=8;
-        if (E) n+=4;
-        if (S) n+=2;
-        if (W) n+=1;//it is no magic numbers it is the reference to the images
+        if (N) n+=0b1000;
+        if (E) n+=0b100;
+        if (S) n+=0b10;
+        if (W) n+=0b1;//it is no magic numbers it is the reference to the images
         return n;
     }
 }

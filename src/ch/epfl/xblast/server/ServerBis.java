@@ -18,6 +18,7 @@ import ch.epfl.xblast.PlayerAction;
 import ch.epfl.xblast.PlayerID;
 import ch.epfl.xblast.Time;
 import ch.epfl.xblast.server.painter.BoardPainter;
+import ch.epfl.xblast.server.painter.ExplosionPainter;
 
 public final class ServerBis {
     /**
@@ -111,15 +112,11 @@ public final class ServerBis {
                 System.out.println("No winner !");
 
             ByteBuffer end = ByteBuffer.allocate(1);
-            for (Map.Entry<SocketAddress, PlayerID> player : players.entrySet()) {
-                if (g.winner().isPresent())
-                    end.put((byte) g.winner().get().ordinal());
-                else
-                    end.put((byte) 4);
-                end.flip();
+            end.put(ExplosionPainter.byteForBlast(g.players().get(0).isAlive(), 
+                    g.players().get(1).isAlive(), g.players().get(2).isAlive(), g.players().get(3).isAlive()));
+            end.flip();
+            for (Map.Entry<SocketAddress, PlayerID> player : players.entrySet())
                 channel.send(end, player.getKey());
-                end.clear();
-            }
             channel.close();
 
         } catch (IOException e) {

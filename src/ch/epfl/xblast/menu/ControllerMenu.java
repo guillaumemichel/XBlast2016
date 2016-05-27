@@ -23,6 +23,7 @@ public final class ControllerMenu {
         switch (s){
             default :
             case "Main":
+                //frame.add(view.createWinners((byte) 0));
                 frame.add(view.createMenuView());
                 break;
             case "Join":

@@ -2,15 +2,22 @@ package ch.epfl.xblast.menu;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import ch.epfl.xblast.client.ClientBis;
+import ch.epfl.xblast.client.ImageCollection;
 import ch.epfl.xblast.client.KeyboardEventHandler;
 import ch.epfl.xblast.client.XBlastComponent;
 
@@ -97,6 +104,25 @@ public final class ViewMenu {
         panel.add(model.getStartServer());
         panel.add(model.getBackJoin());
  
+        return panel;
+    }
+    
+    public final JPanel createWinners(byte n){
+        JPanel panel=new JPanel(new FlowLayout(FlowLayout.CENTER));
+        panel.setLayout(new BoxLayout(panel,0));
+        if (n==0) panel.add(model.getNobody());
+        else {
+            if (n%2==1) panel.add(new JLabel(new ImageIcon(
+                    ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(66))));
+            if ((n>>1)%2==1) panel.add(new JLabel(new ImageIcon(
+                    ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(46))));
+            if ((n>>2)%2==1) panel.add(new JLabel(new ImageIcon(
+                    ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(26))));
+            if ((n>>3)%2==1) panel.add(new JLabel(new ImageIcon(
+                    ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(6))));
+        }
+        
+        panel.add(model.getWon());
         return panel;
     }
     

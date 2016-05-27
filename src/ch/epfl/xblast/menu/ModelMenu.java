@@ -35,6 +35,8 @@ public final class ModelMenu {
     private JRadioButton rb2;
     private JRadioButton rb3;
     private JButton startServer;
+    private JLabel won;
+    private JLabel nobody;
 
     
     public ModelMenu(){
@@ -54,6 +56,8 @@ public final class ModelMenu {
         setCreateTitle();
         setRadioMap();
         setStartServer();
+        setWon();
+        setNobody();
     }
     
     private void setFonts(){
@@ -181,6 +185,18 @@ public final class ModelMenu {
         startServer.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
     public JButton getStartServer(){ return startServer;}
+    
+    private void setWon(){
+        won = new JLabel(" won !");
+        won.setFont(new Font("Arial",Font.PLAIN,36));
+    }
+    public JLabel getWon(){ return won;}
+    
+    private void setNobody(){
+        nobody = new JLabel("Nobody");
+        nobody.setFont(new Font("Arial",Font.PLAIN,36));
+    }
+    public JLabel getNobody(){ return nobody;}
 
 }
 
