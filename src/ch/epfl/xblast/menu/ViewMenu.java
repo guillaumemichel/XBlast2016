@@ -101,6 +101,7 @@ public final class ViewMenu {
         panel.add(model.getCreateTitle());
         panel.add(model.getSelectBoard());
         panel.add(maps);
+        panel.add(model.getTime());
         panel.add(model.getStartServer());
         panel.add(model.getBackJoin());
  
@@ -109,20 +110,29 @@ public final class ViewMenu {
     
     public final JPanel createWinners(byte n){
         JPanel panel=new JPanel(new FlowLayout(FlowLayout.CENTER));
-        panel.setLayout(new BoxLayout(panel,0));
-        if (n==0) panel.add(model.getNobody());
-        else {
-            if (n%2==1) panel.add(new JLabel(new ImageIcon(
-                    ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(66))));
-            if ((n>>1)%2==1) panel.add(new JLabel(new ImageIcon(
-                    ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(46))));
-            if ((n>>2)%2==1) panel.add(new JLabel(new ImageIcon(
-                    ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(26))));
-            if ((n>>3)%2==1) panel.add(new JLabel(new ImageIcon(
-                    ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(6))));
-        }
+        panel.setLayout(new BoxLayout(panel,1));
         
-        panel.add(model.getWon());
+        JPanel winner = new JPanel();
+        winner.setLayout(new BoxLayout(winner,0));
+        if (n==0) winner.add(model.getNobody());
+        else {
+            if ((n>>3)%2==1) winner.add(new JLabel(new ImageIcon(
+                    ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(6))));
+            if ((n>>2)%2==1) winner.add(new JLabel(new ImageIcon(
+                    ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(26))));
+            if ((n>>1)%2==1) winner.add(new JLabel(new ImageIcon(
+                    ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(46))));
+            if (n%2==1) winner.add(new JLabel(new ImageIcon(
+                    ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(66))));
+        }
+        winner.add(model.getWon());
+        panel.add(Box.createRigidArea(new Dimension(0,200)));
+        panel.add(winner, Component.CENTER_ALIGNMENT);
+        panel.add(Box.createRigidArea(new Dimension(0,140)));
+        panel.add(model.getMenu());
+        
+        winner.setAlignmentX(Component.CENTER_ALIGNMENT);
+        model.getMenu().setAlignmentX(Component.CENTER_ALIGNMENT);
         return panel;
     }
     

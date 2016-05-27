@@ -22,7 +22,7 @@ public final class Main {
 
     public static void main(String[] args) {
         int delay = 5; //milliseconds
-        Runnable start = () -> { ServerBis.main(Level.DEFAULT_LEVEL.gameState(), 1, 1); };
+        Runnable start = () -> { ServerBis.main(Level.DEFAULT_LEVEL.gameState(), (int) model.getTime().getValue(), 1); };
         Timer timer = new Timer(delay, new ActionListener(){
             byte i;
             @Override
@@ -31,13 +31,6 @@ public final class Main {
                     ((Timer)e.getSource()).stop();
                     PlaySound.stop();
                     setWin(i);
-                    try {
-                        Thread.sleep(10000);
-                    } catch (InterruptedException e1) {
-                        e1.printStackTrace();
-                    }
-                    setView("Main");
-                    
                 }
             }  
         });
@@ -68,6 +61,7 @@ public final class Main {
     public static void setWin(byte b){
         frame.getContentPane().removeAll();
         frame.add(view.createWinners(b));
+        model.getMenu().addActionListener(e -> setView("Main"));
         frame.validate();
         frame.repaint();
     }
@@ -77,8 +71,7 @@ public final class Main {
         frame.getContentPane().removeAll();
         switch (s){
             case "Main":
-                frame.add(view.createWinners((byte) 2));
-                //frame.add(view.createMenuView());
+                frame.add(view.createMenuView());
                 break;
             case "Join":
                 frame.add(view.createJoinMenu());

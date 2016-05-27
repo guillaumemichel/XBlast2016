@@ -8,7 +8,10 @@ import java.awt.Toolkit;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
+import javax.swing.JSpinner;
+import javax.swing.JSpinner.DefaultEditor;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
@@ -37,6 +40,8 @@ public final class ModelMenu {
     private JButton startServer;
     private JLabel won;
     private JLabel nobody;
+    private JButton menu;
+    private JSpinner time;
 
     
     public ModelMenu(){
@@ -58,6 +63,8 @@ public final class ModelMenu {
         setStartServer();
         setWon();
         setNobody();
+        setMenu();
+        setTime();
     }
     
     private void setFonts(){
@@ -197,7 +204,19 @@ public final class ModelMenu {
         nobody.setFont(new Font("Arial",Font.PLAIN,36));
     }
     public JLabel getNobody(){ return nobody;}
+    
+    private void setMenu(){
+        menu = new JButton("Menu");
+        menu.setFont(bigButtonFont);
+        menu.setMaximumSize(new Dimension(450,100));
+    }
+    public JButton getMenu(){ return menu;}
 
+    private void setTime(){
+        time = new JSpinner(new SpinnerNumberModel(2, 1, 10, 1));
+        time.setMaximumSize(new Dimension(200,100));
+        ((DefaultEditor) time.getEditor()).getTextField().setEditable(false);    }
+    public JSpinner getTime(){ return time;}
 }
 
 class IpFilter extends DocumentFilter { 
