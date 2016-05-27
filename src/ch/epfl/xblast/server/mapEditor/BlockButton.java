@@ -26,7 +26,7 @@ public final class BlockButton extends JButton{
     public BlockButton(Block b){
         setBlock(b);
         this.setPreferredSize(new Dimension(BLOCK_IMAGE_WIDTH, BLOCK_IMAGE_HEIGHT));
-        this.setFocusPainted(false);
+        //this.setFocusPainted(false);
         this.setContentAreaFilled(false);
     }
     
