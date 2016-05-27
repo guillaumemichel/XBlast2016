@@ -28,7 +28,7 @@ import ch.epfl.xblast.server.Board;
  */
 @SuppressWarnings("serial")
 public final class BlockChooser extends JPanel{
-    private BlockButton currentBlock = new BlockButton(Block.FREE, true);
+    private BlockButton currentBlock = new BlockButton(Block.FREE);
     
     private final static int PADDING_VALUE = 10;
     private final static int LINEBORDER_THICKNESS = 3;
@@ -86,7 +86,7 @@ public final class BlockChooser extends JPanel{
     private void addBlockSelectors(){
         for (int i = 0; i < Block.values().length; ++i) {
             if(i != Block.CRUMBLING_WALL.ordinal()){
-                BlockButton block = new BlockButton(Block.values()[i], true);
+                BlockButton block = new BlockButton(Block.values()[i]);
                 block.addMouseListener(new MouseAdapter(){
                     @Override
                     public void mouseClicked(MouseEvent e){

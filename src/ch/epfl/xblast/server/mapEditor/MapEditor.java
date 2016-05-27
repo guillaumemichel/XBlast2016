@@ -15,6 +15,7 @@ import javax.swing.SwingUtilities;
 public final class MapEditor extends JFrame{
     private GridOfBlocks grid = new GridOfBlocks();
     private BlockChooser blockChooser = new BlockChooser();
+    private PlayerChooser playerChooser = new PlayerChooser();
     private Options options = new Options();
     
     /**
@@ -28,6 +29,7 @@ public final class MapEditor extends JFrame{
         this.add(blockChooser, BorderLayout.PAGE_START);
         this.add(grid, BorderLayout.CENTER);
         this.add(options, BorderLayout.PAGE_END);
+        this.add(playerChooser, BorderLayout.EAST);
         this.pack();
         this.setVisible(true);
     }
