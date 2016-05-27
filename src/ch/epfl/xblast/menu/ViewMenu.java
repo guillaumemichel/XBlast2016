@@ -74,6 +74,7 @@ public final class ViewMenu {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel,1));
         
+        panel.add(Box.createRigidArea(new Dimension(0,10)));
         panel.add(model.getSelectBoard());
         
         return panel;
