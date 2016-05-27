@@ -7,17 +7,15 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.border.LineBorder;
 
-import ch.epfl.xblast.Cell;
 import ch.epfl.xblast.PlayerID;
 import ch.epfl.xblast.client.ImageCollection;
-import ch.epfl.xblast.server.Player;
 
 @SuppressWarnings("serial")
 public final class PlayerButton extends JButton{
     private final static int PLAYER_IMAGE_WIDTH = ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(0).getWidth(null);
     private final static int PLAYER_IMAGE_HEIGHT = ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(0).getHeight(null);
     
-    private Player player;
+    private PlayerID player;
     private Color color;
     
     public PlayerButton(int id){
@@ -26,7 +24,7 @@ public final class PlayerButton extends JButton{
         this.setContentAreaFilled(false);
     }
     
-    public Player player(){
+    public PlayerID playerID(){
         return player;
     }
     
@@ -41,12 +39,12 @@ public final class PlayerButton extends JButton{
      *      The new value of the field "block"
      */
     public void setPlayer(int id){
-        this.player = new Player(PlayerID.values()[id-1], 3, new Cell(0,0), 2, 3);
+        this.player = PlayerID.values()[id-1];
         this.setButtonImage(this.player);
     }
     
-    private void setButtonImage(Player p){
-        switch(p.id()){
+    private void setButtonImage(PlayerID p){
+        switch(p){
             case PLAYER_1:
                 this.setIcon(new ImageIcon(ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(6)));
                 this.color = Color.BLUE;

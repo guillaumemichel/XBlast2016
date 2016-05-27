@@ -39,7 +39,7 @@ public final class PlayerChooser  extends JPanel{
             player.addMouseListener(new MouseAdapter(){
                 @Override
                 public void mouseClicked(MouseEvent e){
-                    PlayerID playerOfparentPlayerButton = ((PlayerButton)e.getSource()).player().id();
+                    PlayerID playerOfparentPlayerButton = ((PlayerButton)e.getSource()).playerID();
                     currentPlayer.setPlayer(playerOfparentPlayerButton.ordinal()+1);
                 }
             });

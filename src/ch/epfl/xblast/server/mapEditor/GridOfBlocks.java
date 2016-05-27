@@ -10,9 +10,10 @@ import javax.swing.JPanel;
 
 import ch.epfl.cs108.Sq;
 import ch.epfl.xblast.Cell;
-import ch.epfl.xblast.SubCell;
+import ch.epfl.xblast.PlayerID;
 import ch.epfl.xblast.server.Block;
 import ch.epfl.xblast.server.Board;
+import ch.epfl.xblast.server.GameState;
 import ch.epfl.xblast.server.Level;
 import ch.epfl.xblast.server.Player;
 
@@ -27,8 +28,6 @@ import ch.epfl.xblast.server.Player;
 public final class GridOfBlocks extends JPanel{
     private List<BlockLabel> blocks = new ArrayList<>();
     
-    private List<SubCell> playersPosition = new ArrayList<>();
-
     /**
      * Constructs a grid of blocks
      */
@@ -36,12 +35,24 @@ public final class GridOfBlocks extends JPanel{
         this.setLayout(new GridLayout(Cell.ROWS, Cell.COLUMNS));
         
         for (int i = 0; i < Cell.COUNT; i++) {
-            blocks.add(new BlockLabel(Block.FREE));
+            BlockLabel b =new BlockLabel(Block.FREE);
+            blocks.add(b);
+            
+            if(i == Level.POSITION_PLAYER_1.rowMajorIndex())
+                b.setHostedPlayer(PlayerID.PLAYER_1);
+            else if(i == Level.POSITION_PLAYER_2.rowMajorIndex())
+                b.setHostedPlayer(PlayerID.PLAYER_2);
+            else if(i == Level.POSITION_PLAYER_3.rowMajorIndex())
+                b.setHostedPlayer(PlayerID.PLAYER_3);
+            else if(i == Level.POSITION_PLAYER_4.rowMajorIndex())
+                b.setHostedPlayer(PlayerID.PLAYER_4);
+            
             this.add(blocks.get(blocks.size()-1));
         }
-        
-        for(Player p : Level.DEFAULT_LEVEL.gameState().players())
-            playersPosition.add(p.position());
+    }
+    
+    public List<BlockLabel> blocks(){
+        return blocks;
     }
     
     /**
@@ -58,9 +69,25 @@ public final class GridOfBlocks extends JPanel{
      * Returns the corresponding board of this grid of blocks
      * @return
      */
-    public Board toBoard(){
+    private Board toBoard(){
         List<Sq<Block>> blocks = this.blocks.stream().map(BlockLabel::block).map(Sq::constant).collect(Collectors.toList());;
         return new Board(blocks);
+    }
+    
+    public List<Player> createPlayers(){
+        List<Player> players = new ArrayList<>();
+        
+        for(BlockLabel b : blocks){
+            if(b.hostedPlayer()!=null){
+                players.add(new Player(b.hostedPlayer(), Level.NUMBER_OF_LIVES, Cell.ROW_MAJOR_ORDER.get(blocks.indexOf(b)), Level.MAX_BOMBS, Level.BOMB_RANGE));
+            System.out.println(b.hostedPlayer()+"---->"+Cell.ROW_MAJOR_ORDER.get(blocks.indexOf(b)).toString());
+            }
+        }
+        return players;
+    }
+    
+    public GameState toGameState(){
+        return new GameState(toBoard(), createPlayers());
     }
     
     /**
@@ -77,7 +104,8 @@ public final class GridOfBlocks extends JPanel{
         while(it.hasNext() && it2.hasNext()){
             BlockLabel blockLabel = it.next();
             Block b = it2.next();
-            blockLabel.setBlock(b);
+            if(blockLabel.hostedPlayer()==null || (blockLabel.hostedPlayer()!=null && b.canHostPlayer()))
+                blockLabel.setBlock(b);
         }      
     }
 }

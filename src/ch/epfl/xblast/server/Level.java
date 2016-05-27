@@ -23,13 +23,13 @@ public final class Level {
     private final BoardPainter boardPainter;
     private final GameState gamestate;
     
-    private final static int NUMBER_OF_LIVES = 3;
-    private final static int MAX_BOMBS = 2;
-    private final static int BOMB_RANGE = 3;
-    private final static Cell POSITION_PLAYER_1 = new Cell(1, 1);
-    private final static Cell POSITION_PLAYER_2 = new Cell(13, 1);
-    private final static Cell POSITION_PLAYER_3 = new Cell(13, 11);
-    private final static Cell POSITION_PLAYER_4 = new Cell(1, 11);
+    public final static int NUMBER_OF_LIVES = 3;
+    public final static int MAX_BOMBS = 2;
+    public final static int BOMB_RANGE = 3;
+    public final static Cell POSITION_PLAYER_1 = new Cell(1, 1);
+    public final static Cell POSITION_PLAYER_2 = new Cell(13, 1);
+    public final static Cell POSITION_PLAYER_3 = new Cell(13, 11);
+    public final static Cell POSITION_PLAYER_4 = new Cell(1, 11);
 
     
     /**
