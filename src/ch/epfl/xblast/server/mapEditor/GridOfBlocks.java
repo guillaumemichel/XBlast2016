@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 
 import ch.epfl.cs108.Sq;
 import ch.epfl.xblast.Cell;
+import ch.epfl.xblast.SubCell;
 import ch.epfl.xblast.server.Block;
 import ch.epfl.xblast.server.Board;
 import ch.epfl.xblast.server.Level;
@@ -24,8 +25,9 @@ import ch.epfl.xblast.server.Player;
  */
 @SuppressWarnings("serial")
 public final class GridOfBlocks extends JPanel{
-    private List<BlockButton> blocks = new ArrayList<>();
-    private List<Player> players = Level.DEFAULT_LEVEL.gameState().players();
+    private List<BlockLabel> blocks = new ArrayList<>();
+    
+    private List<SubCell> playersPosition = new ArrayList<>();
 
     /**
      * Constructs a grid of blocks
@@ -34,9 +36,12 @@ public final class GridOfBlocks extends JPanel{
         this.setLayout(new GridLayout(Cell.ROWS, Cell.COLUMNS));
         
         for (int i = 0; i < Cell.COUNT; i++) {
-            blocks.add(new BlockButton(Block.FREE, false));
+            blocks.add(new BlockLabel(Block.FREE));
             this.add(blocks.get(blocks.size()-1));
         }
+        
+        for(Player p : Level.DEFAULT_LEVEL.gameState().players())
+            playersPosition.add(p.position());
     }
     
     /**
@@ -46,7 +51,7 @@ public final class GridOfBlocks extends JPanel{
      *      A list of bytes containing the value (ordinal) of each block of the grid in row major order
      */
     public List<Byte> toListOfBytes(){
-        return blocks.stream().map(BlockButton::block).map(b -> (byte)b.ordinal()).collect(Collectors.toList());
+        return blocks.stream().map(BlockLabel::block).map(b -> (byte)b.ordinal()).collect(Collectors.toList());
     }
     
     /**
@@ -54,7 +59,7 @@ public final class GridOfBlocks extends JPanel{
      * @return
      */
     public Board toBoard(){
-        List<Sq<Block>> blocks = this.blocks.stream().map(BlockButton::block).map(Sq::constant).collect(Collectors.toList());;
+        List<Sq<Block>> blocks = this.blocks.stream().map(BlockLabel::block).map(Sq::constant).collect(Collectors.toList());;
         return new Board(blocks);
     }
     
@@ -67,12 +72,12 @@ public final class GridOfBlocks extends JPanel{
     public void loadGridfromListOfBytes(List<Byte> l){
         List<Block> blocks = l.stream().map(b -> Block.values()[b]).collect(Collectors.toList());
        
-        Iterator<BlockButton> it = this.blocks.iterator();
+        Iterator<BlockLabel> it = this.blocks.iterator();
         Iterator<Block> it2 = blocks.iterator();
         while(it.hasNext() && it2.hasNext()){
-            BlockButton button = it.next();
+            BlockLabel blockLabel = it.next();
             Block b = it2.next();
-            button.setBlock(b);
+            blockLabel.setBlock(b);
         }      
     }
 }
