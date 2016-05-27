@@ -14,8 +14,6 @@ PlayerPainter à adapter (avec les images et tout, pour si on a plus de 4 player
 (Level adapter la méthode defaultLevel())
 Adapter le GameStateDeserializer (pour la création d'image du scoreboard)
 
-CHANGER LE WHILE(TRUE) DU CLIENT !!!!!!!!!
-
 BONUS :
 - Music oklm
 - Map Editor

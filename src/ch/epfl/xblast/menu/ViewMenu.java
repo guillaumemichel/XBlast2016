@@ -1,9 +1,11 @@
 package ch.epfl.xblast.menu;
 
+import java.awt.Component;
 import java.awt.Dimension;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -74,9 +76,27 @@ public final class ViewMenu {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel,1));
         
-        panel.add(Box.createRigidArea(new Dimension(0,10)));
-        panel.add(model.getSelectBoard());
+        JPanel maps = new JPanel();
+        maps.setLayout(new BoxLayout(maps,0));
         
+        ButtonGroup bg = new ButtonGroup();
+        bg.add(model.getRB1());
+        bg.add(model.getRB2());
+        bg.add(model.getRB3());
+        
+        maps.add(model.getRB1());
+        maps.add(Box.createRigidArea(new Dimension(100,0)));
+        maps.add(model.getRB2());
+        maps.add(Box.createRigidArea(new Dimension(100,0)));
+        maps.add(model.getRB3());
+        
+        panel.add(Box.createRigidArea(new Dimension(0,10)));       
+        panel.add(model.getCreateTitle());
+        panel.add(model.getSelectBoard());
+        panel.add(maps);
+        panel.add(model.getStartServer());
+        panel.add(model.getBackJoin());
+ 
         return panel;
     }
     

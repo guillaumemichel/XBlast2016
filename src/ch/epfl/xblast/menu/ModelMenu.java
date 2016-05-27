@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.text.AbstractDocument;
@@ -26,8 +27,15 @@ public final class ModelMenu {
     private JLabel joinTitle;
     private JButton quit;
     private Font bigButtonFont;
+    private Font titleFont;
     private JLabel waiting;
     private JLabel selectBoard;
+    private JLabel createTitle;
+    private JRadioButton rb1;
+    private JRadioButton rb2;
+    private JRadioButton rb3;
+    private JButton startServer;
+
     
     public ModelMenu(){
         setFonts();
@@ -43,10 +51,14 @@ public final class ModelMenu {
         setQuit();
         setWaiting();
         setSelectBoard();
+        setCreateTitle();
+        setRadioMap();
+        setStartServer();
     }
     
     private void setFonts(){
         bigButtonFont = new Font("Arial",Font.PLAIN,36);
+        titleFont = new Font("Arial",Font.PLAIN,70);
     }
         
     private void setTitle(){
@@ -113,7 +125,7 @@ public final class ModelMenu {
     
     private void setJoinTitle(){
         joinTitle = new JLabel("Join a game");
-        joinTitle.setFont(new Font("Arial",Font.PLAIN,70));
+        joinTitle.setFont(titleFont);
         joinTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
     public JLabel getJoinTitle(){ return joinTitle;}
@@ -141,9 +153,35 @@ public final class ModelMenu {
     private void setSelectBoard(){
         selectBoard = new JLabel("Select board");
         selectBoard.setFont(new Font("Arial",Font.PLAIN,20));
-        selectBoard.setHorizontalAlignment(SwingConstants.RIGHT);
+        selectBoard.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
     public JLabel getSelectBoard(){ return selectBoard;}
+    
+    private void setCreateTitle(){
+        createTitle = new JLabel("Create game");
+        createTitle.setFont(titleFont);
+        createTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+    }
+    public JLabel getCreateTitle(){ return createTitle;}
+    
+    private void setRadioMap(){
+        rb1=new JRadioButton("Map 1");
+        rb2=new JRadioButton("Map 2");
+        rb3=new JRadioButton("Map 3");
+        rb1.setSelected(true);
+    }
+    public JRadioButton getRB1(){ return rb1;}
+    public JRadioButton getRB2(){ return rb2;}
+    public JRadioButton getRB3(){ return rb3;}
+
+    private void setStartServer(){
+        startServer = new JButton("Start server");
+        startServer.setFont(bigButtonFont);
+        startServer.setMaximumSize(new Dimension(450,100));
+        startServer.setAlignmentX(Component.CENTER_ALIGNMENT);
+    }
+    public JButton getStartServer(){ return startServer;}
+
 }
 
 class IpFilter extends DocumentFilter { 

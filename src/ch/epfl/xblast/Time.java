@@ -27,10 +27,4 @@ public interface Time {
      * The number of nanoseconds per second
      */
     public final static int NS_PER_S = 1000 * US_PER_S;
-    
-    /**
-     * Duration of the game in minutes
-     */
-    public final static int GAME_DURATION = 1;
-    
 }
