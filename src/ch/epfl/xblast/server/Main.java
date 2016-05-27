@@ -112,6 +112,7 @@ public final class Main {
             else
                 System.out.println("No winner !");
             
+            channel.close();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e){
