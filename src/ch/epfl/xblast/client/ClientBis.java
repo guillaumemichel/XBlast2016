@@ -54,7 +54,7 @@ public class ClientBis {
             if (list.size()==1){
                 list.clear();
                 currentState.clear();
-                //channel.close();
+                channel.close();
                 return true;
             }
             component.setGameState(GameStateDeserializer.deserializeGameState(list.subList(1, list.size())), id);

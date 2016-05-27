@@ -11,6 +11,7 @@ import javax.swing.Timer;
 import ch.epfl.xblast.client.ClientBis;
 import ch.epfl.xblast.client.KeyboardEventHandler;
 import ch.epfl.xblast.client.PlaySound;
+import ch.epfl.xblast.server.GameState;
 import ch.epfl.xblast.server.Level;
 import ch.epfl.xblast.server.ServerBis;
 
@@ -21,6 +22,7 @@ public final class Main {
 
     public static void main(String[] args) {
         int delay = 5; //milliseconds
+        Runnable start = () -> { ServerBis.main(Level.DEFAULT_LEVEL.gameState(), 1, 1); };
         Timer timer = new Timer(delay, new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -31,11 +33,6 @@ public final class Main {
                 }
             }  
         });
-        Thread thread = new Thread(){
-            public void run(){
-                ServerBis.main(Level.DEFAULT_LEVEL.gameState(), 2, 1);
-            }
-        };
         
         SwingUtilities.invokeLater(()->{
             ControllerMenu c = new ControllerMenu(view,model);
@@ -50,7 +47,7 @@ public final class Main {
             model.getCreate().addActionListener(e -> c.setView("Server"));
             model.getQuit().addActionListener(e -> System.exit(0));
             model.getStartServer().addActionListener(e->{
-                thread.start();
+                new Thread(start).start();
                 ClientBis.connect(model.getIpField().getText());
                 ClientBis.start(view.getComponent());
                 c.setView("Game");

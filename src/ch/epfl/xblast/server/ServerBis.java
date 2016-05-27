@@ -120,6 +120,7 @@ public final class ServerBis {
                 channel.send(end, player.getKey());
                 end.clear();
             }
+            channel.close();
 
         } catch (IOException e) {
             e.printStackTrace();
