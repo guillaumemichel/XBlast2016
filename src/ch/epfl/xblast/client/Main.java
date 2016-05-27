@@ -51,7 +51,9 @@ public final class Main {
             ByteBuffer currentState = ByteBuffer.allocate(MAX_BUFFER_SIZE);
             List<Byte> list = new ArrayList<>();
             channel.configureBlocking(true);
-            while (true){
+            while (true){/*as the server doesn't send a message at the end of the game
+                if it sends message at the end of the game, the server is not compatible with the other clients
+                so we decided to do a while(true)*/
                 channel.receive(currentState);
                 currentState.flip();//receive the gamestate
                 while (currentState.hasRemaining())
