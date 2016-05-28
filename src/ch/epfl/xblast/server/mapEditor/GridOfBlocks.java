@@ -89,7 +89,7 @@ public final class GridOfBlocks extends JPanel{
      * @return
      *      The corresponding list of players of this grid of blocks
      */
-    public List<Player> createPlayers(){
+    private List<Player> createPlayers(){
         List<Player> players = new ArrayList<>();
         
         for(BlockLabel b : blocks){
