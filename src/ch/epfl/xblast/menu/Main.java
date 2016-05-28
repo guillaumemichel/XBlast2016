@@ -28,12 +28,22 @@ public final class Main {
         int delay = 5; //milliseconds
         Runnable start = () -> {
             GameState g=Level.DEFAULT_LEVEL.gameState();
-
-            /*if (model.getRB2().getButton().isSelected()) g=model.getRB2().gamestate();
-            else if (model.getRB3().getButton().isSelected()) g=model.getRB3().gamestate();
-            else if(model.getRB4().getButton().isSelected()) g=m.grid().toGameState();
             
-            else g=model.getRB1().gamestate();*/
+            switch (model.mapSelected()){
+                case 0 :
+                    g=Level.DEFAULT_LEVEL.gameState();
+                    break;
+                case 1 :
+                    g=Level.DEFAULT_LEVEL_2.gameState();
+                    break;
+                case 2 :
+                    g=Level.DEFAULT_LEVEL.gameState();
+                    break;
+                case 3 :
+                    g=m.grid().toGameState();
+                    break;
+            }
+                
             ServerBis.main(g, (int) model.getTime().getValue(), (int) model.getNPlayers().getValue()); };
         Timer timer = new Timer(delay, new ActionListener(){
             byte i;

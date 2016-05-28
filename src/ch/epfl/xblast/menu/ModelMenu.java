@@ -65,6 +65,7 @@ public final class ModelMenu {
     private JRadioButton b2;
     private JRadioButton b3;
     private JRadioButton b4;
+    private JRadioButton[] group;
     private JLabel i1;
     private JLabel i2;
     private JLabel i3;
@@ -251,6 +252,12 @@ public final class ModelMenu {
         bg.add(b3);
         bg.add(b4);
         
+        group = new JRadioButton[4];
+        group[0]=b1;
+        group[1]=b2;
+        group[2]=b3;
+        group[3]=b4;
+        
         b1.setSelected(true);
         b4.addActionListener(e -> Main.mapEdit());
         
@@ -277,7 +284,9 @@ public final class ModelMenu {
     }
     public JPanel getRadioMap(){ return maps;}
     public int mapSelected(){ 
-        //TODO
+        for (int i=0;i<group.length;++i)
+            if (group[i].isSelected())
+                return i;
         return 0;
     }
 
