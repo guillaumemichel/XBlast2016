@@ -130,4 +130,25 @@ public final class Options extends JPanel{
         });
         this.add(done);
     }
+    
+    /*private Board readFileToBoard(File f){
+        try(InputStream in = new BufferedInputStream(new FileInputStream(f))){
+            List<Byte> l = new ArrayList<>();
+
+            int b;
+            while((b = in.read()) != -1){
+                int numericValueOfInteger = Character.getNumericValue(b);
+
+                l.add((byte)numericValueOfInteger);
+            }
+            List<Sq<Block>> board = l.stream().map(bytes -> Block.values()[bytes]).map(block -> Sq.constant(block)).collect(Collectors.toList());
+            
+            return new Board(board);
+        }catch(FileNotFoundException e){
+            
+        }catch(IOException e){
+            
+        }
+        return null;
+    }*/
 }

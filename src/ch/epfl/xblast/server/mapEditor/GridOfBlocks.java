@@ -40,13 +40,13 @@ public final class GridOfBlocks extends JPanel{
             
             //Put the spawns of each player to an initial position
             if(i == Level.POSITION_PLAYER_1.rowMajorIndex())
-                b.setHostedPlayer(PlayerID.PLAYER_1);
+                b.addHostedPlayer(PlayerID.PLAYER_1);
             else if(i == Level.POSITION_PLAYER_2.rowMajorIndex())
-                b.setHostedPlayer(PlayerID.PLAYER_2);
+                b.addHostedPlayer(PlayerID.PLAYER_2);
             else if(i == Level.POSITION_PLAYER_3.rowMajorIndex())
-                b.setHostedPlayer(PlayerID.PLAYER_3);
+                b.addHostedPlayer(PlayerID.PLAYER_3);
             else if(i == Level.POSITION_PLAYER_4.rowMajorIndex())
-                b.setHostedPlayer(PlayerID.PLAYER_4);
+                b.addHostedPlayer(PlayerID.PLAYER_4);
             
             this.add(blocks.get(blocks.size()-1));
         }
@@ -93,9 +93,9 @@ public final class GridOfBlocks extends JPanel{
         List<Player> players = new ArrayList<>();
         
         for(BlockLabel b : blocks){
-            if(b.hostedPlayer()!=null){
-                players.add(new Player(b.hostedPlayer(), Level.NUMBER_OF_LIVES, Cell.ROW_MAJOR_ORDER.get(blocks.indexOf(b)), Level.MAX_BOMBS, Level.BOMB_RANGE));
-            System.out.println(b.hostedPlayer()+"---->"+Cell.ROW_MAJOR_ORDER.get(blocks.indexOf(b)).toString());
+            for(PlayerID id : b.hostedPlayers()){
+                players.add(new Player(id, Level.NUMBER_OF_LIVES, Cell.ROW_MAJOR_ORDER.get(blocks.indexOf(b)), Level.MAX_BOMBS, Level.BOMB_RANGE));
+                System.out.println(id+"---->"+Cell.ROW_MAJOR_ORDER.get(blocks.indexOf(b)).toString());
             }
         }
         return players;
@@ -125,7 +125,7 @@ public final class GridOfBlocks extends JPanel{
         while(it.hasNext() && it2.hasNext()){
             BlockLabel blockLabel = it.next();
             Block b = it2.next();
-            if(blockLabel.hostedPlayer()==null || (blockLabel.hostedPlayer()!=null && b.canHostPlayer()))
+            if(blockLabel.hostedPlayers().isEmpty() || (!blockLabel.hostedPlayers().isEmpty() && b.canHostPlayer()))
                 blockLabel.setBlock(b);
         }      
     }
