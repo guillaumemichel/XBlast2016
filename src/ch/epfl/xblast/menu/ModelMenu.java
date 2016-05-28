@@ -3,17 +3,13 @@ package ch.epfl.xblast.menu;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.image.BufferedImage;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -30,9 +26,6 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 
 import ch.epfl.xblast.client.ImageCollection;
-import ch.epfl.xblast.server.GameState;
-import ch.epfl.xblast.server.Level;
-import ch.epfl.xblast.server.mapEditor.MapEditor;
 
 public final class ModelMenu {
     private JLabel title;
@@ -74,6 +67,8 @@ public final class ModelMenu {
     private JPanel mapsDown;
     private JPanel maps;
     private ButtonGroup bg;
+    private JButton backConnect;
+    private JButton backServer;
 
     public ModelMenu(){
         setFonts();
@@ -100,6 +95,8 @@ public final class ModelMenu {
         setMinutes();
         setPlayers();
         setNPlayers();
+        setBackConnect();
+        setBackServer();
     }
     
     private void setFonts(){
@@ -351,26 +348,22 @@ public final class ModelMenu {
         ((DefaultEditor) nPlayers.getEditor()).getTextField().setEditable(false);
     }
     public JSpinner getNPlayers(){ return nPlayers;}
-}
     
-class GButton extends JPanel{
-    private GameState g;
-    private JRadioButton radio;
-    private JButton b;
-    public GButton(JButton b){
-        setLayout(new GridBagLayout());
-        radio = new JRadioButton();
-        add(radio);
-        add(b);
-        b.addActionListener(e -> radio.setSelected(true));
-        //radio.setEnabled(false);
-        this.b=b;
-        setMaximumSize(new Dimension(100,150));
+    private void setBackConnect(){
+        backConnect = new JButton("Cancel");
+        backConnect.setFont(bigButtonFont);
+        backConnect.setMaximumSize(new Dimension(450,100));
+        backConnect.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
-    public void setGamestate(GameState g){ this.g=g; }
-    public GameState gamestate(){ return g;}
-    public JRadioButton getButton(){ return radio;}
-    public JButton getB(){ return b;}
+    public JButton getBackConnect(){ return backConnect;}
+    
+    private void setBackServer(){
+        backServer = new JButton("Cancel");
+        backServer.setFont(bigButtonFont);
+        backServer.setMaximumSize(new Dimension(450,100));
+        backServer.setAlignmentX(Component.CENTER_ALIGNMENT);
+    }
+    public JButton getBackServer(){ return backServer;}
 }
 
 class IpFilter extends DocumentFilter { 

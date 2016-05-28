@@ -29,7 +29,7 @@ public final class ControllerMenu {
                 frame.add(view.createJoinMenu());
                 break;
             case "WaitC":
-                frame.add(view.createWaitingClient());
+                frame.add(view.createWaitingClient(model.getIpField().getText()));
                 break;
             case "Game":
                 frame.add(view.getComponent());

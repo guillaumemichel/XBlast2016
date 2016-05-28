@@ -3,10 +3,7 @@ package ch.epfl.xblast.menu;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -14,11 +11,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 
-import ch.epfl.xblast.client.ClientBis;
 import ch.epfl.xblast.client.ImageCollection;
-import ch.epfl.xblast.client.KeyboardEventHandler;
 import ch.epfl.xblast.client.XBlastComponent;
 
 public final class ViewMenu {
@@ -137,10 +131,19 @@ public final class ViewMenu {
         return panel;
     }
     
-    public final JPanel createWaitingClient(){
+    public final JPanel createWaitingClient(String str){
         JPanel panel = new JPanel();
         
         panel.add(model.getWaiting(3));
+        panel.add(model.getBackConnect());
+        return panel;
+    }
+    
+    public final JPanel createWaitingServer(){
+        JPanel panel = new JPanel();
+        
+        panel.add(model.getWaiting(1));
+        panel.add(model.getBackServer());
         return panel;
     }
     

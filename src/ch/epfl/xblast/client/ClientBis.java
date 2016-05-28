@@ -31,6 +31,7 @@ public class ClientBis {
     private static byte returnValue;
     
     public final static void start(XBlastComponent component0) {
+        firstState.flip();
         component = component0;
         id = PlayerID.values()[firstState.get()];
         while(firstState.hasRemaining())//transfer the buffer to a list
@@ -69,11 +70,37 @@ public class ClientBis {
         return 0x10;
     }
     
-    public final static void connect(){
-        connect("localhost");
+    public final static void initialize(){
+        initialize("localhost");
     }
     
-    public final static void connect(String s){
+    public final static void initialize(String s){
+        try {
+            channel = DatagramChannel.open(StandardProtocolFamily.INET);
+            channel.configureBlocking(false);
+            chaussette = new InetSocketAddress(s, DEFAULT_PORT);
+            join = ByteBuffer.allocate(1);
+            firstState = ByteBuffer.allocate(MAX_BUFFER_SIZE);
+            join.put((byte)PlayerAction.JOIN_GAME.ordinal()).flip();
+            
+            System.out.println("Connecting the server ...");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public final static SocketAddress connect(){
+        try {
+            channel.send(join, chaussette);
+            Thread.sleep(1000);
+            return channel.receive(firstState);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public final static void connectBis(String s){
         try {
             channel = DatagramChannel.open(StandardProtocolFamily.INET);
             channel.configureBlocking(false);

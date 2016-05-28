@@ -2,10 +2,7 @@ package ch.epfl.xblast.menu;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.util.Enumeration;
 
-import javax.swing.AbstractButton;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -23,12 +20,15 @@ public final class Main {
     private static ViewMenu view = new ViewMenu(model);
     private static JFrame frame = view.getFrame();
     private static MapEditor m;
+    private static Timer game;
+    private static Timer join;
+    private static boolean bool;
 
     public static void main(String[] args) {
         int delay = 5; //milliseconds
         Runnable start = () -> {
+            bool = true;
             GameState g=Level.DEFAULT_LEVEL.gameState();
-            
             switch (model.mapSelected()){
                 case 0 :
                     g=Level.DEFAULT_LEVEL.gameState();
@@ -43,9 +43,14 @@ public final class Main {
                     g=m.grid().toGameState();
                     break;
             }
-                
-            ServerBis.main(g, (int) model.getTime().getValue(), (int) model.getNPlayers().getValue()); };
-        Timer timer = new Timer(delay, new ActionListener(){
+            ServerBis.init((int) model.getTime().getValue());
+            while (ServerBis.connect()!=(int)model.getNPlayers().getValue() && bool){System.out.println("connecting");}
+            System.out.println(bool);
+            if (bool) ServerBis.game(g);
+            else ServerBis.closeChannel();
+            //ServerBis.main(g, (int) model.getTime().getValue(), (int) model.getNPlayers().getValue());
+            };
+        game = new Timer(delay, new ActionListener(){
             byte i;
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -56,34 +61,54 @@ public final class Main {
                 }
             }  
         });
+        join = new Timer(delay, new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (ClientBis.connect()!=null){
+                    ((Timer)e.getSource()).stop();
+                    ClientBis.start(view.getComponent());
+                    setView("Game");
+                    game.start();
+                }
+            }  
+        });
         
         SwingUtilities.invokeLater(()->{
             ControllerMenu c = new ControllerMenu(view,model);
             model.getJoin().addActionListener(e -> c.setView("Join"));
             model.getBackJoin().addActionListener(e -> c.setView("Main"));
             model.getIpJoin().addActionListener(e -> {
-                ClientBis.connect(model.getIpField().getText());
-                ClientBis.start(view.getComponent());
-                c.setView("Game");
-                timer.start();
+                setView("WaitC");
+                startClient();
             });
             model.getCreate().addActionListener(e -> c.setView("Server"));
             model.getQuit().addActionListener(e -> System.exit(0));
             model.getStartServer().addActionListener(e->{
+                setView("WaitS");
                 new Thread(start).start();
-                ClientBis.connect(model.getIpField().getText());
-                ClientBis.start(view.getComponent());
-                c.setView("Game");
-                timer.start();
+                startClient();
+            });
+            model.getBackConnect().addActionListener(e -> {
+                join.stop();
+                setView("Join");
+            });
+            model.getBackServer().addActionListener(e -> {
+                bool = false;
+                //join.stop();
+                setView("Server");
             });
         });
 
 
     }
     
+    public static void startClient(){
+        ClientBis.initialize(model.getIpField().getText());
+        join.start();
+    }
+    
     public static void mapEdit(){
         m = new MapEditor();
-        
     }
     
     public static void setWin(byte b){
@@ -94,10 +119,10 @@ public final class Main {
         frame.repaint();
     }
     
-    
     public static void setView(String s){
         frame.getContentPane().removeAll();
         switch (s){
+            default : frame.add(view.createMenuView());
             case "Main":
                 frame.add(view.createMenuView());
                 break;
@@ -105,14 +130,19 @@ public final class Main {
                 frame.add(view.createJoinMenu());
                 break;
             case "WaitC":
-                frame.add(view.createWaitingClient());
+                frame.add(view.createWaitingClient(model.getIpField().getText()));
+                break;
+            case "WaitS" :
+                frame.add(view.createWaitingServer());
                 break;
             case "Game":
                 frame.add(view.getComponent());
                 view.getComponent().addKeyListener(new KeyboardEventHandler(ClientBis.getMap(), ClientBis.getConsumer()));
                 view.getComponent().requestFocusInWindow();
                 break;
-            default : frame.add(view.createMenuView());
+            case "Server":
+                frame.add(view.createCreateMenu());
+                break;
         }
         frame.validate();
         frame.repaint();
