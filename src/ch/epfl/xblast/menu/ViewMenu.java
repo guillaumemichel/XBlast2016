@@ -83,29 +83,25 @@ public final class ViewMenu {
     public final JPanel createCreateMenu(){
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel,1));
-        panel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.setAlignmentX(Component.CENTER_ALIGNMENT);    
         
-        JPanel maps = new JPanel();
-        maps.setLayout(new BoxLayout(maps,0));
-        maps.setMaximumSize(new Dimension(600,200));
+        JPanel options = new JPanel();
+        options.setLayout(new BoxLayout(options,0));
+        options.setMaximumSize(new Dimension(700,60));
+        options.setAlignmentX(Component.CENTER_ALIGNMENT);
         
-        bg = new ButtonGroup();
-        bg.add(model.getRB1().getButton());
-        bg.add(model.getRB2().getButton());
-        bg.add(model.getRB3().getButton());
-        bg.add(model.getRB4().getButton());
-        
-        maps.add(Box.createRigidArea(new Dimension(150,0)));
-        maps.add(model.getRB1());
-        maps.add(model.getRB2());
-        maps.add(model.getRB3());
+        options.add(model.getDuration());
+        options.add(model.getTime());
+        options.add(model.getMinutes());
+        options.add(Box.createRigidArea(new Dimension(180,0)));       
+        options.add(model.getPlayers());
+        options.add(model.getNPlayers());
         
         panel.add(Box.createRigidArea(new Dimension(0,10)));       
         panel.add(model.getCreateTitle());
         panel.add(model.getSelectBoard());
-        panel.add(maps);
-        panel.add(model.getRB4());
-        panel.add(model.getTime());
+        panel.add(model.getRadioMap());
+        panel.add(options);
         panel.add(model.getStartServer());
         panel.add(model.getBackJoin());
  

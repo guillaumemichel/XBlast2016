@@ -5,8 +5,13 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -45,17 +50,30 @@ public final class ModelMenu {
     private JLabel waiting;
     private JLabel selectBoard;
     private JLabel createTitle;
-    private GButton rb1;
-    private GButton rb2;
-    private GButton rb3;
-    private GButton rb4;
     private JButton startServer;
     private JLabel won;
     private JLabel nobody;
     private JButton menu;
     private JSpinner time;
+    private JLabel duration;
+    private Font littleBold;
+    private Font littlePlain;
+    private JLabel minutes;
+    private JLabel players;
+    private JSpinner nPlayers;
+    private JRadioButton b1;
+    private JRadioButton b2;
+    private JRadioButton b3;
+    private JRadioButton b4;
+    private JLabel i1;
+    private JLabel i2;
+    private JLabel i3;
+    private JLabel i4;
+    private JPanel mapsUp;
+    private JPanel mapsDown;
+    private JPanel maps;
+    private ButtonGroup bg;
 
-    
     public ModelMenu(){
         setFonts();
         setTitle();
@@ -77,11 +95,17 @@ public final class ModelMenu {
         setNobody();
         setMenu();
         setTime();
+        setDuration();
+        setMinutes();
+        setPlayers();
+        setNPlayers();
     }
     
     private void setFonts(){
         bigButtonFont = new Font("Arial",Font.PLAIN,36);
         titleFont = new Font("Arial",Font.PLAIN,70);
+        littleBold = new Font("Arial",Font.BOLD,20);
+        littlePlain = new Font("Arial",Font.PLAIN,20);
     }
         
     private void setTitle(){
@@ -117,7 +141,7 @@ public final class ModelMenu {
     
     private void setIpText(){
         ipText = new JLabel("Select IP : ");
-        ipText.setFont(new Font("Arial",Font.BOLD,20));
+        ipText.setFont(littleBold);
         ipText.setHorizontalAlignment(SwingConstants.RIGHT);
     }
     public JLabel getIpText(){ return ipText;}
@@ -133,7 +157,7 @@ public final class ModelMenu {
     private void setIpField(){
         ipField = new JTextField();
         ((AbstractDocument)ipField.getDocument()).setDocumentFilter(new IpFilter());
-        ipField.setFont(new Font("Arial",Font.PLAIN,20));
+        ipField.setFont(littlePlain);
         ipField.setMaximumSize(new Dimension(200,50));
         ipField.setHorizontalAlignment(SwingConstants.CENTER);;
     }
@@ -141,7 +165,7 @@ public final class ModelMenu {
     
     private void setIpJoin(){
         ipJoin = new JButton("Connect server");
-        ipJoin.setFont(new Font("Arial",Font.BOLD,20));
+        ipJoin.setFont(littleBold);
         ipJoin.setMaximumSize(new Dimension(200,50));
     }
     public JButton getIpJoin(){ return ipJoin;}
@@ -175,7 +199,7 @@ public final class ModelMenu {
     
     private void setSelectBoard(){
         selectBoard = new JLabel("Select board");
-        selectBoard.setFont(new Font("Arial",Font.PLAIN,20));
+        selectBoard.setFont(littlePlain);
         selectBoard.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
     public JLabel getSelectBoard(){ return selectBoard;}
@@ -188,19 +212,74 @@ public final class ModelMenu {
     public JLabel getCreateTitle(){ return createTitle;}
     
     private void setRadioMap(){
-        rb1=new GButton(new JButton(new ImageIcon(ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(6))));
-        rb2=new GButton(new JButton(new ImageIcon(ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(26))));
-        rb3=new GButton(new JButton(new ImageIcon(ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(6))));
-        rb4=new GButton(new JButton(new ImageIcon(ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(53))));
-        rb1.setGamestate(Level.DEFAULT_LEVEL.gameState());
-        rb2.setGamestate(Level.DEFAULT_LEVEL_2.gameState());
-        rb3.setGamestate(Level.DEFAULT_LEVEL.gameState());
-        rb1.getButton().setSelected(true);
+        b1=new JRadioButton();
+        b2=new JRadioButton();
+        b3=new JRadioButton();
+        b4=new JRadioButton();
+        i1=new JLabel(new ImageIcon(ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(6)));
+        i2=new JLabel(new ImageIcon(ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(26)));
+        i3=new JLabel(new ImageIcon(ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(6)));
+        i4=new JLabel(new ImageIcon(ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(53)));
+        i1.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                b1.setSelected(true);
+            }
+        });
+        i2.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                b2.setSelected(true);
+            }
+        });
+        i3.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                b3.setSelected(true);
+            }
+        });
+        i4.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                b4.setSelected(true);
+                Main.mapEdit();
+            }
+        });
+        bg = new ButtonGroup();
+        bg.add(b1);
+        bg.add(b2);
+        bg.add(b3);
+        bg.add(b4);
+        
+        b1.setSelected(true);
+        b4.addActionListener(e -> Main.mapEdit());
+        
+        mapsUp = new JPanel();
+        mapsUp.setLayout(new BoxLayout(mapsUp,0));
+        mapsUp.add(b1);
+        mapsUp.add(i1);
+        mapsUp.add(Box.createRigidArea(new Dimension(30,0)));
+        mapsUp.add(b2);
+        mapsUp.add(i2);
+        mapsUp.add(Box.createRigidArea(new Dimension(30,0)));
+        mapsUp.add(b3);
+        mapsUp.add(i3);
+        
+        mapsDown = new JPanel();
+        mapsDown.setLayout(new BoxLayout(mapsDown,0));
+        mapsDown.add(b4);
+        mapsDown.add(i4);
+        
+        maps = new JPanel();
+        maps.setLayout(new BoxLayout(maps,1));
+        maps.add(mapsUp);
+        maps.add(mapsDown);
     }
-    public GButton getRB1(){ return rb1;}
-    public GButton getRB2(){ return rb2;}
-    public GButton getRB3(){ return rb3;}
-    public GButton getRB4(){ return rb4;}
+    public JPanel getRadioMap(){ return maps;}
+    public int mapSelected(){ 
+        //TODO
+        return 0;
+    }
 
     private void setStartServer(){
         startServer = new JButton("Start server");
@@ -231,9 +310,38 @@ public final class ModelMenu {
 
     private void setTime(){
         time = new JSpinner(new SpinnerNumberModel(2, 1, 10, 1));
-        time.setMaximumSize(new Dimension(200,100));
-        ((DefaultEditor) time.getEditor()).getTextField().setEditable(false);    }
+        time.setMaximumSize(new Dimension(45,30));
+        ((DefaultEditor) time.getEditor()).getTextField().setEditable(false);
+        }
     public JSpinner getTime(){ return time;}
+    
+    private void setDuration(){
+        duration = new JLabel("Game duration : ");
+        duration.setFont(littlePlain);
+        duration.setHorizontalTextPosition(SwingConstants.RIGHT);
+    }
+    public JLabel getDuration(){ return duration;}
+    
+    private void setMinutes(){
+        minutes = new JLabel(" minutes");
+        minutes.setFont(littlePlain);
+        minutes.setHorizontalTextPosition(SwingConstants.LEFT);
+    }
+    public JLabel getMinutes(){ return minutes;}
+    
+    private void setPlayers(){
+        players = new JLabel("Number of players : ");
+        players.setFont(littlePlain);
+        players.setHorizontalTextPosition(SwingConstants.RIGHT);
+    }
+    public JLabel getPlayers(){ return players;}
+    
+    private void setNPlayers(){
+        nPlayers = new JSpinner(new SpinnerNumberModel(4, 1, 4, 1));
+        nPlayers.setMaximumSize(new Dimension(45,30));
+        ((DefaultEditor) nPlayers.getEditor()).getTextField().setEditable(false);
+    }
+    public JSpinner getNPlayers(){ return nPlayers;}
 }
     
 class GButton extends JPanel{

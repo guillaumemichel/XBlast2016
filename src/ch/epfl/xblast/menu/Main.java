@@ -29,12 +29,12 @@ public final class Main {
         Runnable start = () -> {
             GameState g=Level.DEFAULT_LEVEL.gameState();
 
-            if (model.getRB2().getButton().isSelected()) g=model.getRB2().gamestate();
+            /*if (model.getRB2().getButton().isSelected()) g=model.getRB2().gamestate();
             else if (model.getRB3().getButton().isSelected()) g=model.getRB3().gamestate();
             else if(model.getRB4().getButton().isSelected()) g=m.grid().toGameState();
             
-            else g=model.getRB1().gamestate(); 
-            ServerBis.main(g, (int) model.getTime().getValue(), 1); };
+            else g=model.getRB1().gamestate();*/
+            ServerBis.main(g, (int) model.getTime().getValue(), (int) model.getNPlayers().getValue()); };
         Timer timer = new Timer(delay, new ActionListener(){
             byte i;
             @Override
@@ -66,8 +66,6 @@ public final class Main {
                 c.setView("Game");
                 timer.start();
             });
-            model.getRB4().getB().addActionListener(e -> mapEdit());
-            model.getRB4().getButton().addActionListener(e -> mapEdit());
         });
 
 
