@@ -59,9 +59,9 @@ public final class MapEditor extends JFrame{
     }
     
     public static void main(String[] args){
-        main();
+        SwingUtilities.invokeLater(() -> new MapEditor());
     }
     public static void main(){
-        SwingUtilities.invokeLater(() -> new MapEditor());
+        new MapEditor();
     }
 }
