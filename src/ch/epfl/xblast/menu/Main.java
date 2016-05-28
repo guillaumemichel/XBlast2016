@@ -66,9 +66,8 @@ public final class Main {
                 c.setView("Game");
                 timer.start();
             });
-            model.getRB4().getB().addActionListener(e ->{
-                mapEdit();
-            });
+            model.getRB4().getB().addActionListener(e -> mapEdit());
+            model.getRB4().getButton().addActionListener(e -> mapEdit());
         });
 
 

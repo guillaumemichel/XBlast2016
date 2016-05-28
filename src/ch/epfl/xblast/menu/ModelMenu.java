@@ -246,7 +246,7 @@ class GButton extends JPanel{
         add(radio);
         add(b);
         b.addActionListener(e -> radio.setSelected(true));
-        radio.setEnabled(false);
+        //radio.setEnabled(false);
         this.b=b;
         setMaximumSize(new Dimension(100,150));
     }
