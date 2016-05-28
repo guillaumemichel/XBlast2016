@@ -3,10 +3,16 @@ package ch.epfl.xblast.menu;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagLayout;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 
+import javax.swing.ButtonGroup;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
 import javax.swing.JSpinner.DefaultEditor;
@@ -17,6 +23,11 @@ import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
+
+import ch.epfl.xblast.client.ImageCollection;
+import ch.epfl.xblast.server.GameState;
+import ch.epfl.xblast.server.Level;
+import ch.epfl.xblast.server.mapEditor.MapEditor;
 
 public final class ModelMenu {
     private JLabel title;
@@ -34,9 +45,10 @@ public final class ModelMenu {
     private JLabel waiting;
     private JLabel selectBoard;
     private JLabel createTitle;
-    private JRadioButton rb1;
-    private JRadioButton rb2;
-    private JRadioButton rb3;
+    private GButton rb1;
+    private GButton rb2;
+    private GButton rb3;
+    private GButton rb4;
     private JButton startServer;
     private JLabel won;
     private JLabel nobody;
@@ -176,14 +188,22 @@ public final class ModelMenu {
     public JLabel getCreateTitle(){ return createTitle;}
     
     private void setRadioMap(){
-        rb1=new JRadioButton("Map 1");
-        rb2=new JRadioButton("Map 2");
-        rb3=new JRadioButton("Map 3");
-        rb1.setSelected(true);
+        rb1=new GButton(new JButton(new ImageIcon(ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(6))));
+        rb2=new GButton(new JButton(new ImageIcon(ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(26))));
+        rb3=new GButton(new JButton(new ImageIcon(ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(6))));
+        rb4=new GButton(new JButton(new ImageIcon(ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(53))));
+        rb1.setGamestate(Level.DEFAULT_LEVEL.gameState());
+        rb2.setGamestate(Level.DEFAULT_LEVEL_2.gameState());
+        rb3.setGamestate(Level.DEFAULT_LEVEL.gameState());
+        rb1.getButton().setSelected(true);
+        rb4.getB().addActionListener(e -> {
+            MapEditor.main();            
+        });
     }
-    public JRadioButton getRB1(){ return rb1;}
-    public JRadioButton getRB2(){ return rb2;}
-    public JRadioButton getRB3(){ return rb3;}
+    public GButton getRB1(){ return rb1;}
+    public GButton getRB2(){ return rb2;}
+    public GButton getRB3(){ return rb3;}
+    public GButton getRB4(){ return rb4;}
 
     private void setStartServer(){
         startServer = new JButton("Start server");
@@ -217,6 +237,26 @@ public final class ModelMenu {
         time.setMaximumSize(new Dimension(200,100));
         ((DefaultEditor) time.getEditor()).getTextField().setEditable(false);    }
     public JSpinner getTime(){ return time;}
+}
+    
+class GButton extends JPanel{
+    private GameState g;
+    private JRadioButton radio;
+    private JButton b;
+    public GButton(JButton b){
+        setLayout(new GridBagLayout());
+        radio = new JRadioButton();
+        add(radio);
+        add(b);
+        b.addActionListener(e -> radio.setSelected(true));
+        radio.setEnabled(false);
+        this.b=b;
+        setMaximumSize(new Dimension(100,105));
+    }
+    public void setGamestate(GameState g){ this.g=g; }
+    public GameState gamestate(){ return g;}
+    public JRadioButton getButton(){ return radio;}
+    public JButton getB(){ return b;}
 }
 
 class IpFilter extends DocumentFilter { 

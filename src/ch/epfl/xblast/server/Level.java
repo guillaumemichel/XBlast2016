@@ -36,6 +36,7 @@ public final class Level {
      * Variable that contains a "default level"
      */
     public static final Level DEFAULT_LEVEL = defaultLevel();
+    public static final Level DEFAULT_LEVEL_2 = defaultLevel2();
     
     /**
      * Constructs a level with the given parameters
@@ -92,6 +93,36 @@ public final class Level {
             Arrays.asList(xx, XX, __, XX, XX, XX, XX),
             Arrays.asList(__, xx, __, xx, __, __, __),
             Arrays.asList(xx, XX, xx, XX, xx, XX, __)));
+        
+        List<Player> players = new ArrayList<>();
+        players.add(new Player(PlayerID.PLAYER_1,NUMBER_OF_LIVES, POSITION_PLAYER_1, MAX_BOMBS, BOMB_RANGE));
+        players.add(new Player(PlayerID.PLAYER_2, NUMBER_OF_LIVES, POSITION_PLAYER_2, MAX_BOMBS, BOMB_RANGE));
+        players.add(new Player(PlayerID.PLAYER_3, NUMBER_OF_LIVES, POSITION_PLAYER_3, MAX_BOMBS, BOMB_RANGE));
+        players.add(new Player(PlayerID.PLAYER_4, NUMBER_OF_LIVES, POSITION_PLAYER_4, MAX_BOMBS, BOMB_RANGE));
+        
+        return new Level(new BoardPainter(defaultPalette, BlockImage.IRON_FLOOR_S), new GameState(board, players));
+    }
+    
+    private static Level defaultLevel2(){
+        Map<Block, BlockImage> defaultPalette=new HashMap<>();
+        defaultPalette.put(Block.FREE, BlockImage.IRON_FLOOR);
+        for(int i=1;i<Block.values().length;i++)
+            defaultPalette.put(Block.values()[i], BlockImage.values()[i+1]);
+        
+        Block __ = Block.FREE;
+        Block XX = Block.INDESTRUCTIBLE_WALL;
+        Block xx = Block.DESTRUCTIBLE_WALL;
+        Block ff = Block.BONUS_RANGE;
+        Block bb = Block.BONUS_BOMB;
+        
+        Board board = Board.ofQuadrantNWBlocksWalled(
+          Arrays.asList(
+            Arrays.asList(__, __, __, __, xx, __, __),
+            Arrays.asList(__, XX, XX, XX, XX, xx, XX),
+            Arrays.asList(__, XX, bb, __, __, __, XX),
+            Arrays.asList(xx, XX, __, __, __, __, XX),
+            Arrays.asList(__, xx, __, __, __, __, XX),
+            Arrays.asList(__, XX, XX, XX, XX, xx, ff)));
         
         List<Player> players = new ArrayList<>();
         players.add(new Player(PlayerID.PLAYER_1,NUMBER_OF_LIVES, POSITION_PLAYER_1, MAX_BOMBS, BOMB_RANGE));

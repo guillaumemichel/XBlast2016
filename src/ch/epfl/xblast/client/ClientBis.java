@@ -55,7 +55,6 @@ public class ClientBis {
             if (list.size()==1){
                 returnValue=list.get(0);
                 list.clear();
-                System.out.println("fini");
                 currentState.clear();
                 channel.close();
                 return returnValue;
@@ -67,7 +66,7 @@ public class ClientBis {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return 0xF;
+        return 0x10;
     }
     
     public final static void connect(){

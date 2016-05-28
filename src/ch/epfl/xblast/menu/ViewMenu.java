@@ -25,6 +25,7 @@ public final class ViewMenu {
     private JFrame frame = new JFrame("XBlast 2016");
     private ModelMenu model;
     private XBlastComponent component=new XBlastComponent();
+    private ButtonGroup bg;
     
     public ViewMenu(ModelMenu model){
         this.model=model;
@@ -85,28 +86,34 @@ public final class ViewMenu {
         
         JPanel maps = new JPanel();
         maps.setLayout(new BoxLayout(maps,0));
+        maps.setMaximumSize(new Dimension(600,200));
         
-        ButtonGroup bg = new ButtonGroup();
-        bg.add(model.getRB1());
-        bg.add(model.getRB2());
-        bg.add(model.getRB3());
+        GButton map1=model.getRB1();
+        GButton map2=model.getRB2();
+        GButton map3=model.getRB3();
+        
+        bg = new ButtonGroup();
+        bg.add(model.getRB1().getButton());
+        bg.add(model.getRB2().getButton());
+        bg.add(model.getRB3().getButton());
+        bg.add(model.getRB4().getButton());
         
         maps.add(model.getRB1());
-        maps.add(Box.createRigidArea(new Dimension(100,0)));
         maps.add(model.getRB2());
-        maps.add(Box.createRigidArea(new Dimension(100,0)));
         maps.add(model.getRB3());
         
         panel.add(Box.createRigidArea(new Dimension(0,10)));       
         panel.add(model.getCreateTitle());
         panel.add(model.getSelectBoard());
         panel.add(maps);
+        panel.add(model.getRB4());
         panel.add(model.getTime());
         panel.add(model.getStartServer());
         panel.add(model.getBackJoin());
  
         return panel;
     }
+    public final ButtonGroup getBg(){ return bg;}
     
     public final JPanel createWinners(byte n){
         JPanel panel=new JPanel(new FlowLayout(FlowLayout.CENTER));

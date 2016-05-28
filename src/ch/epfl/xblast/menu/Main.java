@@ -3,7 +3,9 @@ package ch.epfl.xblast.menu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Enumeration;
 
+import javax.swing.AbstractButton;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -22,12 +24,20 @@ public final class Main {
 
     public static void main(String[] args) {
         int delay = 5; //milliseconds
-        Runnable start = () -> { ServerBis.main(Level.DEFAULT_LEVEL.gameState(), (int) model.getTime().getValue(), 1); };
+        Runnable start = () -> {
+            GameState g=Level.DEFAULT_LEVEL.gameState();
+
+            if (model.getRB1().getButton().isSelected()) g=model.getRB1().gamestate();
+            else if (model.getRB2().getButton().isSelected()) g=model.getRB2().gamestate();
+            else if (model.getRB3().getButton().isSelected()) g=model.getRB3().gamestate();
+
+            
+            ServerBis.main(g, (int) model.getTime().getValue(), 1); };
         Timer timer = new Timer(delay, new ActionListener(){
             byte i;
             @Override
             public void actionPerformed(ActionEvent e) {
-                if ((i=ClientBis.play())!=0xF){
+                if ((i=ClientBis.play())!=0x10){
                     ((Timer)e.getSource()).stop();
                     PlaySound.stop();
                     setWin(i);
