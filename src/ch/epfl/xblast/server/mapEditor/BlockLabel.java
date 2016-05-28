@@ -3,6 +3,8 @@ package ch.epfl.xblast.server.mapEditor;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -21,7 +23,7 @@ public final class BlockLabel extends JLabel{
     private final static int BLOCK_IMAGE_HEIGHT = ImageCollection.IMAGE_COLLECTION_BLOCK.imageOrNull(0).getHeight(null);
     
     private Block block;
-    private PlayerID hostedPlayer = null;
+    private Set<PlayerID> hostedPlayers = new HashSet<>();
     
     /**
      * Constructs a block label with the given block
@@ -38,16 +40,20 @@ public final class BlockLabel extends JLabel{
                 BlockChooser parentBlockChooser =((MapEditor)SwingUtilities.windowForComponent(BlockLabel.this)).blockChooser();
                 PlayerChooser parentPlayerChooser =((MapEditor)SwingUtilities.windowForComponent(BlockLabel.this)).playerChooser();
                 
-                if(((e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) != 0) && !parentPlayerChooser.playerSelection().isSelected() && (parentBlockChooser.currentBlock().block().canHostPlayer()||BlockLabel.this.hostedPlayer==null)){
+                if(((e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) != 0) && !parentPlayerChooser.playerSelection().isSelected() && (parentBlockChooser.currentBlock().block().canHostPlayer()||BlockLabel.this.hostedPlayers.isEmpty())){
                     setBlock(parentBlockChooser.currentBlock().block());
                 }else if(((e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) != 0) && parentPlayerChooser.playerSelection().isSelected() && BlockLabel.this.block().canHostPlayer()){
                     GridOfBlocks parentGrid = ((MapEditor)SwingUtilities.windowForComponent(BlockLabel.this)).grid();
                     for(BlockLabel b: parentGrid.blocks())
-                        if(b.hostedPlayer == parentPlayerChooser.currentPlayer().playerID()){
-                            b.hostedPlayer=null;
-                            b.setBorder(BorderFactory.createEmptyBorder());
+                        if(b.hostedPlayers.contains(parentPlayerChooser.currentPlayer().playerID())){
+                            b.hostedPlayers.remove(parentPlayerChooser.currentPlayer().playerID());
+                           
+                            if(b.hostedPlayers.isEmpty())
+                                b.setBorder(BorderFactory.createEmptyBorder());
+                            else 
+                                b.addHostedPlayer(b.hostedPlayers.iterator().next());
                         }
-                    BlockLabel.this.setHostedPlayer(parentPlayerChooser.currentPlayer().playerID());
+                    BlockLabel.this.addHostedPlayer(parentPlayerChooser.currentPlayer().playerID());
                 }
             }
             
@@ -56,16 +62,22 @@ public final class BlockLabel extends JLabel{
                 BlockChooser parentBlockChooser =((MapEditor)SwingUtilities.windowForComponent(BlockLabel.this)).blockChooser();
                 PlayerChooser parentPlayerChooser =((MapEditor)SwingUtilities.windowForComponent(BlockLabel.this)).playerChooser();
                 
-                if(!parentPlayerChooser.playerSelection().isSelected() && (parentBlockChooser.currentBlock().block().canHostPlayer()||BlockLabel.this.hostedPlayer==null)){
+                if(!parentPlayerChooser.playerSelection().isSelected() && (parentBlockChooser.currentBlock().block().canHostPlayer()||BlockLabel.this.hostedPlayers.isEmpty())){
                     setBlock(parentBlockChooser.currentBlock().block());
                 }else if(parentPlayerChooser.playerSelection().isSelected() && BlockLabel.this.block().canHostPlayer()){
                     GridOfBlocks parentGrid = ((MapEditor)SwingUtilities.windowForComponent(BlockLabel.this)).grid();
                     for(BlockLabel b: parentGrid.blocks())
-                        if(b.hostedPlayer == parentPlayerChooser.currentPlayer().playerID()){
-                            b.hostedPlayer=null;
-                            b.setBorder(BorderFactory.createEmptyBorder());
+                        if(b.hostedPlayers.contains(parentPlayerChooser.currentPlayer().playerID())){
+                            b.hostedPlayers.remove(parentPlayerChooser.currentPlayer().playerID());
+                            
+                            if(b.hostedPlayers.isEmpty())
+                                b.setBorder(BorderFactory.createEmptyBorder());
+                            else
+                                
+                                b.addHostedPlayer(b.hostedPlayers.iterator().next());
                         }
-                    BlockLabel.this.setHostedPlayer(parentPlayerChooser.currentPlayer().playerID());
+                    
+                    BlockLabel.this.addHostedPlayer(parentPlayerChooser.currentPlayer().playerID());
                 }
                     
             }
@@ -84,17 +96,17 @@ public final class BlockLabel extends JLabel{
     }
     
     /**
-     * Returns the hosted player of this block label if there is one
+     * Returns the hosted players of this block label if there is one or more
      * 
      * @return
-     *      The hosted player of this block label
+     *      The hosted players of this block label
      */
-    public PlayerID hostedPlayer(){
-        return hostedPlayer;
+    public Set<PlayerID> hostedPlayers(){
+        return hostedPlayers;
     }
     
-    public void setHostedPlayer(PlayerID p){
-        hostedPlayer = p;
+    public void addHostedPlayer(PlayerID p){
+        hostedPlayers.add(p);
         this.setBorder(new LineBorder(new PlayerButton(p.ordinal()+1).color(), 3));
     }
     /**
