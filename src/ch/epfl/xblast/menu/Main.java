@@ -16,22 +16,24 @@ import ch.epfl.xblast.client.PlaySound;
 import ch.epfl.xblast.server.GameState;
 import ch.epfl.xblast.server.Level;
 import ch.epfl.xblast.server.ServerBis;
+import ch.epfl.xblast.server.mapEditor.MapEditor;
 
 public final class Main {
     private static ModelMenu model = new ModelMenu();
     private static ViewMenu view = new ViewMenu(model);
     private static JFrame frame = view.getFrame();
+    private static MapEditor m;
 
     public static void main(String[] args) {
         int delay = 5; //milliseconds
         Runnable start = () -> {
             GameState g=Level.DEFAULT_LEVEL.gameState();
 
-            if (model.getRB1().getButton().isSelected()) g=model.getRB1().gamestate();
-            else if (model.getRB2().getButton().isSelected()) g=model.getRB2().gamestate();
+            if (model.getRB2().getButton().isSelected()) g=model.getRB2().gamestate();
             else if (model.getRB3().getButton().isSelected()) g=model.getRB3().gamestate();
-
+            else if(model.getRB4().getButton().isSelected()) g=m.grid().toGameState();
             
+            else g=model.getRB1().gamestate(); 
             ServerBis.main(g, (int) model.getTime().getValue(), 1); };
         Timer timer = new Timer(delay, new ActionListener(){
             byte i;
@@ -64,8 +66,17 @@ public final class Main {
                 c.setView("Game");
                 timer.start();
             });
+            model.getRB4().getB().addActionListener(e ->{
+                mapEdit();
+            });
         });
 
+
+    }
+    
+    public static void mapEdit(){
+        m = new MapEditor();
+        
     }
     
     public static void setWin(byte b){

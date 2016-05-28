@@ -196,9 +196,6 @@ public final class ModelMenu {
         rb2.setGamestate(Level.DEFAULT_LEVEL_2.gameState());
         rb3.setGamestate(Level.DEFAULT_LEVEL.gameState());
         rb1.getButton().setSelected(true);
-        rb4.getB().addActionListener(e -> {
-            MapEditor.main();            
-        });
     }
     public GButton getRB1(){ return rb1;}
     public GButton getRB2(){ return rb2;}
@@ -251,7 +248,7 @@ class GButton extends JPanel{
         b.addActionListener(e -> radio.setSelected(true));
         radio.setEnabled(false);
         this.b=b;
-        setMaximumSize(new Dimension(100,105));
+        setMaximumSize(new Dimension(100,150));
     }
     public void setGamestate(GameState g){ this.g=g; }
     public GameState gamestate(){ return g;}

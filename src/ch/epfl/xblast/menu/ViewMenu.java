@@ -83,14 +83,11 @@ public final class ViewMenu {
     public final JPanel createCreateMenu(){
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel,1));
+        panel.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         JPanel maps = new JPanel();
         maps.setLayout(new BoxLayout(maps,0));
         maps.setMaximumSize(new Dimension(600,200));
-        
-        GButton map1=model.getRB1();
-        GButton map2=model.getRB2();
-        GButton map3=model.getRB3();
         
         bg = new ButtonGroup();
         bg.add(model.getRB1().getButton());
@@ -98,6 +95,7 @@ public final class ViewMenu {
         bg.add(model.getRB3().getButton());
         bg.add(model.getRB4().getButton());
         
+        maps.add(Box.createRigidArea(new Dimension(150,0)));
         maps.add(model.getRB1());
         maps.add(model.getRB2());
         maps.add(model.getRB3());
