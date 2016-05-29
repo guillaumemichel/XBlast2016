@@ -94,7 +94,9 @@ public final class ViewMenu {
         
         panel.add(Box.createRigidArea(new Dimension(0,10)));       
         panel.add(model.getCreateTitle());
+        panel.add(Box.createRigidArea(new Dimension(0,10)));       
         panel.add(model.getSelectBoard());
+        panel.add(Box.createRigidArea(new Dimension(0,10)));       
         panel.add(model.getRadioMap());
 
         panel.add(options);

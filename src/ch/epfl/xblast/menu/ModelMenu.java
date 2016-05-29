@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -190,7 +191,7 @@ public final class ModelMenu {
     
     private void setSelectBoard(){
         selectBoard = new JLabel("Select board");
-        selectBoard.setFont(littlePlain);
+        selectBoard.setFont(littleBold);
         selectBoard.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
     public JLabel getSelectBoard(){ return selectBoard;}
@@ -207,12 +208,14 @@ public final class ModelMenu {
         b2=new JRadioButton();
         b3=new JRadioButton();
         b4=new JRadioButton();
-        i1=new JLabel(new ImageIcon(ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(6)));
-        i2=new JLabel(new ImageIcon(ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(26)));
-        i3=new JLabel(new ImageIcon(ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(6)));
+        i1=new JLabel(new ImageIcon(ImageCollection.IMAGE_COLLECTION_MAPS.imageOrNull(0).getScaledInstance(264, 172, Image.SCALE_SMOOTH)));
+        i2=new JLabel(new ImageIcon(ImageCollection.IMAGE_COLLECTION_MAPS.imageOrNull(1).getScaledInstance(264, 172, Image.SCALE_SMOOTH)));
+        i3=new JLabel(new ImageIcon(ImageCollection.IMAGE_COLLECTION_MAPS.imageOrNull(2).getScaledInstance(264, 172, Image.SCALE_SMOOTH)));
         i4=new JLabel("Custom Map");
         i4.setFont(littlePlain);
-        i4.setBorder(new LineBorder(Color.BLACK, 1));;
+        i4.setOpaque(true);
+        i4.setBackground(Color.LIGHT_GRAY);
+        i4.setBorder(new LineBorder(Color.BLACK, 1));
         i1.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e){

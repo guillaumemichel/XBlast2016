@@ -42,6 +42,12 @@ public final class ImageCollection {
      */
     public final static ImageCollection IMAGE_COLLECTION_PLAYER = new ImageCollection("player");
     
+    /**
+     * An image collection that represents the sample maps
+     */
+    public final static ImageCollection IMAGE_COLLECTION_MAPS = new ImageCollection("samplemaps");
+
+    
     private final static int SIZE_OF_NUMBER_IMAGE = 3;
     
     /**
@@ -66,7 +72,6 @@ public final class ImageCollection {
                     .getResource(this.dirName)
                     .toURI());
         }catch(URISyntaxException e){
-
         }
         
         for (File file : dir.listFiles()) {
