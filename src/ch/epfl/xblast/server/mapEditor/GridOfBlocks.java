@@ -95,7 +95,6 @@ public final class GridOfBlocks extends JPanel{
         for(BlockLabel b : blocks){
             for(PlayerID id : b.hostedPlayers()){
                 players.add(new Player(id, Level.NUMBER_OF_LIVES, Cell.ROW_MAJOR_ORDER.get(blocks.indexOf(b)), Level.MAX_BOMBS, Level.BOMB_RANGE));
-                System.out.println(id+"---->"+Cell.ROW_MAJOR_ORDER.get(blocks.indexOf(b)).toString());
             }
         }
         return players;

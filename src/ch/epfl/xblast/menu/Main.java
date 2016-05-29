@@ -2,14 +2,26 @@ package ch.epfl.xblast.menu;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+import ch.epfl.cs108.Sq;
 import ch.epfl.xblast.client.ClientBis;
 import ch.epfl.xblast.client.KeyboardEventHandler;
 import ch.epfl.xblast.client.PlaySound;
+import ch.epfl.xblast.server.Block;
+import ch.epfl.xblast.server.Board;
 import ch.epfl.xblast.server.GameState;
 import ch.epfl.xblast.server.Level;
 import ch.epfl.xblast.server.ServerBis;
@@ -31,13 +43,13 @@ public final class Main {
             GameState g=Level.DEFAULT_LEVEL.gameState();
             switch (model.mapSelected()){
                 case 0 :
-                    g=Level.DEFAULT_LEVEL.gameState();
+                    g=readFileToGameState(new File("sample_maps/sample_map_1.txt"));
                     break;
                 case 1 :
-                    g=Level.DEFAULT_LEVEL_2.gameState();
+                    g=readFileToGameState(new File("sample_maps/sample_map_2.txt"));
                     break;
                 case 2 :
-                    g=Level.DEFAULT_LEVEL.gameState();
+                    g=readFileToGameState(new File("sample_maps/sample_map_3.txt"));
                     break;
                 case 3 :
                     g=m.grid().toGameState();
@@ -146,5 +158,27 @@ public final class Main {
         }
         frame.validate();
         frame.repaint();
+    }
+    
+    private static GameState readFileToGameState(File f){
+        try(InputStream in = new BufferedInputStream(new FileInputStream(f))){
+            List<Byte> l = new ArrayList<>();
+
+            int b;
+            while((b = in.read()) != -1){
+                int numericValueOfInteger = Character.getNumericValue(b);
+
+                l.add((byte)numericValueOfInteger);
+            }
+            List<Sq<Block>> board = l.stream().map(bytes -> Block.values()[bytes]).map(block -> Sq.constant(block)).collect(Collectors.toList());
+            
+            return new GameState(new Board(board), new ArrayList<>(Level.DEFAULT_LEVEL.gameState().players()));
+        }catch(FileNotFoundException e){
+            
+        }catch(IOException e){
+            
+        }
+        System.out.println("Fail load");
+        return Level.DEFAULT_LEVEL.gameState();
     }
 }
