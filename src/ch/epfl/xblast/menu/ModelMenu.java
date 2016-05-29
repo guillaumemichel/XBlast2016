@@ -26,6 +26,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 
 import ch.epfl.xblast.client.ImageCollection;
+import ch.epfl.xblast.server.ServerBis;
 
 public final class ModelMenu {
     private JLabel title;
@@ -40,7 +41,6 @@ public final class ModelMenu {
     private JButton quit;
     private Font bigButtonFont;
     private Font titleFont;
-    private JLabel waiting;
     private JLabel selectBoard;
     private JLabel createTitle;
     private JButton startServer;
@@ -69,6 +69,8 @@ public final class ModelMenu {
     private ButtonGroup bg;
     private JButton backConnect;
     private JButton backServer;
+    private JLabel connecting;
+    private JLabel ip;
 
     public ModelMenu(){
         setFonts();
@@ -82,7 +84,6 @@ public final class ModelMenu {
         setIpJoin();
         setJoinTitle();
         setQuit();
-        setWaiting();
         setSelectBoard();
         setCreateTitle();
         setRadioMap();
@@ -97,6 +98,8 @@ public final class ModelMenu {
         setNPlayers();
         setBackConnect();
         setBackServer();
+        setConnecting();
+        setIp();
     }
     
     private void setFonts(){
@@ -182,18 +185,6 @@ public final class ModelMenu {
         quit.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
     public JButton getQuit(){ return quit;}
-    
-    private void setWaiting(){
-        waiting = new JLabel();
-        waiting.setFont(bigButtonFont);
-        waiting.setMaximumSize(new Dimension(700,200));
-    }
-    public JLabel getWaiting(int n){
-        if (n>1) waiting.setText("Waiting for "+n+" more players");
-        else waiting.setText("Waiting for 1 more player");
-        
-        return waiting;
-    }
     
     private void setSelectBoard(){
         selectBoard = new JLabel("Select board");
@@ -351,19 +342,38 @@ public final class ModelMenu {
     
     private void setBackConnect(){
         backConnect = new JButton("Cancel");
-        backConnect.setFont(bigButtonFont);
-        backConnect.setMaximumSize(new Dimension(450,100));
+        backConnect.setFont(littleBold);
+        backConnect.setMaximumSize(new Dimension(100,60));
         backConnect.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
     public JButton getBackConnect(){ return backConnect;}
     
     private void setBackServer(){
         backServer = new JButton("Cancel");
-        backServer.setFont(bigButtonFont);
-        backServer.setMaximumSize(new Dimension(450,100));
+        backServer.setFont(littleBold);
+        backServer.setMaximumSize(new Dimension(100,60));
         backServer.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
     public JButton getBackServer(){ return backServer;}
+    
+    private void setConnecting(){
+        connecting = new JLabel();
+        connecting.setFont(bigButtonFont);
+        connecting.setAlignmentX(Component.CENTER_ALIGNMENT);
+    }
+    public JLabel getConnecting(String str){
+        connecting.setText("Connecting "+str+" ...");
+        return connecting;
+    }
+    private void setIp(){
+        ip = new JLabel();
+        ip.setFont(littlePlain);
+        ip.setAlignmentX(Component.CENTER_ALIGNMENT);
+    }
+    public JLabel getIp(){
+        ip.setText("IP : "+ServerBis.getIp());
+        return ip;
+    }
 }
 
 class IpFilter extends DocumentFilter { 

@@ -37,7 +37,7 @@ public class ClientBis {
         while(firstState.hasRemaining())//transfer the buffer to a list
             list.add(firstState.get());
         component.setGameState(GameStateDeserializer.deserializeGameState(list), id);
-        PlaySound.play();
+        PlaySound.loop();
         list.clear();
         firstState.clear();
         try {

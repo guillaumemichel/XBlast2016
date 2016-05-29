@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 
 import ch.epfl.xblast.client.ImageCollection;
 import ch.epfl.xblast.client.XBlastComponent;
+import ch.epfl.xblast.server.ServerBis;
 
 public final class ViewMenu {
     private JFrame frame = new JFrame("XBlast 2016");
@@ -96,6 +97,7 @@ public final class ViewMenu {
         panel.add(model.getSelectBoard());
         panel.add(model.getRadioMap());
         panel.add(options);
+        panel.add(model.getIp());
         panel.add(model.getStartServer());
         panel.add(model.getBackJoin());
  
@@ -133,16 +135,20 @@ public final class ViewMenu {
     
     public final JPanel createWaitingClient(String str){
         JPanel panel = new JPanel();
-        
-        panel.add(model.getWaiting(3));
+        panel.setLayout(new BoxLayout(panel,1));
+        panel.add(Box.createRigidArea(new Dimension(0,260)));
+        panel.add(model.getConnecting(str));
+        panel.add(Box.createRigidArea(new Dimension(0,20)));
         panel.add(model.getBackConnect());
         return panel;
     }
     
     public final JPanel createWaitingServer(){
         JPanel panel = new JPanel();
-        
-        panel.add(model.getWaiting(1));
+        panel.setLayout(new BoxLayout(panel,1));
+        panel.add(Box.createRigidArea(new Dimension(0,260)));
+        panel.add(model.getConnecting(ServerBis.getIp()));
+        panel.add(Box.createRigidArea(new Dimension(0,20)));
         panel.add(model.getBackServer());
         return panel;
     }

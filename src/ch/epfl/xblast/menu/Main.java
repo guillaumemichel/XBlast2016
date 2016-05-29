@@ -44,11 +44,14 @@ public final class Main {
                     break;
             }
             ServerBis.init((int) model.getTime().getValue());
-            while (ServerBis.connect()!=(int)model.getNPlayers().getValue() && bool){System.out.println("connecting");}
+            while (ServerBis.connect()!=(int)model.getNPlayers().getValue() && bool){}
             System.out.println(bool);
             if (bool) ServerBis.game(g);
-            else ServerBis.closeChannel();
-            //ServerBis.main(g, (int) model.getTime().getValue(), (int) model.getNPlayers().getValue());
+            else {
+                ServerBis.closeChannel();
+                join.stop();
+                setView("Server");
+            }
             };
         game = new Timer(delay, new ActionListener(){
             byte i;
@@ -74,14 +77,15 @@ public final class Main {
         });
         
         SwingUtilities.invokeLater(()->{
-            ControllerMenu c = new ControllerMenu(view,model);
-            model.getJoin().addActionListener(e -> c.setView("Join"));
-            model.getBackJoin().addActionListener(e -> c.setView("Main"));
+            setView("Main");
+            frame.setVisible(true);
+            model.getJoin().addActionListener(e -> setView("Join"));
+            model.getBackJoin().addActionListener(e -> setView("Main"));
             model.getIpJoin().addActionListener(e -> {
-                setView("WaitC");
+                setView("Wait");
                 startClient();
             });
-            model.getCreate().addActionListener(e -> c.setView("Server"));
+            model.getCreate().addActionListener(e -> setView("Server"));
             model.getQuit().addActionListener(e -> System.exit(0));
             model.getStartServer().addActionListener(e->{
                 setView("WaitS");
@@ -92,11 +96,7 @@ public final class Main {
                 join.stop();
                 setView("Join");
             });
-            model.getBackServer().addActionListener(e -> {
-                bool = false;
-                //join.stop();
-                setView("Server");
-            });
+            model.getBackServer().addActionListener(e -> bool = false);
         });
 
 
@@ -129,7 +129,7 @@ public final class Main {
             case "Join":
                 frame.add(view.createJoinMenu());
                 break;
-            case "WaitC":
+            case "Wait":
                 frame.add(view.createWaitingClient(model.getIpField().getText()));
                 break;
             case "WaitS" :
