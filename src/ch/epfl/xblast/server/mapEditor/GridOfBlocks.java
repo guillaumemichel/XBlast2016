@@ -101,6 +101,28 @@ public final class GridOfBlocks extends JPanel{
     }
     
     /**
+     * Return a list of n alive player and 4-n dead players according to this grid
+     * 
+     * @param n
+     *      The number of players
+     *      
+     * @return
+     *      The list of players of this grid of blocks
+     */
+    public List<Player> createPlayers(int n){
+        List<Player> players = new ArrayList<>();
+        int i=0;
+        for(BlockLabel b : blocks){
+            for(PlayerID id : b.hostedPlayers()){
+                players.add(new Player(id, i<n ? Level.NUMBER_OF_LIVES : 0,
+                        Cell.ROW_MAJOR_ORDER.get(blocks.indexOf(b)), Level.MAX_BOMBS, Level.BOMB_RANGE));
+                i++;
+            }
+        }
+        return players;
+    }
+    
+    /**
      * Returns the corresponding game state of this grid of blocks
      * 
      * @return

@@ -140,12 +140,15 @@ public final class ServerBis {
             else
                 System.out.println("No winner !");
 
-            ByteBuffer end = ByteBuffer.allocate(1);
-            end.put(ExplosionPainter.byteForBlast(g.players().get(0).isAlive(), 
+            byte end = (ExplosionPainter.byteForBlast(g.players().get(0).isAlive(), 
                     g.players().get(1).isAlive(), g.players().get(2).isAlive(), g.players().get(3).isAlive()));
-            end.flip();
-            for (Map.Entry<SocketAddress, PlayerID> player : players.entrySet())
-                channel.send(end, player.getKey());
+            ByteBuffer send = ByteBuffer.allocate(1);
+            for (Map.Entry<SocketAddress, PlayerID> player : players.entrySet()){
+                send.put(end);
+                send.flip();
+                channel.send(send, player.getKey());
+                send.clear();
+            }
             channel.close();
 
         } catch (IOException e) {

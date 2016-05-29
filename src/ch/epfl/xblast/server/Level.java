@@ -101,4 +101,26 @@ public final class Level {
         
         return new Level(new BoardPainter(defaultPalette, BlockImage.IRON_FLOOR_S), new GameState(board, players));
     }
+    
+    /**
+     * Return a list of n alive players and 4-n dead players
+     * 
+     * @param n
+     *      Number of players
+     *      
+     * @return
+     *      A list of players
+     */
+    public final static List<Player> createPlayers(int n){
+        List<Player> players = new ArrayList<>();
+        players.add(new Player(PlayerID.PLAYER_1,PlayerID.PLAYER_1.ordinal()<n ? NUMBER_OF_LIVES:0,
+                POSITION_PLAYER_1, MAX_BOMBS, BOMB_RANGE));
+        players.add(new Player(PlayerID.PLAYER_2,PlayerID.PLAYER_2.ordinal()<n ? NUMBER_OF_LIVES:0,
+                POSITION_PLAYER_2, MAX_BOMBS, BOMB_RANGE));
+        players.add(new Player(PlayerID.PLAYER_3,PlayerID.PLAYER_3.ordinal()<n ? NUMBER_OF_LIVES:0,
+                POSITION_PLAYER_3, MAX_BOMBS, BOMB_RANGE));
+        players.add(new Player(PlayerID.PLAYER_4,PlayerID.PLAYER_4.ordinal()<n ? NUMBER_OF_LIVES:0,
+                POSITION_PLAYER_4, MAX_BOMBS, BOMB_RANGE));
+        return players;
+    }
 }

@@ -24,6 +24,7 @@ import ch.epfl.xblast.server.Block;
 import ch.epfl.xblast.server.Board;
 import ch.epfl.xblast.server.GameState;
 import ch.epfl.xblast.server.Level;
+import ch.epfl.xblast.server.Player;
 import ch.epfl.xblast.server.ServerBis;
 import ch.epfl.xblast.server.mapEditor.MapEditor;
 
@@ -40,24 +41,30 @@ public final class Main {
         int delay = 5; //milliseconds
         Runnable start = () -> {
             bool = true;
-            GameState g=Level.DEFAULT_LEVEL.gameState();
+            Board b=Level.DEFAULT_LEVEL.gameState().board();
+            List<Player> l = Level.DEFAULT_LEVEL.gameState().players();
             switch (model.mapSelected()){
                 case 0 :
-                    g=readFileToGameState(new File("sample_maps/sample_map_1.txt"));
+                    b=readFileToBoard(new File("sample_maps/sample_map_1.txt"));
                     break;
                 case 1 :
-                    g=readFileToGameState(new File("sample_maps/sample_map_2.txt"));
+                    b=readFileToBoard(new File("sample_maps/sample_map_2.txt"));
                     break;
                 case 2 :
-                    g=readFileToGameState(new File("sample_maps/sample_map_3.txt"));
+                    b=readFileToBoard(new File("sample_maps/sample_map_3.txt"));
                     break;
                 case 3 :
-                    g=m.grid().toGameState();
+                    b=m.grid().toGameState().board();
+                    l=m.grid().createPlayers(
+                            (int) model.getNPlayers().getValue()==1 ? 4 :(int) model.getNPlayers().getValue());
                     break;
             }
+            if (model.mapSelected()!=3)
+                l=Level.createPlayers((int) model.getNPlayers().getValue()==1 ?
+                        4 :(int) model.getNPlayers().getValue());
+            GameState g = new GameState(b,l);
             ServerBis.init((int) model.getTime().getValue());
             while (ServerBis.connect()!=(int)model.getNPlayers().getValue() && bool){}
-            System.out.println(bool);
             if (bool) ServerBis.game(g);
             else {
                 ServerBis.closeChannel();
@@ -114,7 +121,7 @@ public final class Main {
 
     }
     
-    public static void startClient(){
+    private static void startClient(){
         ClientBis.initialize(model.getIpField().getText());
         join.start();
     }
@@ -123,7 +130,7 @@ public final class Main {
         m = new MapEditor();
     }
     
-    public static void setWin(byte b){
+    private static void setWin(byte b){
         frame.getContentPane().removeAll();
         frame.add(view.createWinners(b));
         model.getMenu().addActionListener(e -> setView("Main"));
@@ -131,7 +138,7 @@ public final class Main {
         frame.repaint();
     }
     
-    public static void setView(String s){
+    private static void setView(String s){
         frame.getContentPane().removeAll();
         switch (s){
             default : frame.add(view.createMenuView());
@@ -160,7 +167,7 @@ public final class Main {
         frame.repaint();
     }
     
-    private static GameState readFileToGameState(File f){
+    private static Board readFileToBoard(File f){
         try(InputStream in = new BufferedInputStream(new FileInputStream(f))){
             List<Byte> l = new ArrayList<>();
 
@@ -172,13 +179,13 @@ public final class Main {
             }
             List<Sq<Block>> board = l.stream().map(bytes -> Block.values()[bytes]).map(block -> Sq.constant(block)).collect(Collectors.toList());
             
-            return new GameState(new Board(board), new ArrayList<>(Level.DEFAULT_LEVEL.gameState().players()));
+            return new Board(board);
         }catch(FileNotFoundException e){
             
         }catch(IOException e){
             
         }
         System.out.println("Fail load");
-        return Level.DEFAULT_LEVEL.gameState();
+        return Level.DEFAULT_LEVEL.gameState().board();
     }
 }

@@ -53,7 +53,7 @@ public class ClientBis {
             currentState.flip();//receive the gamestate
             while (currentState.hasRemaining())
                 list.add(currentState.get());//transfert into a list
-            if (list.size()==1){
+            if (list.size()<2){
                 returnValue=list.get(0);
                 list.clear();
                 currentState.clear();
