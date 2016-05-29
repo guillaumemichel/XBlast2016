@@ -96,6 +96,7 @@ public final class ViewMenu {
         panel.add(model.getCreateTitle());
         panel.add(model.getSelectBoard());
         panel.add(model.getRadioMap());
+
         panel.add(options);
         panel.add(model.getIp());
         panel.add(model.getStartServer());

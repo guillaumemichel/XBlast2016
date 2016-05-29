@@ -1,5 +1,6 @@
 package ch.epfl.xblast.menu;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -20,6 +21,7 @@ import javax.swing.JSpinner.DefaultEditor;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -208,7 +210,9 @@ public final class ModelMenu {
         i1=new JLabel(new ImageIcon(ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(6)));
         i2=new JLabel(new ImageIcon(ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(26)));
         i3=new JLabel(new ImageIcon(ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(6)));
-        i4=new JLabel(new ImageIcon(ImageCollection.IMAGE_COLLECTION_PLAYER.imageOrNull(53)));
+        i4=new JLabel("Custom Map");
+        i4.setFont(littlePlain);
+        i4.setBorder(new LineBorder(Color.BLACK, 1));;
         i1.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e){
@@ -268,6 +272,7 @@ public final class ModelMenu {
         maps = new JPanel();
         maps.setLayout(new BoxLayout(maps,1));
         maps.add(mapsUp);
+        maps.add(Box.createRigidArea(new Dimension(0,50)));       
         maps.add(mapsDown);
     }
     public JPanel getRadioMap(){ return maps;}
