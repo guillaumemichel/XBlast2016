@@ -32,48 +32,19 @@ import ch.epfl.xblast.client.ImageCollection;
 import ch.epfl.xblast.server.ServerBis;
 
 public final class ModelMenu {
-    private JLabel title;
-    private JLabel names;
-    private JButton create;
-    private JButton join;
-    private JLabel ipText;
-    private JButton backJoin;
+    /**
+     * Entities decrla
+     */
+    private JLabel title,names,ipText,joinTitle,selectBoard,createTitle,won,nobody,duration,minutes,players,
+            i1,i2,i3,i4,connecting,ip;
+    private JButton create,join,backJoin,ipJoin,quit,startServer,menu,backConnect,backServer;
     private JTextField ipField;
-    private JButton ipJoin;
-    private JLabel joinTitle;
-    private JButton quit;
-    private Font bigButtonFont;
-    private Font titleFont;
-    private JLabel selectBoard;
-    private JLabel createTitle;
-    private JButton startServer;
-    private JLabel won;
-    private JLabel nobody;
-    private JButton menu;
-    private JSpinner time;
-    private JLabel duration;
-    private Font littleBold;
-    private Font littlePlain;
-    private JLabel minutes;
-    private JLabel players;
-    private JSpinner nPlayers;
-    private JRadioButton b1;
-    private JRadioButton b2;
-    private JRadioButton b3;
-    private JRadioButton b4;
+    private Font bigButtonFont,titleFont,littleBold,littlePlain;
+    private JSpinner time,nPlayers;
+    private JRadioButton b1,b2,b3,b4;
     private JRadioButton[] group;
-    private JLabel i1;
-    private JLabel i2;
-    private JLabel i3;
-    private JLabel i4;
-    private JPanel mapsUp;
-    private JPanel mapsDown;
-    private JPanel maps;
+    private JPanel mapsUp,mapsDown,maps;
     private ButtonGroup bg;
-    private JButton backConnect;
-    private JButton backServer;
-    private JLabel connecting;
-    private JLabel ip;
 
     public ModelMenu(){
         setFonts();
