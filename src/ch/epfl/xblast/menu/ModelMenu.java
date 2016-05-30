@@ -222,7 +222,7 @@ public final class ModelMenu {
             @Override
             public void mouseClicked(MouseEvent e){
                 b4.setSelected(true);
-                Main.mapEdit();
+                ControllerMenu.mapEdit();
             }
         });
         bg = new ButtonGroup();
@@ -238,7 +238,7 @@ public final class ModelMenu {
         group[3]=b4;
         
         b1.setSelected(true);
-        b4.addActionListener(e -> Main.mapEdit());
+        b4.addActionListener(e -> ControllerMenu.mapEdit());
         
         mapsUp = new JPanel();
         mapsUp.setLayout(new BoxLayout(mapsUp,0));
@@ -269,6 +269,7 @@ public final class ModelMenu {
                 return i;
         return 0;
     }
+    public JRadioButton getB4(){ return b4;}
 
     private void setStartServer(){
         startServer = new JButton("Start server");
