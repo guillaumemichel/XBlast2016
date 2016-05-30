@@ -2,6 +2,7 @@ package ch.epfl.xblast.server.mapEditor;
 
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -94,13 +95,10 @@ public final class GridOfBlocks extends JPanel{
      */
     private List<Player> createPlayers(int playerNumber){
         List<Player> players = new ArrayList<>();
-        int i=0;
         for(BlockLabel b : blocks){
-            for(PlayerID id : b.hostedPlayers()){
-                players.add(new Player(id, i < playerNumber ? Level.NUMBER_OF_LIVES : 0,
+            for(PlayerID id : b.hostedPlayers())
+                players.add(new Player(id, id.ordinal() < playerNumber ? Level.NUMBER_OF_LIVES : 0,
                         Cell.ROW_MAJOR_ORDER.get(blocks.indexOf(b)), Level.MAX_BOMBS, Level.BOMB_RANGE));
-                i++;
-            }
         }
         return players;
     }

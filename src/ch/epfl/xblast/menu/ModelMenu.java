@@ -365,6 +365,7 @@ class IpFilter extends DocumentFilter {
                
         for (int i = 0; i < l; i++){
             if (!(str.charAt(i)==46 || (str.charAt(i)>=48 && str.charAt(i)<=57))) {
+                //allows only the numbers and the '.'
                 valid = false;
                 break;
                 
@@ -384,6 +385,7 @@ class IpFilter extends DocumentFilter {
                
         for (int i = 0; i < l; i++){
             if (!(str.charAt(i)==46 || (str.charAt(i)>=48 && str.charAt(i)<=57))) {
+                //allows only the numbers and the '.'
                 valid = false;
                 break;
                 
