@@ -15,12 +15,12 @@ PlayerPainter à adapter (avec les images et tout, pour si on a plus de 4 player
 Adapter le GameStateDeserializer (pour la création d'image du scoreboard)
 
 BONUS :
-- Music oklm
-- Map Editor
-- Affichage du winner sur le client (proposer de rejouer)
+- Music oklm ok
+- Map Editor ok
+- Affichage du winner sur le client (proposer de rejouer) ok
 - Ajouter des bonus
-- Changer le temps de la partie
-- Le dernier joueur mort disparait et son nombre de vies passe à 0
+- Changer le temps de la partie ok
+- Le dernier joueur mort disparait et son nombre de vies passe à 0 ok
 - Bonus INVULNERABLE
 
 Méthode dans BoardPainter pour mapEditor: (attention à changer en Byte pour réutiliser le runlengthencoder)
@@ -39,6 +39,6 @@ Méthode dans BoardPainter pour mapEditor: (attention à changer en Byte pour r�
         return palette.get(b).ordinal();
     }
     
-    -demander comment faire pour que la size de la fenêtre soit stylé
-    -demander pour images qui ne sont pas dans bin
+    -demander comment faire pour que la size de la fenêtre soit stylée
+    -demander pour images qui ne sont pas dans bin/ charger les images depuis un jar
 
