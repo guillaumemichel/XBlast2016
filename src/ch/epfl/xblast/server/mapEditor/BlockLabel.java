@@ -105,6 +105,12 @@ public final class BlockLabel extends JLabel{
         return hostedPlayers;
     }
     
+    /**
+     * Add a player to the hosted players set
+     * 
+     * @param p
+     *      The player to add
+     */
     public void addHostedPlayer(PlayerID p){
         hostedPlayers.add(p);
         this.setBorder(new LineBorder(new PlayerButton(p.ordinal()+1).color(), 3));
