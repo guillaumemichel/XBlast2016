@@ -1,7 +1,6 @@
 package ch.epfl.xblast.server.mapEditor;
 
 import java.awt.BorderLayout;
-
 import javax.swing.JFrame;
 
 /**
@@ -53,11 +52,13 @@ public final class MapEditor extends JFrame{
         return blockChooser;
     }
     
+    /**
+     * Returns the player chooser of this map editor
+     * 
+     * @return
+     *      The player chooser of this map editor
+     */
     public PlayerChooser playerChooser(){
         return playerChooser;
-    }
-
-    public static void main(){
-        new MapEditor();
     }
 }

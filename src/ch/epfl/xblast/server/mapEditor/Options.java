@@ -56,6 +56,7 @@ public final class Options extends JPanel{
                 if(fileChooser.showOpenDialog(getParent())== JFileChooser.APPROVE_OPTION){
                     File toLoad = fileChooser.getSelectedFile();
 
+                    //Load a map
                     try(InputStream in = new BufferedInputStream(new FileInputStream(toLoad))){
                         List<Byte> l = new ArrayList<>();
 
@@ -99,7 +100,8 @@ public final class Options extends JPanel{
 
                 if(saveChooser.showSaveDialog(getParent()) == JFileChooser.APPROVE_OPTION){
                     File toSave = new File(saveChooser.getSelectedFile()+".txt");
-
+                    
+                    //Save the current grid
                     try(FileWriter out = new FileWriter(toSave)){
                         GridOfBlocks parentGrid = ((MapEditor) SwingUtilities.windowForComponent(Options.this)).grid();
 

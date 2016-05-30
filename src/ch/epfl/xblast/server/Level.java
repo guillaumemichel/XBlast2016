@@ -93,13 +93,7 @@ public final class Level {
             Arrays.asList(__, xx, __, xx, __, __, __),
             Arrays.asList(xx, XX, xx, XX, xx, XX, __)));
         
-        List<Player> players = new ArrayList<>();
-        players.add(new Player(PlayerID.PLAYER_1,NUMBER_OF_LIVES, POSITION_PLAYER_1, MAX_BOMBS, BOMB_RANGE));
-        players.add(new Player(PlayerID.PLAYER_2, NUMBER_OF_LIVES, POSITION_PLAYER_2, MAX_BOMBS, BOMB_RANGE));
-        players.add(new Player(PlayerID.PLAYER_3, NUMBER_OF_LIVES, POSITION_PLAYER_3, MAX_BOMBS, BOMB_RANGE));
-        players.add(new Player(PlayerID.PLAYER_4, NUMBER_OF_LIVES, POSITION_PLAYER_4, MAX_BOMBS, BOMB_RANGE));
-        
-        return new Level(new BoardPainter(defaultPalette, BlockImage.IRON_FLOOR_S), new GameState(board, players));
+        return new Level(new BoardPainter(defaultPalette, BlockImage.IRON_FLOOR_S), new GameState(board, createPlayers(4)));
     }
     
     /**

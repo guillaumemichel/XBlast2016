@@ -23,6 +23,12 @@ public final class BlockButton extends JButton{
     
     private Block block;
     
+    /**
+     * Constructs a block button with the given block
+     * 
+     * @param b
+     *      The block represented by the block button
+     */
     public BlockButton(Block b){
         setBlock(b);
         this.setPreferredSize(new Dimension(BLOCK_IMAGE_WIDTH, BLOCK_IMAGE_HEIGHT));
