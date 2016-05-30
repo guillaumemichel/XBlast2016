@@ -38,4 +38,7 @@ Méthode dans BoardPainter pour mapEditor: (attention à changer en Byte pour r�
     public int correspondingBlockImageOf(Block b){
         return palette.get(b).ordinal();
     }
+    
+    -demander comment faire pour que la size de la fenêtre soit stylé
+    -demander pour images qui ne sont pas dans bin
 

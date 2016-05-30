@@ -136,7 +136,7 @@ public final class ServerBis {
             }
 
             if (g.winner().isPresent())
-                System.out.println(g.winner().get());
+                System.out.println("The winner is "+g.winner().get());
             else
                 System.out.println("No winner !");
 
@@ -169,7 +169,7 @@ public final class ServerBis {
     
     public final static String getIp(){
         try {
-            return InetAddress.getLocalHost().toString().substring(7);
+            return InetAddress.getLocalHost().toString();
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
