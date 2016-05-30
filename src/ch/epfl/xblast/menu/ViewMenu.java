@@ -16,6 +16,12 @@ import ch.epfl.xblast.client.ImageCollection;
 import ch.epfl.xblast.client.XBlastComponent;
 import ch.epfl.xblast.server.ServerBis;
 
+/**
+ * A ViewMenu, view of the patron MVC
+ * 
+ * @author Guillaume Michel (258066)
+ * @author Adrien Vandenbroucque (258715)
+ */
 public final class ViewMenu {
     private JFrame frame = new JFrame("XBlast 2016");
     private ModelMenu model;

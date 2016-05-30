@@ -31,9 +31,15 @@ import javax.swing.text.DocumentFilter;
 import ch.epfl.xblast.client.ImageCollection;
 import ch.epfl.xblast.server.ServerBis;
 
+/**
+ * A ModelMenu, model of the patron MVC
+ * 
+ * @author Guillaume Michel (258066)
+ * @author Adrien Vandenbroucque (258715)
+ */
 public final class ModelMenu {
     /**
-     * Entities decrla
+     * Entities declaration
      */
     private JLabel title,names,ipText,joinTitle,selectBoard,createTitle,won,nobody,duration,minutes,players,
             i1,i2,i3,i4,connecting,ip;
@@ -46,6 +52,9 @@ public final class ModelMenu {
     private JPanel mapsUp,mapsDown,maps;
     private ButtonGroup bg;
 
+    /**
+     * Create a ModelMenu and set all its components
+     */
     public ModelMenu(){
         setFonts();
         setTitle();
@@ -75,6 +84,10 @@ public final class ModelMenu {
         setConnecting();
         setIp();
     }
+    /*
+     * The following methods are setters and getters of each element, there is more than 40
+     * elements so i cannot comment them all, sorry
+     */
     
     private void setFonts(){
         bigButtonFont = new Font("Arial",Font.PLAIN,36);
