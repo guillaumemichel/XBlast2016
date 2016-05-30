@@ -30,6 +30,7 @@ public final class ViewMenu {
     private final void setFrame(){
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
+        //frame.setSize(component.getSize());
         frame.setPreferredSize(new Dimension(960,708));
         frame.pack();
     }
