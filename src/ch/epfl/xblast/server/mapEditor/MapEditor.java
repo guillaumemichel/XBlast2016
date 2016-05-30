@@ -23,7 +23,6 @@ public final class MapEditor extends JFrame{
      */
     public MapEditor(){
         super("Map Editor");
-        //this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setLayout(new BorderLayout());
         this.add(blockChooser, BorderLayout.PAGE_START);
