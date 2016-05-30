@@ -41,4 +41,7 @@ Méthode dans BoardPainter pour mapEditor: (attention à changer en Byte pour r�
     
     -demander comment faire pour que la size de la fenêtre soit stylée
     -demander pour images qui ne sont pas dans bin/ charger les images depuis un jar
+    -comment le ServerBis, ClientBis (renommer en Client, Server ?)
+    -régler la taille de la frame
+    -MVC correct
 
