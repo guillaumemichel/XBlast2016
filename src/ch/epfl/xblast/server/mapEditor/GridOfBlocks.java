@@ -84,24 +84,7 @@ public final class GridOfBlocks extends JPanel{
     }
     
     /**
-     * Returns the corresponding list of players of this grid of blocks
-     * 
-     * @return
-     *      The corresponding list of players of this grid of blocks
-     */
-    private List<Player> createPlayers(){
-        List<Player> players = new ArrayList<>();
-        
-        for(BlockLabel b : blocks){
-            for(PlayerID id : b.hostedPlayers()){
-                players.add(new Player(id, Level.NUMBER_OF_LIVES, Cell.ROW_MAJOR_ORDER.get(blocks.indexOf(b)), Level.MAX_BOMBS, Level.BOMB_RANGE));
-            }
-        }
-        return players;
-    }
-    
-    /**
-     * Return a list of n alive player and 4-n dead players according to this grid
+     * Return a list of n alive player and 4-n dead players corresponding to this grid
      * 
      * @param n
      *      The number of players
@@ -109,12 +92,12 @@ public final class GridOfBlocks extends JPanel{
      * @return
      *      The list of players of this grid of blocks
      */
-    public List<Player> createPlayers(int n){
+    private List<Player> createPlayers(int playerNumber){
         List<Player> players = new ArrayList<>();
         int i=0;
         for(BlockLabel b : blocks){
             for(PlayerID id : b.hostedPlayers()){
-                players.add(new Player(id, i<n ? Level.NUMBER_OF_LIVES : 0,
+                players.add(new Player(id, i < playerNumber ? Level.NUMBER_OF_LIVES : 0,
                         Cell.ROW_MAJOR_ORDER.get(blocks.indexOf(b)), Level.MAX_BOMBS, Level.BOMB_RANGE));
                 i++;
             }
@@ -128,8 +111,8 @@ public final class GridOfBlocks extends JPanel{
      * @return
      *      The corresponding game state of this grid of blocks
      */
-    public GameState toGameState(){
-        return new GameState(toBoard(), createPlayers());
+    public GameState toGameState(int playerNumber){
+        return new GameState(toBoard(), createPlayers(playerNumber));
     }
     
     /**
