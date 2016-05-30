@@ -22,6 +22,12 @@ public final class ViewMenu {
     private XBlastComponent component=new XBlastComponent();
     private ButtonGroup bg;
     
+    /**
+     * Construct a ViewMenu
+     * 
+     * @param model
+     *      The model containing resources
+     */
     public ViewMenu(ModelMenu model){
         this.model=model;
         setFrame();
@@ -30,13 +36,25 @@ public final class ViewMenu {
     private final void setFrame(){
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
-        //frame.setSize(component.getSize());
+        //frame.setSize(component.getPreferredSize());
         frame.setPreferredSize(new Dimension(960,708));
         frame.pack();
     }
     
+    /**
+     * Get the frame of the view
+     * 
+     * @return
+     *      the frame of the view
+     */
     public final JFrame getFrame(){ return frame;}
     
+    /**
+     * Get the panel of the Main menu
+     * 
+     * @return 
+     *      The panel "main menu"
+     */
     public final JPanel createMenuView(){ 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, 1));
@@ -55,6 +73,12 @@ public final class ViewMenu {
 
     }
     
+    /**
+     * Get the panel of the menu "Join game"
+     * 
+     * @return 
+     *      The panel "Join game"
+     */
     public final JPanel createJoinMenu(){
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel,1));
@@ -75,7 +99,12 @@ public final class ViewMenu {
         return panel;
     }
     
-    
+    /**
+     * Get the panel of the menu "Create game"
+     * 
+     * @return 
+     *      The panel "Create game"
+     */
     public final JPanel createCreateMenu(){
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel,1));
@@ -107,8 +136,23 @@ public final class ViewMenu {
  
         return panel;
     }
+    /**
+     * Get the button group of map selection
+     * 
+     * @return
+     *      The button group of map selections
+     */
     public final ButtonGroup getBg(){ return bg;}
     
+    /**
+     * Create the screen at the end of the game, displaying the winners
+     * 
+     * @param n
+     *      The byte received by the server giving the winner
+     *      
+     * @return
+     *      The panel of the end of the game
+     */
     public final JPanel createWinners(byte n){
         JPanel panel=new JPanel(new FlowLayout(FlowLayout.CENTER));
         panel.setLayout(new BoxLayout(panel,1));
@@ -136,7 +180,15 @@ public final class ViewMenu {
         model.getMenu().setAlignmentX(Component.CENTER_ALIGNMENT);
         return panel;
     }
-    
+    /**
+     * Create the screen of the client waiting for connection
+     * 
+     * @param str
+     *      The address of the server
+     *      
+     * @return
+     *      The panel of the waiting client
+     */
     public final JPanel createWaitingClient(String str){
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel,1));
@@ -147,6 +199,12 @@ public final class ViewMenu {
         return panel;
     }
     
+    /**
+     * Create the screen of the server waiting for the clients
+     * 
+     * @return
+     *      The panel of the waiting server
+     */
     public final JPanel createWaitingServer(){
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel,1));
@@ -157,5 +215,11 @@ public final class ViewMenu {
         return panel;
     }
     
+    /**
+     * Get the XBlastComponent of the game
+     * 
+     * @return
+     *      The XBlast component of the view
+     */
     public final XBlastComponent getComponent(){ return component;}
 }
