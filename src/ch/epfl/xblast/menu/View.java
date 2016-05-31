@@ -61,9 +61,9 @@ public final class View {
     private final void setFrame(){
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
-        //frame.setSize(component.getPreferredSize());
-        frame.setPreferredSize(new Dimension(960,708));
+        frame.add(component); //to get the exact size of the frame
         frame.pack();
+        frame.remove(component);
     }
     
     private final void setComponents(){
