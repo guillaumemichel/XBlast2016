@@ -8,20 +8,34 @@ import java.io.File;
 
 import javax.swing.Timer;
 
-import ch.epfl.xblast.client.ClientBis;
+import ch.epfl.xblast.client.Client;
 import ch.epfl.xblast.client.PlaySound;
 import ch.epfl.xblast.server.GameState;
 import ch.epfl.xblast.server.Level;
-import ch.epfl.xblast.server.ServerBis;
+import ch.epfl.xblast.server.Server;
 
+/**
+ * A controller, controller of the MVC pattern
+ * 
+ * @author Guillaume Michel (258066)
+ * @author Adrien Vandenbroucque (258715)
+ *
+ */
 public final class Controller {
-    private final View view;
     private Timer game;
     private Timer join;
     private boolean bool;
     
+    /**
+     * Contructs a Controller from a view and a model, set all actions listeners on the view
+     * 
+     * @param view
+     *      The view associated to the controller
+     *      
+     * @param model
+     *      The model associated to the controller
+     */
     public Controller(View view,Model model){
-        this.view=view;
         view.getJoin().addActionListener(e -> model.setView("Join"));
         view.getCreate().addActionListener(e -> model.setView("Server"));
         view.getQuit().addActionListener(e -> System.exit(0));
@@ -51,11 +65,11 @@ public final class Controller {
                     g = Level.DEFAULT_LEVEL.gameState();
             }
 
-            ServerBis.init((int) view.getTime().getValue());
-            while (ServerBis.connect()!=(int)view.getNPlayers().getValue() && bool){}
-            if (bool) ServerBis.game(g);
+            Server.init((int) view.getTime().getValue());
+            while (Server.connect()!=(int)view.getNPlayers().getValue() && bool){}
+            if (bool) Server.game(g);
             else {
-                ServerBis.closeChannel();
+                Server.closeChannel();
                 join.stop();
                 model.setView("Server");
             }
@@ -64,7 +78,7 @@ public final class Controller {
             byte i;
             @Override
             public void actionPerformed(ActionEvent e) {
-                if ((i=ClientBis.play())!=0x10){
+                if ((i=Client.play())!=0x10){
                     ((Timer)e.getSource()).stop();
                     PlaySound.stop();
                     model.setWin(i);
@@ -74,9 +88,9 @@ public final class Controller {
         join = new Timer(delay, new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (ClientBis.connect()!=null){
+                if (Client.connect()!=null){
                     ((Timer)e.getSource()).stop();
-                    ClientBis.start(view.getComponent());
+                    Client.start(view.getComponent());
                     model.setView("Game");
                     game.start();
                 }
@@ -86,12 +100,12 @@ public final class Controller {
         view.getBackJoin().addActionListener(e -> model.setView("Main"));
         view.getIpJoin().addActionListener(e -> {
             model.setView("Wait");
-            startClient();
+            startClient(view.getIpField().getText());
         });
         view.getStartServer().addActionListener(e->{
             model.setView("WaitS");
             new Thread(start).start();
-            startClient();
+            startClient("localhost");
         });
         view.getBackConnect().addActionListener(e -> {
             join.stop();
@@ -107,8 +121,8 @@ public final class Controller {
         });
     }
     
-    private void startClient(){
-        ClientBis.initialize(view.getIpField().getText());
+    private void startClient(String s){
+        Client.initialize(s);
         join.start();
     }
 }

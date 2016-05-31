@@ -28,10 +28,10 @@ import javax.swing.text.AbstractDocument;
 
 import ch.epfl.xblast.client.ImageCollection;
 import ch.epfl.xblast.client.XBlastComponent;
-import ch.epfl.xblast.server.ServerBis;
+import ch.epfl.xblast.server.Server;
 
 /**
- * A View, view of the patron MVC
+ * A View, view of the MVC pattern
  * 
  * @author Guillaume Michel (258066)
  * @author Adrien Vandenbroucque (258715)
@@ -50,6 +50,9 @@ public final class View {
     private ButtonGroup bg;
     private XBlastComponent component=new XBlastComponent();
     
+    /**
+     * Constructs a View
+     */
     public View(){
         setFrame();
         setComponents();
@@ -119,6 +122,12 @@ public final class View {
         create.setMaximumSize(new Dimension(450,100));
         create.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
+    /**
+     * Get the "create game" button of the main screen
+     * 
+     * @return
+     *      The button create of the main screen
+     */
     public JButton getCreate(){ return create;}
     
     private void setJoin(){
@@ -127,6 +136,12 @@ public final class View {
         join.setMaximumSize(new Dimension(450,100));
         join.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
+    /**
+     * Get the "join game" button of the main screen
+     * 
+     * @return
+     *      The button join of the main screen
+     */
     public JButton getJoin(){ return join;}
     
     private void setIpText(){
@@ -141,6 +156,12 @@ public final class View {
         backJoin.setMaximumSize(new Dimension(450,100));
         backJoin.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
+    /**
+     * Get the "back" button of the join screen
+     * 
+     * @return
+     *      The button back of the join screen
+     */
     public JButton getBackJoin(){ return backJoin;}
     
     private void setIpField(){
@@ -150,6 +171,12 @@ public final class View {
         ipField.setMaximumSize(new Dimension(200,50));
         ipField.setHorizontalAlignment(SwingConstants.CENTER);;
     }
+    /**
+     * Get the ip field of the join screen
+     * 
+     * @return
+     *      The ip field of the main screen
+     */
     public JTextField getIpField(){ return ipField;}
     
     private void setIpJoin(){
@@ -157,6 +184,12 @@ public final class View {
         ipJoin.setFont(littleBold);
         ipJoin.setMaximumSize(new Dimension(200,50));
     }
+    /**
+     * Get the "join" button of the join screen
+     * 
+     * @return
+     *      The button join of the join screen
+     */
     public JButton getIpJoin(){ return ipJoin;}
     
     private void setJoinTitle(){
@@ -171,6 +204,12 @@ public final class View {
         quit.setMaximumSize(new Dimension(300,100));
         quit.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
+    /**
+     * Get the "quit" button of the main screen
+     * 
+     * @return
+     *      The button quit of the main screen
+     */
     public JButton getQuit(){ return quit;}
     
     private void setSelectBoard(){
@@ -235,7 +274,6 @@ public final class View {
         group[3]=b4;
         
         b1.setSelected(true);
-        b4.addActionListener(e -> ControllerMenu.mapEdit());
         
         mapsUp = new JPanel();
         mapsUp.setLayout(new BoxLayout(mapsUp,0));
@@ -259,13 +297,31 @@ public final class View {
         maps.add(Box.createRigidArea(new Dimension(0,50)));       
         maps.add(mapsDown);
     }
+    /**
+     * Get the selected button in the radio group
+     * 
+     * @return
+     *      the position in the group of the selected radiobutton
+     */
     public int mapSelected(){ 
         for (int i=0;i<group.length;++i)
             if (group[i].isSelected())
                 return i;
         return 0;
     }
+    /**
+     * Get the "custom map" button of the "create game" screen
+     * 
+     * @return
+     *      The button custom map of the create game screen
+     */
     public JRadioButton getB4(){ return b4;}
+    /**
+     * Get the "custom map" label of the "create game" screen
+     * 
+     * @return
+     *      The label custom map of the create game screen
+     */
     public JLabel getI4(){ return i4;}
 
     private void setStartServer(){
@@ -274,6 +330,12 @@ public final class View {
         startServer.setMaximumSize(new Dimension(450,100));
         startServer.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
+    /**
+     * Get the "start server" button of the "create game" screen
+     * 
+     * @return
+     *      The button start server of the create game screen
+     */
     public JButton getStartServer(){ return startServer;}
     
     private void setWon(){
@@ -291,6 +353,12 @@ public final class View {
         menu.setFont(bigButtonFont);
         menu.setMaximumSize(new Dimension(450,100));
     }
+    /**
+     * Get the "menu" button of the "won" screen
+     * 
+     * @return
+     *      The button menu of the won screen
+     */
     public JButton getMenu(){ return menu;}
 
     private void setTime(){
@@ -298,6 +366,12 @@ public final class View {
         time.setMaximumSize(new Dimension(45,30));
         ((DefaultEditor) time.getEditor()).getTextField().setEditable(false);
         }
+    /**
+     * Get the "time" spinner of the "create game" screen
+     * 
+     * @return
+     *      The spinner time of the create game screen
+     */
     public JSpinner getTime(){ return time;}
     
     private void setDuration(){
@@ -323,6 +397,12 @@ public final class View {
         nPlayers.setMaximumSize(new Dimension(45,30));
         ((DefaultEditor) nPlayers.getEditor()).getTextField().setEditable(false);
     }
+    /**
+     * Get the "number of players" spinner of the "create game" screen
+     * 
+     * @return
+     *      The spinner number of players of the create game screen
+     */
     public JSpinner getNPlayers(){ return nPlayers;}
     
     private void setBackConnect(){
@@ -331,6 +411,12 @@ public final class View {
         backConnect.setMaximumSize(new Dimension(100,60));
         backConnect.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
+    /**
+     * Get the "back" button of the "joining game" screen (from joining game)
+     * 
+     * @return
+     *      The button custom map of the joining game screen (from joining game)
+     */
     public JButton getBackConnect(){ return backConnect;}
     
     private void setBackServer(){
@@ -339,6 +425,12 @@ public final class View {
         backServer.setMaximumSize(new Dimension(100,60));
         backServer.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
+    /**
+     * Get the "back" button of the "joining game" screen (from create game)
+     * 
+     * @return
+     *      The button custom map of the joining game screen (from create game)
+     */
     public JButton getBackServer(){ return backServer;}
     
     private void setConnecting(){
@@ -347,7 +439,7 @@ public final class View {
         connecting.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
     private void setIp(){
-        ip = new JLabel("IP : "+ServerBis.getIp());
+        ip = new JLabel("IP : "+Server.getIp());
         ip.setFont(littlePlain);
         ip.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
@@ -526,7 +618,7 @@ public final class View {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel,1));
         panel.add(Box.createRigidArea(new Dimension(0,260)));
-        panel.add(getConnecting(ServerBis.getIp()));
+        panel.add(getConnecting(Server.getIp()));
         panel.add(Box.createRigidArea(new Dimension(0,20)));
         panel.add(backServer);
         return panel;

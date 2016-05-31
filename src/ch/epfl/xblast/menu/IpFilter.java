@@ -6,6 +6,13 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 
+/**
+ * An ip filter that allows only numbers and '.' in the field
+ * 
+ * @author Guillaume Michel (258066)
+ * @author Adrien Vandenbroucque (258715)
+ *
+ */
 public final class IpFilter extends DocumentFilter{
     @Override
     public void insertString(DocumentFilter.FilterBypass bypass, int offset, String str, AttributeSet set)

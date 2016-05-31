@@ -26,7 +26,7 @@ public final class GameStateSerializer {
     /**
      * Number of seconds per unit of time on the scoreboard
      */
-    private final static int SECOND_PER_TIME_UNIT = ServerBis.GAME_DURATION*Time.S_PER_MIN/TIME_UNIT_NUMBER;
+    private final static int SECOND_PER_TIME_UNIT = Server.GAME_DURATION*Time.S_PER_MIN/TIME_UNIT_NUMBER;
     
     private GameStateSerializer(){};
     

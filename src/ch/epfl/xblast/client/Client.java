@@ -13,76 +13,127 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-
 import ch.epfl.xblast.PlayerAction;
 import ch.epfl.xblast.PlayerID;
 
 /**
- * The main class for the client
+ * A client of the game
  * 
  * @author Guillaume Michel (258066)
  * @author Adrien Vandenbroucque (258715)
  *
  */
-public final class Client {
-    private static XBlastComponent component = new XBlastComponent();
+public class Client {
     public final static int MAX_BUFFER_SIZE = 410;
     public final static int DEFAULT_PORT = 2016;
     
-    public static void main(String[] args) {
+    private static DatagramChannel channel;
+    private static SocketAddress chaussette;
+    private static ByteBuffer firstState;
+    private static ByteBuffer join;
+    private static ByteBuffer currentState = ByteBuffer.allocate(MAX_BUFFER_SIZE);
+    private static PlayerID id;
+    private static List<Byte> list=new ArrayList<>();
+    private static XBlastComponent component;
+    private static byte returnValue;
+    
+    /**
+     * Initialize the game's connections
+     * 
+     * @param s
+     *      The address of the server we will try to join
+     */
+    public final static void initialize(String s){
         try {
-            DatagramChannel channel = DatagramChannel.open(StandardProtocolFamily.INET);
-            SocketAddress address = new InetSocketAddress(args.length==0 ? "localhost" : args[0], DEFAULT_PORT);
-            
+            channel = DatagramChannel.open(StandardProtocolFamily.INET);
             channel.configureBlocking(false);
+            chaussette = new InetSocketAddress(s, DEFAULT_PORT);
+            join = ByteBuffer.allocate(1);
+            firstState = ByteBuffer.allocate(MAX_BUFFER_SIZE);
+            join.put((byte)PlayerAction.JOIN_GAME.ordinal()).flip();
             
-            ByteBuffer bjoin = joinGame(channel, address);
-            PlayerID id = PlayerID.values()[bjoin.get()];
-                        
-            List<Byte> firstState = new ArrayList<>();
-            while(bjoin.hasRemaining())//transfer the buffer to a list
-                firstState.add(bjoin.get());
-            component.setGameState(GameStateDeserializer.deserializeGameState(firstState), id);
-            SwingUtilities.invokeAndWait(()-> createUI(channel, address));//create ui
-            PlaySound.play();
-            
-            ByteBuffer currentState = ByteBuffer.allocate(MAX_BUFFER_SIZE);
-            List<Byte> list = new ArrayList<>();
-            channel.configureBlocking(true);
-            while (true){
-                channel.receive(currentState);
-                currentState.flip();//receive the gamestate
-                while (currentState.hasRemaining())
-                    list.add(currentState.get());//transfert into a list
-                component.setGameState(GameStateDeserializer.deserializeGameState(list.subList(1, list.size())), id);
-                //display the deserialized gamestate to screen
-                currentState.clear();
-                list.clear();
-            }
-            
-        } catch (Exception e) {
+            System.out.println("Connecting the server ...");
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        
     }
     
     /**
-     * Create an User Interface
+     * Try to connect the server
      * 
-     * @param channel
-     *      The channel of communication with the server
-     *              
-     * @param address
-     *      The SocketAddress of the server
+     * @return
+     *      The socketAddress of the server if a server connected and null if not
      */
-    public static void createUI(DatagramChannel channel, SocketAddress address){
-        JFrame frame = new JFrame("XBlast 2016");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(component);
-        frame.pack();
-        
+    public final static SocketAddress connect(){
+        try {
+            channel.send(join, chaussette);
+            Thread.sleep(1000);
+            return channel.receive(firstState);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    /**
+     * Set the first gamestate and get the game ready to run
+     * 
+     * @param component0
+     *      The xblastcomponent containing the game
+     */
+    public final static void start(XBlastComponent component0) {
+        firstState.flip();
+        component = component0;
+        id = PlayerID.values()[firstState.get()];
+        while(firstState.hasRemaining())//transfer the buffer to a list
+            list.add(firstState.get());
+        component.setGameState(GameStateDeserializer.deserializeGameState(list), id);
+        PlaySound.loop();
+        list.clear();
+        firstState.clear();
+        try {
+            channel.configureBlocking(true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Play one "tick" of the game
+     * 
+     * @return
+     *      A byte, 0x10 if the game is not ended or a bit containing the winners if the game is over
+     */
+    public final static byte play(){
+        try {
+            channel.receive(currentState);
+            currentState.flip();//receive the gamestate
+            while (currentState.hasRemaining())
+                list.add(currentState.get());//transfert into a list
+            if (list.size()<2){
+                returnValue=list.get(0);
+                list.clear();
+                currentState.clear();
+                channel.close();
+                return returnValue;
+            }
+            component.setGameState(GameStateDeserializer.deserializeGameState(list.subList(1, list.size())), id);
+            //display the deserialized gamestate to screen
+            currentState.clear();
+            list.clear();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0x10;
+    }
+    
+    /**
+     * Get the map of the keys and their corresponding playerActions. It is the controls of the game
+     * 
+     * @return
+     *      The map of the keys and their corresponding playerActions
+     */
+    public final static Map<Integer, PlayerAction> getMap(){
         Map<Integer, PlayerAction> kb = new HashMap<>();
         kb.put(KeyEvent.VK_UP, PlayerAction.MOVE_N);
         kb.put(KeyEvent.VK_DOWN, PlayerAction.MOVE_S);
@@ -90,51 +141,26 @@ public final class Client {
         kb.put(KeyEvent.VK_RIGHT, PlayerAction.MOVE_E);
         kb.put(KeyEvent.VK_SPACE, PlayerAction.DROP_BOMB);
         kb.put(KeyEvent.VK_SHIFT, PlayerAction.STOP);
+        return kb;
+    }
+    
+    /**
+     * Get the consumer that will send the player actions to the server
+     * 
+     * @return
+     *      The consumer that will send the player actions to the server
+     */
+    public final static Consumer<PlayerAction> getConsumer(){
         Consumer<PlayerAction> c = x -> {
             try {//if a key in the map is pressed send the key event to the server
                 ByteBuffer senderBuffer = ByteBuffer.allocate(1);
                 senderBuffer.put((byte)x.ordinal());
                 senderBuffer.flip();
-                channel.send(senderBuffer, address);
+                channel.send(senderBuffer, chaussette);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         };
-        component.addKeyListener(new KeyboardEventHandler(kb, c));
-        component.requestFocusInWindow();
-        frame.setVisible(true);
+        return c;
     }
-    
-    /**
-     * Send to the server the intention to join the game, get and return the first state from the server
-     * 
-     * @param channel
-     *      The channel of communication with the server
-     *              
-     * @param address
-     *      The SocketAddress of the server
-     *      
-     * @return
-     *      The Buffer containing the first state of the game
-     */
-    private static ByteBuffer joinGame(DatagramChannel channel,SocketAddress address) {
-        ByteBuffer join = ByteBuffer.allocate(1);
-        ByteBuffer firstState = ByteBuffer.allocate(MAX_BUFFER_SIZE);
-        join.put((byte)PlayerAction.JOIN_GAME.ordinal()).flip();
-        System.out.println("Connecting the server ...");
-        try {
-            do {//send the request to join the game until the server send a buffer in return
-                channel.send(join, address);
-                Thread.sleep(1000);
-            }while(channel.receive(firstState)==null);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch(InterruptedException e){
-            e.printStackTrace();
-        }
-        System.out.println("Connected");
-        firstState.flip();
-        return firstState;
-    }
-
 }

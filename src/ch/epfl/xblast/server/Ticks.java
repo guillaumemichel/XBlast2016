@@ -53,5 +53,5 @@ public interface Ticks {
     /**
      * The total number of ticks of a game, which lasts 2 minutes by default
      */
-    public final static int TOTAL_TICKS = ServerBis.GAME_DURATION * Time.S_PER_MIN * TICKS_PER_SECOND; 
+    public final static int TOTAL_TICKS = Server.GAME_DURATION * Time.S_PER_MIN * TICKS_PER_SECOND; 
 }
