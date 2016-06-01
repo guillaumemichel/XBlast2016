@@ -21,6 +21,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import ch.epfl.xblast.Cell;
+import ch.epfl.xblast.menu.View;
 import ch.epfl.xblast.server.Block;
 
 /**
@@ -125,6 +126,7 @@ public final class Options extends JPanel{
             
             @Override
             public void actionPerformed(ActionEvent e) {
+                View.setMainFrameEnabled();
                 SwingUtilities.windowForComponent(Options.this).dispose();
             }
         });

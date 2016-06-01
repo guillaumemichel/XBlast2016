@@ -3,6 +3,8 @@ package ch.epfl.xblast.server.mapEditor;
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
 
+import ch.epfl.xblast.menu.View;
+
 /**
  * A custom JFrame representing a map editor
  * 
@@ -22,6 +24,13 @@ public final class MapEditor extends JFrame{
      */
     public MapEditor(){
         super("Map Editor");
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                View.setMainFrameEnabled();
+                MapEditor.this.dispose();
+            }
+        });
         this.setResizable(false);
         this.setLayout(new BorderLayout());
         this.add(blockChooser, BorderLayout.PAGE_START);

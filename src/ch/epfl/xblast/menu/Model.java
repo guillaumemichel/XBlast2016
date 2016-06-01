@@ -128,6 +128,7 @@ public final class Model {
     }
     
     public void mapEdit(){
+        frame.setEnabled(false);
         m = new MapEditor();
     }
     public MapEditor getMap(){

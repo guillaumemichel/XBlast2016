@@ -37,7 +37,7 @@ import ch.epfl.xblast.server.Server;
  * @author Adrien Vandenbroucque (258715)
  */
 public final class View {
-    private JFrame frame = new JFrame("XBlast 2016");
+    private static JFrame frame = new JFrame("XBlast 2016");
     private JLabel title,names,ipText,joinTitle,selectBoard,createTitle,won,nobody,duration,minutes,players,
             i1,i2,i3,i4,connecting,ip;
     private JButton create,join,backJoin,ipJoin,quit,startServer,menu,backConnect,backServer;
@@ -457,6 +457,9 @@ public final class View {
      */
     public final JFrame getFrame(){ return frame;}
     
+    public static void setMainFrameEnabled(){
+        frame.setEnabled(true);
+    }
 
     /**
      * Get the panel of the Main menu
