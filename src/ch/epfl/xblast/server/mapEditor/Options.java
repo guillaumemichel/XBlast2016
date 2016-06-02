@@ -51,7 +51,7 @@ public final class Options extends JPanel{
             
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFileChooser fileChooser = new JFileChooser();
+                JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir")+"/sample_maps");
                 fileChooser.setFileFilter(new FileNameExtensionFilter("Text Files", "txt"));
                 
                 if(fileChooser.showOpenDialog(getParent())== JFileChooser.APPROVE_OPTION){
@@ -97,7 +97,7 @@ public final class Options extends JPanel{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFileChooser saveChooser = new JFileChooser();
+                JFileChooser saveChooser = new JFileChooser(System.getProperty("user.dir")+"/sample_maps");
 
                 if(saveChooser.showSaveDialog(getParent()) == JFileChooser.APPROVE_OPTION){
                     File toSave = new File(saveChooser.getSelectedFile()+".txt");
