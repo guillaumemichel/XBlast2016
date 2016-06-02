@@ -32,57 +32,61 @@ public final class BlockLabel extends JLabel{
      *      The block
      */
     public BlockLabel(Block b){
+        this.setPreferredSize(new Dimension(BLOCK_IMAGE_WIDTH, BLOCK_IMAGE_HEIGHT));
         setBlock(b);
-
         this.addMouseListener(new MouseAdapter() {
+            
+            
             @Override
-            public void mouseEntered(MouseEvent e) {
+            public void mouseEntered(MouseEvent e) { 
                 BlockChooser parentBlockChooser =((MapEditor)SwingUtilities.windowForComponent(BlockLabel.this)).blockChooser();
                 PlayerChooser parentPlayerChooser =((MapEditor)SwingUtilities.windowForComponent(BlockLabel.this)).playerChooser();
+                boolean conditionForSettingBlock = !parentPlayerChooser.playerSelection().isSelected() && 
+                        (parentBlockChooser.currentBlock().block().canHostPlayer()||BlockLabel.this.hostedPlayers.isEmpty());
+                boolean conditionForSettingPlayer = parentPlayerChooser.playerSelection().isSelected() && BlockLabel.this.block().canHostPlayer();
                 
-                if(((e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) != 0) && !parentPlayerChooser.playerSelection().isSelected() && (parentBlockChooser.currentBlock().block().canHostPlayer()||BlockLabel.this.hostedPlayers.isEmpty())){
+                if(((e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) != 0) && conditionForSettingBlock){
                     setBlock(parentBlockChooser.currentBlock().block());
-                }else if(((e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) != 0) && parentPlayerChooser.playerSelection().isSelected() && BlockLabel.this.block().canHostPlayer()){
-                    GridOfBlocks parentGrid = ((MapEditor)SwingUtilities.windowForComponent(BlockLabel.this)).grid();
-                    for(BlockLabel b: parentGrid.blocks())
-                        if(b.hostedPlayers.contains(parentPlayerChooser.currentPlayer().playerID())){
-                            b.hostedPlayers.remove(parentPlayerChooser.currentPlayer().playerID());
-                           
-                            if(b.hostedPlayers.isEmpty())
-                                b.setBorder(BorderFactory.createEmptyBorder());
-                            else 
-                                b.addHostedPlayer(b.hostedPlayers.iterator().next());
-                        }
-                    BlockLabel.this.addHostedPlayer(parentPlayerChooser.currentPlayer().playerID());
+                }else if(((e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) != 0) && conditionForSettingPlayer){
+                    addPlayerListener(parentPlayerChooser);
                 }
             }
             
             @Override
-            public void mousePressed(MouseEvent e) {
+            public void mousePressed(MouseEvent e) { 
                 BlockChooser parentBlockChooser =((MapEditor)SwingUtilities.windowForComponent(BlockLabel.this)).blockChooser();
                 PlayerChooser parentPlayerChooser =((MapEditor)SwingUtilities.windowForComponent(BlockLabel.this)).playerChooser();
+                boolean conditionForSettingBlock = !parentPlayerChooser.playerSelection().isSelected() && 
+                        (parentBlockChooser.currentBlock().block().canHostPlayer()||BlockLabel.this.hostedPlayers.isEmpty());
+                boolean conditionForSettingPlayer = parentPlayerChooser.playerSelection().isSelected() && BlockLabel.this.block().canHostPlayer();
                 
-                if(!parentPlayerChooser.playerSelection().isSelected() && (parentBlockChooser.currentBlock().block().canHostPlayer()||BlockLabel.this.hostedPlayers.isEmpty())){
+                if(conditionForSettingBlock){
                     setBlock(parentBlockChooser.currentBlock().block());
-                }else if(parentPlayerChooser.playerSelection().isSelected() && BlockLabel.this.block().canHostPlayer()){
-                    GridOfBlocks parentGrid = ((MapEditor)SwingUtilities.windowForComponent(BlockLabel.this)).grid();
-                    for(BlockLabel b: parentGrid.blocks())
-                        if(b.hostedPlayers.contains(parentPlayerChooser.currentPlayer().playerID())){
-                            b.hostedPlayers.remove(parentPlayerChooser.currentPlayer().playerID());
-                            
-                            if(b.hostedPlayers.isEmpty())
-                                b.setBorder(BorderFactory.createEmptyBorder());
-                            else
-                                
-                                b.addHostedPlayer(b.hostedPlayers.iterator().next());
-                        }
-                    
-                    BlockLabel.this.addHostedPlayer(parentPlayerChooser.currentPlayer().playerID());
+                }else if(conditionForSettingPlayer){
+                   addPlayerListener(parentPlayerChooser);
                 }
                     
             }
+            
+            private void addPlayerListener(PlayerChooser parentPlayerChooser){
+                GridOfBlocks parentGrid = ((MapEditor)SwingUtilities.windowForComponent(BlockLabel.this)).grid();
+                for(BlockLabel b: parentGrid.blocks()){//for every blockLabel
+                    //before putting a new playerId in the blockLabel, we have to remove its position in the previous blockLabel
+                    if(b.hostedPlayers.contains(parentPlayerChooser.currentPlayer().playerID())){
+                        b.hostedPlayers.remove(parentPlayerChooser.currentPlayer().playerID());
+                       
+                        //then if there is no more player on the current blockLabel, we remove the border
+                        if(b.hostedPlayers.isEmpty())
+                            b.setBorder(BorderFactory.createEmptyBorder());
+                        //else we set the border to the color of a player that is hosted in the current blockLabel
+                        else 
+                            b.addHostedPlayer(b.hostedPlayers.iterator().next());
+                    }
+                }
+                //Finally we add the player to this blockLabel
+                BlockLabel.this.addHostedPlayer(parentPlayerChooser.currentPlayer().playerID());
+            }
         });
-        this.setPreferredSize(new Dimension(BLOCK_IMAGE_WIDTH, BLOCK_IMAGE_HEIGHT));
     }
     
     /**
@@ -129,5 +133,4 @@ public final class BlockLabel extends JLabel{
     private void setLabelImage(Block b){
         this.setIcon(new ImageIcon(ImageCollection.IMAGE_COLLECTION_BLOCK.imageOrNull(Level.DEFAULT_LEVEL.boardPainter().correspondingBlockImageOf(block))));
     }
-    
 }
