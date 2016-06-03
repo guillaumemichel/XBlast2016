@@ -64,7 +64,6 @@ public final class Controller {
                 default:
                     g = Level.DEFAULT_LEVEL.gameState();
             }
-
             Server.init((int) view.getTime().getValue());
             while (Server.connect()!=(int)view.getNPlayers().getValue() && bool){}
             if (bool) Server.game(g);
