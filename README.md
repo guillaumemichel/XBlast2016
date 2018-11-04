@@ -11,7 +11,7 @@ As it was not very intuitive and convenient to launch the game from a command li
 ![Alt text](/screenshots/create_game.png?raw=true "")
 ![Alt text](/screenshots/join_screen.png?raw=true "")
 ### Map Editor
-We decided to add a map editor that would allow the users to create and customise their own maps. It is possible to edit all the blocks of the map as well as the spawn point of the players. We added a feature that allows the user to save the maps for future usage. 
+We decided to add a map editor that would allow the users to create and customise their own maps. It is possible to edit all the blocks of the map as well as the spawn point of the players. We added a feature that allows the user to save and load the maps for future usage. 
 ![Alt text](/screenshots/map_editor.png?raw=true "")
 ![Alt text](/screenshots/custom_game.png?raw=true "")
 ### Music
