@@ -10,10 +10,9 @@ As it was not very intuitive and convenient to launch the game from a command li
 ![Alt text](/screenshots/start_screen.png?raw=true "")
 ![Alt text](/screenshots/create_game.png?raw=true "")
 ![Alt text](/screenshots/join_screen.png?raw=true "")
-![Alt text](/screenshots/custom_game.png?raw=true "")
-![Alt text](/screenshots/end_game.png?raw=true "")
 ### Map Editor
 We decided to add a map editor that would allow the users to create and customise their own maps. It is possible to edit all the blocks of the map as well as the spawn point of the players. We added a feature that allows the user to save the maps for future usage. 
 ![Alt text](/screenshots/map_editor.png?raw=true "")
+![Alt text](/screenshots/custom_game.png?raw=true "")
 ### Music
 We simply added the possibility to play a music during the game, making it more fun. The default music is a 8-bit adaptation of the soundtrack of Game of Thrones. 
